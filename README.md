@@ -197,12 +197,13 @@ Os registros 01 a 17 documentam a arquitetura básica. Os registros a partir de
 com o estado atual das portas e do proxy. A reflexão distingue o comportamento da escala
 antes e depois da inclusão do Nginx.
 
-A entrega será pelo [repositório no GitHub](https://github.com/lucasmotareis/G1-Nuvem),
-sem pacote do projeto. Antes de enviar esse link no ambiente virtual, publique
-as alterações locais com commit e push e confira no GitHub se o README, a imagem
-`docs/arquitetura.png`, os documentos e as evidências aparecem na versão enviada.
-O professor precisa ter acesso ao repositório; se ele for privado, conceda esse acesso.
-O `.env` e os backups locais devem continuar ignorados; `.env.example` faz parte da entrega.
+A entrega é pelo [repositório público no GitHub](https://github.com/lucasmotareis/G1-Nuvem),
+sem pacote do projeto. A versão com infraestrutura, documentação, arquitetura e
+evidências foi publicada e conferida em um clone real, conforme a
+[verificação 28](docs/evidencias/28-publicacao-github.txt). O HTML do README
+renderizado pelo GitHub também contém a imagem da arquitetura.
+Envie esse link no ambiente virtual ao professor.
+O `.env` e os backups locais continuam ignorados; `.env.example` faz parte da entrega.
 
 A [revisão final contra o PDF](docs/REVISAO_FINAL.md) relaciona os requisitos aos
 arquivos e testes. As equivalências em nuvem são propostas: nenhum recurso de
@@ -231,6 +232,10 @@ todas as rotas, parada/retomada e as três situações da Tarefa 5 com volumes n
 O projeto original foi preservado e retomado com seis itens e duas fotos.
 O Adminer terminou desativado, e a aplicação fornecida permaneceu intacta.
 
-O ensaio 23 é uma validação local e não comprova publicação no GitHub.
-Commit, push e acesso do professor são a etapa de entrega; os testes locais
-não substituem essa conferência do repositório remoto.
+O ensaio 23 registra os testes completos em um clone local de snapshot.
+A publicação posterior e o clone real do GitHub estão na
+[verificação 28](docs/evidencias/28-publicacao-github.txt): os nove arquivos
+operacionais coincidem com o manifesto testado, a configuração a partir do
+exemplo é válida e `.env` não está nos arquivos ou no histórico publicado.
+Os registros 26 e 27 descrevem a situação anterior ao push e foram preservados
+como histórico. Resta ao aluno enviar o link no ambiente virtual.

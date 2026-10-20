@@ -42,7 +42,8 @@ os arquivos a partir de 18 correspondem à implementação dos bônus.
 | [24-foto-com-proxy.png](24-foto-com-proxy.png) | Foto azul do item 4 exibida no navegador pela URL `/fotos/32ca639243894b06b6a718d246401cef.png`, após os testes finais e a retomada do projeto original com Nginx. |
 | [25-auditoria-entrega.txt](25-auditoria-entrega.txt) | Auditoria final de Git, credenciais, arquivos fornecidos, links, requisitos da documentação e inventário de arquivos destinados à entrega. |
 | [26-conferencia-final.txt](26-conferencia-final.txt) | Conferência final contra o PDF: integridade dos arquivos operacionais, imagem original incluída, documentação, exclusão de segredos e verificação atual do ambiente; publicação remota não realizada. |
-| [27-auditoria-criterios-eliminacao.txt](27-auditoria-criterios-eliminacao.txt) | Credenciais: índice, commits, objetos locais e referências atuais do GitHub sem indício de segredo real; versão remota ainda inicial, com publicação funcional pendente. |
+| [27-auditoria-criterios-eliminacao.txt](27-auditoria-criterios-eliminacao.txt) | Auditoria anterior ao push: índice, commits, objetos locais e referências do GitHub sem indício de segredo real; naquele momento, a publicação funcional ainda estava pendente. |
+| [28-publicacao-github.txt](28-publicacao-github.txt) | Push confirmado, repositório público, clone real com os nove arquivos operacionais testados, `.env` ausente do histórico e imagem presente no HTML do README renderizado pelo GitHub. |
 
 As imagens enviadas são [foto-teste-1.png](foto-teste-1.png) e
 [foto-teste-2.png](foto-teste-2.png), dois PNGs 64 × 64 de cor uniforme.
@@ -73,9 +74,11 @@ O Adminer terminou desativado. O volume restaurado de demonstração é independ
 do volume ativo. A [reflexão](../REFLEXAO.md) distingue o conflito da arquitetura
 básica e o funcionamento das três réplicas atrás do proxy, incluindo a limitação
 observada na redução de escala e o procedimento adotado para a retomada.
-O snapshot temporário do ensaio 23 não representa publicação do repositório de
-trabalho: para entregar por link, é necessário disponibilizar as alterações no
-repositório. A entrega escolhida é por link, conforme o [README](../../README.md).
-As menções a pacote no registro 25 e no manifesto 23 pertencem ao planejamento
-anterior e foram preservadas como histórico; a conferência 26 verifica a versão
-atual destinada ao repositório, sem incluir `.env` ou backups locais.
+O snapshot temporário do ensaio 23 registra a validação local. Posteriormente,
+a [verificação 28](28-publicacao-github.txt) confirmou a publicação e o clone
+real do GitHub, com os mesmos arquivos operacionais, repositório público e imagem
+no HTML do README. A entrega escolhida é por link, conforme o [README](../../README.md).
+As menções a publicação pendente nos registros 26 e 27 retratam o período anterior
+ao push; essa pendência foi resolvida em 28. As menções a pacote no registro 25 e
+no manifesto 23 pertencem ao planejamento anterior e foram preservadas como
+histórico. O `.env` e os backups locais permanecem excluídos da entrega.

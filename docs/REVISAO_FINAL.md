@@ -2,8 +2,10 @@
 
 Revisão de `G1-CN-2N.pdf`, seções 2 a 7 e Apêndice A, em 19/10/2026.
 A implementação local atende aos requisitos obrigatórios conferidos abaixo.
-A publicação das alterações no GitHub e o acesso do professor ainda precisam
-ser concluídos antes de enviar o link; esta revisão não comprova publicação remota.
+A versão foi publicada no GitHub, com repositório público e clone real conferido
+na [verificação 28](evidencias/28-publicacao-github.txt). A imagem também foi
+confirmada no HTML do README renderizado pelo GitHub. Resta enviar o link no
+ambiente virtual.
 
 | Parte do enunciado | Resultado e onde conferir |
 | --- | --- |
@@ -12,7 +14,7 @@ ser concluídos antes de enviar o link; esta revisão não comprova publicação
 | Dockerfile — Tarefa 2 / RNF04 | Python 3.12 slim, dependências antes do código, pip sem cache, uploads pertencentes ao usuário `app`, `USER`, `EXPOSE 5000` e Gunicorn na forma exec: [Dockerfile](../app/Dockerfile). Exclusões em [`.dockerignore`](../app/.dockerignore). Usuário comprovado em 23 e 26. |
 | Compose — Tarefa 3 / RNF03 e RNF05 | PostgreSQL 16 alpine, variáveis do `.env`, banco sem porta publicada, bridge própria, dois volumes, SQL somente leitura, `pg_isready`, dependência saudável e política de reinício: [Compose](../docker-compose.yml), [relatório (b)](RELATORIO.md) e [conferência 26](evidencias/26-conferencia-final.txt). |
 | Funcionamento — RF01 a RF04 / Tarefa 4 | Saúde, listagem, filtro, cadastro com/sem foto, recuperação de fotos, estatísticas e logs: [18](evidencias/18-proxy-e-rotas.txt), [23](evidencias/23-clone-e-aceite.txt) e [foto no navegador 24](evidencias/24-foto-com-proxy.png). |
-| Subida do zero — RNF01 | Clone local de snapshot com volumes novos, somente `.env.example` copiado e `up -d --build`: [23](evidencias/23-clone-e-aceite.txt). Os nove arquivos operacionais atuais têm os mesmos hashes: [26](evidencias/26-conferencia-final.txt). Não equivale a um clone verificado do GitHub após o push. |
+| Subida do zero — RNF01 | Clone local de snapshot com volumes novos, somente `.env.example` copiado e `up -d --build`: [23](evidencias/23-clone-e-aceite.txt). Os nove arquivos operacionais atuais têm os mesmos hashes: [26](evidencias/26-conferencia-final.txt). O clone real do GitHub e a configuração com o exemplo foram posteriormente conferidos em [28](evidencias/28-publicacao-github.txt), sem repetir a subida já testada com os mesmos arquivos. |
 | Persistência — RNF02 / Tarefa 5 | Recriação preserva registros, IDs, URLs e fotos; inspeção identifica volumes e caminhos; remoção elimina cadastros/fotos e recria os três exemplos: [22](evidencias/22-persistencia-com-proxy.txt), [23](evidencias/23-clone-e-aceite.txt) e [relatório (d)](RELATORIO.md). |
 | A1 — README | Objetivo, pré-requisitos, clonagem, `.env`, subida, testes, rotas, parada e destruição: [README](../README.md). |
 | A2 — Diagrama | Imagem fornecida incluída sem alterações em [arquitetura.png](arquitetura.png), com [fonte Mermaid](ARQUITETURA.md). Mostra host, portas, contêineres, rede, volumes, caminhos e bind mounts. |
@@ -45,9 +47,9 @@ não um pacote do projeto para entrega.
 O endereço configurado é [github.com/lucasmotareis/G1-Nuvem](https://github.com/lucasmotareis/G1-Nuvem).
 Antes de entregar no ambiente virtual:
 
-- [ ] Fazer commit e push das alterações locais, incluindo imagem, documentos e evidências.
-- [ ] Conferir a versão publicada no GitHub e a exibição da imagem no README.
-- [ ] Garantir que o professor tenha acesso ao repositório.
+- [x] Fazer commit e push da infraestrutura, imagem, documentos e evidências: [verificação 28](evidencias/28-publicacao-github.txt).
+- [x] Conferir o clone real e a imagem no HTML do README do GitHub: [verificação 28](evidencias/28-publicacao-github.txt).
+- [x] Repositório com visibilidade pública confirmada: [verificação 28](evidencias/28-publicacao-github.txt).
 - [ ] Enviar o link do repositório no ambiente virtual.
 
 O `.env` permanece somente local, ignorado e ausente do histórico Git local
@@ -61,8 +63,8 @@ A [auditoria 27](evidencias/27-auditoria-criterios-eliminacao.txt) verificou
 de senha real versionada. O `.env` permanece excluído; o modelo contém valores
 fictícios permitidos. Não foi identificado motivo para reescrever o histórico.
 
-A consulta remota confirmou uma pendência de entrega: o GitHub ainda aponta
-para o commit inicial, cujo `docker-compose.yml` está vazio. Portanto, o link
-atual ainda não disponibiliza a versão funcional e as evidências desta revisão.
-É necessário publicar as alterações antes de entregar; enviar a versão remota
-inicial comprometeria o critério de funcionamento.
+Na auditoria 27, o GitHub ainda apontava para o commit inicial com Compose
+vazio. Essa pendência foi resolvida pelo push da versão funcional e pela
+[verificação 28](evidencias/28-publicacao-github.txt), que confirmou o clone real,
+os arquivos operacionais, a imagem no README e a ausência do `.env` no histórico
+publicado. A auditoria anterior permanece como registro da situação antes do push.

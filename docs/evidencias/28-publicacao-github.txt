@@ -1,0 +1,40 @@
+Legenda: publicação e clone real do GitHub em 19/10/2026; conferência dos arquivos operacionais, arquitetura, exclusão do .env e visibilidade do repositório.
+
+$ git ls-remote origin refs/heads/master
+ffe4a58a2958ac9872166ecd3945085aec7aeac6	refs/heads/master
+CONFIRMADO: master remoto aponta para o commit local ffe4a58a2958ac9872166ecd3945085aec7aeac6
+$ gh repo view lucasmotareis/G1-Nuvem --json nameWithOwner,url,visibility,defaultBranchRef
+{"defaultBranchRef":{"name":"master"},"nameWithOwner":"lucasmotareis/G1-Nuvem","url":"https://github.com/lucasmotareis/G1-Nuvem","visibility":"PUBLIC"}
+CONFIRMADO: Repositório e branch de entrega confirmados
+Visibilidade: PUBLIC
+$ git clone --branch master https://github.com/lucasmotareis/G1-Nuvem.git /tmp/g1-clone-github-6niad6ml/G1-Nuvem
+Cloning into '/tmp/g1-clone-github-6niad6ml/G1-Nuvem'...
+CONFIRMADO: Clone baixado do GitHub contém o commit publicado
+CONFIRMADO: docker-compose.yml igual ao arquivo operacional testado no ensaio 23
+CONFIRMADO: nginx/default.conf igual ao arquivo operacional testado no ensaio 23
+CONFIRMADO: app/Dockerfile igual ao arquivo operacional testado no ensaio 23
+CONFIRMADO: app/.dockerignore igual ao arquivo operacional testado no ensaio 23
+CONFIRMADO: app/app.py igual ao arquivo operacional testado no ensaio 23
+CONFIRMADO: app/requirements.txt igual ao arquivo operacional testado no ensaio 23
+CONFIRMADO: db/init.sql igual ao arquivo operacional testado no ensaio 23
+CONFIRMADO: .env.example igual ao arquivo operacional testado no ensaio 23
+CONFIRMADO: .gitignore igual ao arquivo operacional testado no ensaio 23
+CONFIRMADO: .env ausente do clone antes da configuração
+CONFIRMADO: .env ausente dos arquivos rastreados no clone
+CONFIRMADO: .env ausente do histórico publicado disponível
+CONFIRMADO: Backups locais excluídos do clone
+CONFIRMADO: Imagem original presente no clone, sem alteração de bytes
+CONFIRMADO: README publicado incorpora a imagem
+CONFIRMADO: Fonte Mermaid publicado
+CONFIRMADO: Senha de demonstração ausente dos demais arquivos publicados; valor omitido
+CONFIRMADO: Entrega por repositório, sem .env, ZIP do projeto ou backups locais
+$ cp .env.example .env  # somente no clone de verificação
+$ docker compose config --quiet
+A configuração a partir do exemplo foi validada no clone real. Não houve nova subida de contêineres nesta etapa: os nove arquivos operacionais são idênticos aos do ensaio completo 23.
+$ git status --short
+CONFIRMADO: HTML do README renderizado pelo GitHub contém a imagem da arquitetura
+Commits publicados nesta primeira etapa:
+ffe4a58 Documenta arquitetura, testes, reflexões e auditoria da entrega
+ae7f428 Configura Compose com persistência, Nginx e Adminer opcional
+Nota: referências a publicação pendente nos registros 26/27 descrevem a situação anterior a este push. Os textos de apresentação serão atualizados em um commit somente de documentação.
+RESULTADO: publicação dos dois commits confirmada; clone real, arquivos operacionais, credenciais excluídas e imagem no README conferidos.

@@ -3,6 +3,9 @@
 .env.*
 !.env.example
 
+# Arquivos locais de backup (podem conter dados dos usuários)
+backups/
+
 # Ambiente virtual e arquivos gerados pelo Python
 .venv/
 venv/

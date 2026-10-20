@@ -1,0 +1,198 @@
+Legenda: Tarefa 5, remoção e reinicialização em 19/10/2026, solicitadas pelo aluno; comparação de contagens, IDs e URLs antes/depois. Cópias dos dados anteriores estão indicadas em 13-preservacao-antes-remocao.txt.
+
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:46:09 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 41
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200
+CONFIRMADO: Contagens anteriores à remoção permanecem iguais ao início do ensaio
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:46:09 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 867
+
+[{"criado_em":"2026-10-19T23:35:57.547917","descricao":"Objeto de teste RF03 sem foto","foto":null,"id":6,"local":"Laboratorio - teste G1"},{"criado_em":"2026-10-19T23:35:57.535191","descricao":"Objeto de teste RF03 com foto 2","foto":"/fotos/846af42ade3f45d6b3f769a9e63e47be.png","id":5,"local":"Biblioteca - teste G1"},{"criado_em":"2026-10-19T23:35:57.520363","descricao":"Objeto de teste RF03 com foto 1","foto":"/fotos/d1db8ccebee64116af60f2b39b324e6d.png","id":4,"local":"Biblioteca - teste G1"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 200
+CONFIRMADO: Registros anteriores à remoção permanecem iguais ao início do ensaio
+CONFIRMADO: Há pelo menos dois cadastros com foto para demonstrar a perda dos dados
+$ docker compose down -v
+ Container g1-nuvem-web-1 Stopping 
+ Container g1-nuvem-web-1 Stopped 
+ Container g1-nuvem-web-1 Removing 
+ Container g1-nuvem-web-1 Removed 
+ Container g1-nuvem-db-1 Stopping 
+ Container g1-nuvem-db-1 Stopped 
+ Container g1-nuvem-db-1 Removing 
+ Container g1-nuvem-db-1 Removed 
+ Volume g1-nuvem_dados_banco Removing 
+ Volume g1-nuvem_fotos Removing 
+ Network g1-nuvem_rede_interna Removing 
+ Volume g1-nuvem_dados_banco Removed 
+ Volume g1-nuvem_fotos Removed 
+ Network g1-nuvem_rede_interna Removed
+Código de saída: 0.
+
+$ docker volume ls
+DRIVER    VOLUME NAME
+local     8aa43ec64a617160a29cc41c200fdf11db8928e64a16d208f8c8fe4252481c71
+Código de saída: 0.
+
+$ docker compose up -d
+ Network g1-nuvem_rede_interna Creating 
+ Network g1-nuvem_rede_interna Creating 
+ Volume g1-nuvem_fotos Creating 
+ Volume g1-nuvem_fotos Creating 
+ Volume g1-nuvem_dados_banco Creating 
+ Volume g1-nuvem_dados_banco Creating 
+ Volume g1-nuvem_fotos Created 
+ Volume g1-nuvem_fotos Created 
+ Volume g1-nuvem_dados_banco Created 
+ Volume g1-nuvem_dados_banco Created 
+ Network g1-nuvem_rede_interna Created 
+ Network g1-nuvem_rede_interna Created 
+ Container g1-nuvem-db-1 Creating 
+ Container g1-nuvem-db-1 Created 
+ Container g1-nuvem-web-1 Creating 
+ Container g1-nuvem-web-1 Created 
+ Container g1-nuvem-db-1 Starting 
+ Container g1-nuvem-db-1 Started 
+ Container g1-nuvem-db-1 Waiting 
+ Container g1-nuvem-db-1 Healthy 
+ Container g1-nuvem-web-1 Starting 
+ Container g1-nuvem-web-1 Started
+Código de saída: 0.
+
+$ curl --silent --show-error --fail --max-time 2 http://localhost:8080/health (sondagem de prontidão após a reinicialização)
+{"banco":"conectado","container":"1753a7633ece","status":"ok"}
+Código de saída: 0.
+
+$ docker compose ps
+NAME             IMAGE                COMMAND                  SERVICE   CREATED         STATUS                   PORTS
+g1-nuvem-db-1    postgres:16-alpine   "docker-entrypoint.s…"   db        6 seconds ago   Up 6 seconds (healthy)   5432/tcp
+g1-nuvem-web-1   g1-nuvem-web         "gunicorn --bind 0.0…"   web       6 seconds ago   Up Less than a second    0.0.0.0:8080->5000/tcp, [::]:8080->5000/tcp
+Código de saída: 0.
+
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/health
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:46:16 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 63
+
+{"banco":"conectado","container":"1753a7633ece","status":"ok"}
+Código de saída: 0.
+
+CONFIRMADO: /health: HTTP 200
+CONFIRMADO: API conectada ao banco recriado
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:46:16 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 41
+
+{"fotos_no_volume":0,"itens_no_banco":3}
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:46:16 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 366
+
+[{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 200
+CONFIRMADO: Após down -v e up: três itens de exemplo e nenhuma foto
+CONFIRMADO: init.sql recriou exatamente os três exemplos, com IDs 1 a 3
+CONFIRMADO: Os exemplos recriados não possuem fotos
+CONFIRMADO: IDs dos cadastros de teste anteriores não existem mais
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/fotos/846af42ade3f45d6b3f769a9e63e47be.png
+HTTP/1.1 404 NOT FOUND
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:46:16 GMT
+Connection: close
+Content-Type: text/html; charset=utf-8
+Content-Length: 207
+
+<!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+Código de saída: 0.
+
+CONFIRMADO: /fotos/846af42ade3f45d6b3f769a9e63e47be.png: HTTP 404
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/fotos/d1db8ccebee64116af60f2b39b324e6d.png
+HTTP/1.1 404 NOT FOUND
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:46:16 GMT
+Connection: close
+Content-Type: text/html; charset=utf-8
+Content-Length: 207
+
+<!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+Código de saída: 0.
+
+CONFIRMADO: /fotos/d1db8ccebee64116af60f2b39b324e6d.png: HTTP 404
+$ docker compose exec -T web ls -l /app/uploads
+total 0
+Código de saída: 0.
+
+$ docker volume inspect g1-nuvem_dados_banco g1-nuvem_fotos
+[
+    {
+        "CreatedAt": "2026-10-19T20:46:10-03:00",
+        "Driver": "local",
+        "Labels": {
+            "com.docker.compose.config-hash": "249bc5761c906ea61c63ee88492b6d145c57d40025f32c6f2d73d295c4fae0c8",
+            "com.docker.compose.project": "g1-nuvem",
+            "com.docker.compose.version": "5.6.0",
+            "com.docker.compose.volume": "dados_banco"
+        },
+        "Mountpoint": "/var/lib/docker/volumes/g1-nuvem_dados_banco/_data",
+        "Name": "g1-nuvem_dados_banco",
+        "Options": null,
+        "Scope": "local"
+    },
+    {
+        "CreatedAt": "2026-10-19T20:46:10-03:00",
+        "Driver": "local",
+        "Labels": {
+            "com.docker.compose.config-hash": "262c287537992d5ee80f9facd05ee05fc75d8cba005ff87fe6a2163336d7a97c",
+            "com.docker.compose.project": "g1-nuvem",
+            "com.docker.compose.version": "5.6.0",
+            "com.docker.compose.volume": "fotos"
+        },
+        "Mountpoint": "/var/lib/docker/volumes/g1-nuvem_fotos/_data",
+        "Name": "g1-nuvem_fotos",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+Código de saída: 0.
+
+RESULTADO: antes, seis itens e duas fotos; depois, três itens e nenhuma foto. down -v removeu os volumes; a nova subida criou volumes vazios e a imagem PostgreSQL executou init.sql no banco novo. Os três exemplos foram recriados, não preservados. Os backups locais não foram restaurados.
+

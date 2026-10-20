@@ -1,0 +1,117 @@
+Legenda: Bônus backup: docker run --rm, arquivo tar.gz e restauração em volume novo; comparação dos hashes e preservação da origem em 19/10/2026.
+
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:04:36 GMT
+Content-Type: application/json
+Content-Length: 41
+Connection: keep-alive
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200 via Nginx
+$ docker compose exec -T web python -c 'import hashlib,json,pathlib; p=pathlib.Path("/app/uploads"); print(json.dumps({f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(p.iterdir()) if f.is_file()},sort_keys=True))'
+{"32ca639243894b06b6a718d246401cef.png": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf", "92ededde7bb3412799c5f85173cbd1cc.png": "160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562"}
+
+Código de saída: 0.
+
+CONFIRMADO: Há pelo menos duas fotos reais de teste no volume de origem
+$ docker inspect --format '{{json .Mounts}}' g1-nuvem-web-1
+[{"Type":"volume","Name":"g1-nuvem_fotos","Source":"/var/lib/docker/volumes/g1-nuvem_fotos/_data","Destination":"/app/uploads","Driver":"local","Mode":"rw","RW":true,"Propagation":""}]
+
+Código de saída: 0.
+
+$ docker pull alpine:3
+3: Pulling from library/alpine
+e2de96513ba9: Pulling fs layer
+e2de96513ba9: Already exists
+6d0606d1815c: Download complete
+797dd00a0fc7: Download complete
+Digest: sha256:294b683cb724975bec92580e1e685676bd4b50bda910ddb8c51d4cabeaec77e6
+Status: Downloaded newer image for alpine:3
+docker.io/library/alpine:3
+
+Código de saída: 0.
+
+$ docker compose stop web
+ Container g1-nuvem-web-1 Stopping 
+ Container g1-nuvem-web-1 Stopped 
+
+Código de saída: 0.
+
+$ docker run --rm --network none --mount type=volume,src=g1-nuvem_fotos,dst=/origem,readonly --mount 'type=bind,src=/home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem/backups,dst=/backup' alpine:3 tar -czf /backup/fotos.tar.gz -C /origem .
+
+Código de saída: 0.
+
+$ docker compose start web
+ Container g1-nuvem-db-1 Waiting 
+ Container g1-nuvem-db-1 Healthy 
+ Container g1-nuvem-web-1 Starting 
+ Container g1-nuvem-web-1 Started 
+
+Código de saída: 0.
+
+$ curl --silent --show-error --fail --max-time 2 http://localhost:8080/health (sondagem de prontidão)
+{"banco":"conectado","container":"4d37a85c14e7","status":"ok"}
+$ docker run --rm --network none --mount 'type=bind,src=/home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem/backups,dst=/backup,readonly' alpine:3 tar -tzf /backup/fotos.tar.gz
+./
+./32ca639243894b06b6a718d246401cef.png
+./92ededde7bb3412799c5f85173cbd1cc.png
+
+Código de saída: 0.
+
+$ docker volume create g1-nuvem_fotos_restauradas_1dfb978f
+g1-nuvem_fotos_restauradas_1dfb978f
+
+Código de saída: 0.
+
+$ docker run --rm --network none --mount type=volume,src=g1-nuvem_fotos_restauradas_1dfb978f,dst=/restaurado --mount 'type=bind,src=/home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem/backups,dst=/backup,readonly' alpine:3 tar -xzf /backup/fotos.tar.gz -C /restaurado
+
+Código de saída: 0.
+
+$ docker run --rm --network none --mount type=volume,src=g1-nuvem_fotos_restauradas_1dfb978f,dst=/app/uploads,readonly --entrypoint python g1-nuvem-web -c 'import hashlib,json,pathlib; p=pathlib.Path("/app/uploads"); print(json.dumps({f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(p.iterdir()) if f.is_file()},sort_keys=True))'
+{"32ca639243894b06b6a718d246401cef.png": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf", "92ededde7bb3412799c5f85173cbd1cc.png": "160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562"}
+
+Código de saída: 0.
+
+CONFIRMADO: Mesmos nomes, quantidade e SHA-256 no volume novo restaurado
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:05:04 GMT
+Content-Type: application/json
+Content-Length: 41
+Connection: keep-alive
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200 via Nginx
+$ docker compose exec -T web python -c 'import hashlib,json,pathlib; p=pathlib.Path("/app/uploads"); print(json.dumps({f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(p.iterdir()) if f.is_file()},sort_keys=True))'
+{"32ca639243894b06b6a718d246401cef.png": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf", "92ededde7bb3412799c5f85173cbd1cc.png": "160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562"}
+
+Código de saída: 0.
+
+CONFIRMADO: Origem permaneceu inalterada após backup e restauração
+$ docker volume inspect g1-nuvem_fotos_restauradas_1dfb978f
+[
+    {
+        "CreatedAt": "2026-10-19T21:05:03-03:00",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/g1-nuvem_fotos_restauradas_1dfb978f/_data",
+        "Name": "g1-nuvem_fotos_restauradas_1dfb978f",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+
+Código de saída: 0.
+
+Arquivo entregue, contendo somente os dois PNGs de demonstração: docs/evidencias/19-fotos-backup.tar.gz
+SHA-256 do tar.gz: 4ceaae151c79f0d01610865475b91e5687affb02ecdd3395f52ec1264302b166
+RESULTADO: verificações desta etapa concluídas sem falhas.

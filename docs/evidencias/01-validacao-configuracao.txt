@@ -1,0 +1,30 @@
+Legenda: validação estática do Compose e verificação de exclusão do .env em 19/10/2026; não comprova execução do ambiente.
+
+$ docker --version
+Docker version 29.9.1, build dfc520dcc2
+Código de saída: 0.
+
+$ docker compose version
+Docker Compose version 5.6.0
+Código de saída: 0.
+
+$ docker compose config --quiet
+(sem saída)
+Código de saída: 0.
+
+$ git check-ignore .env
+.env
+Código de saída: 0.
+
+$ git ls-files -- .env
+(sem saída)
+Código de saída: 0.
+
+$ git log --all --format=%h %s -- .env
+(sem saída)
+Código de saída: 0.
+
+$ git diff --check
+(sem saída)
+Código de saída: 0.
+

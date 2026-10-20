@@ -1,0 +1,73 @@
+Legenda: Q7, tentativa real de três réplicas em 19/10/2026; resultado com porta fixa 8080 e retorno à configuração de uma réplica, preservando os volumes.
+
+$ curl --silent --show-error --fail --max-time 15 http://localhost:8080/estatisticas
+{"fotos_no_volume":0,"itens_no_banco":3}
+
+Código de saída: 0.
+
+$ docker compose up -d --scale web=3
+ Container g1-nuvem-db-1 Running 
+ Container g1-nuvem-web-1 Running 
+ Container g1-nuvem-web-3 Creating 
+ Container g1-nuvem-web-2 Creating 
+ Container g1-nuvem-web-3 Created 
+ Container g1-nuvem-web-2 Created 
+ Container g1-nuvem-db-1 Waiting 
+ Container g1-nuvem-db-1 Healthy 
+ Container g1-nuvem-web-2 Starting 
+Error response from daemon: failed to set up container networking: driver failed programming external connectivity on endpoint g1-nuvem-web-2 (a020997b0bb37b46b817bc0d4b18527d24624e69a810cb1a87293b2a6d39c221): Bind for 0.0.0.0:8080 failed: port is already allocated
+
+Código de saída: 1.
+
+$ docker compose ps -a
+NAME             IMAGE                COMMAND                  SERVICE   CREATED              STATUS                        PORTS
+g1-nuvem-db-1    postgres:16-alpine   "docker-entrypoint.s…"   db        About a minute ago   Up About a minute (healthy)   5432/tcp
+g1-nuvem-web-1   g1-nuvem-web         "gunicorn --bind 0.0…"   web       About a minute ago   Up About a minute             0.0.0.0:8080->5000/tcp, [::]:8080->5000/tcp
+g1-nuvem-web-2   g1-nuvem-web         "gunicorn --bind 0.0…"   web       1 second ago         Created                       
+g1-nuvem-web-3   g1-nuvem-web         "gunicorn --bind 0.0…"   web       1 second ago         Created                       
+
+Código de saída: 0.
+
+Resultado da tentativa: código 1; a saída acima é o resultado real, não uma simulação.
+
+$ docker compose up -d --scale web=1
+ Container g1-nuvem-db-1 Running 
+ Container g1-nuvem-web-1 Running 
+ Container g1-nuvem-web-2 Stopping 
+ Container g1-nuvem-web-3 Stopping 
+ Container g1-nuvem-web-3 Stopped 
+ Container g1-nuvem-web-3 Removing 
+ Container g1-nuvem-web-2 Stopped 
+ Container g1-nuvem-web-2 Removing 
+ Container g1-nuvem-web-2 Removed 
+ Container g1-nuvem-web-3 Removed 
+ Container g1-nuvem-db-1 Waiting 
+ Container g1-nuvem-db-1 Healthy 
+
+Código de saída: 0.
+
+$ docker compose ps -a
+NAME             IMAGE                COMMAND                  SERVICE   CREATED              STATUS                        PORTS
+g1-nuvem-db-1    postgres:16-alpine   "docker-entrypoint.s…"   db        About a minute ago   Up About a minute (healthy)   5432/tcp
+g1-nuvem-web-1   g1-nuvem-web         "gunicorn --bind 0.0…"   web       About a minute ago   Up About a minute             0.0.0.0:8080->5000/tcp, [::]:8080->5000/tcp
+
+Código de saída: 0.
+
+$ curl --silent --show-error --fail --max-time 15 -i http://localhost:8080/health
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:47:48 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 63
+
+{"banco":"conectado","container":"1753a7633ece","status":"ok"}
+
+Código de saída: 0.
+
+$ curl --silent --show-error --fail --max-time 15 http://localhost:8080/estatisticas
+{"fotos_no_volume":0,"itens_no_banco":3}
+
+Código de saída: 0.
+
+CONFIRMADO: retorno a uma réplica e manutenção das mesmas contagens de itens e fotos. Nenhum volume foi removido neste teste.

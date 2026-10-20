@@ -1,0 +1,10 @@
+Legenda: tentativa de subir o ambiente em 19/10/2026; acesso ao Docker negado, sem comprovação de funcionamento.
+
+Comando executado, inclusive em tentativa autorizada fora do sandbox:
+$ docker compose up -d --build
+permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
+
+Código de saída: 1.
+
+A API não foi testada nesta etapa. A execução das Tarefas 4 e 5 depende
+de acesso ao Docker; nenhuma evidência de contêiner saudável foi obtida.

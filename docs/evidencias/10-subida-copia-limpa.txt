@@ -1,0 +1,228 @@
+Legenda: RNF01, teste da versão atual em cópia limpa com .env criado somente a partir de .env.example e volumes novos, em 19/10/2026. A cópia não é um clone de um commit: inclui as alterações de trabalho ainda não commitadas.
+
+Variáveis COMPOSE_*, POSTGRES_* e DB_* da sessão não são herdadas pelo ensaio. Nenhum .env local é copiado.
+
+Cópia dos arquivos rastreados e não ignorados para: /tmp/g1-nuvem-aceite-yn37aotl
+Arquivos copiados:
+.env.example
+.gitignore
+AGENTS.md
+G1-CN-2N.pdf
+README.md
+app/.dockerignore
+app/Dockerfile
+app/app.py
+app/requirements.txt
+db/init.sql
+docker-compose.yml
+docs/evidencias/01-validacao-configuracao.txt
+docs/evidencias/02-tentativa-subida.txt
+docs/evidencias/03-subida.txt
+docs/evidencias/04-verificacao-inicial.txt
+docs/evidencias/05-rotas-funcionais.txt
+docs/evidencias/06-persistencia-recriacao.txt
+docs/evidencias/07-usuario-prontidao.txt
+docs/evidencias/08-foto-no-navegador.png
+docs/evidencias/09-credenciais-e-configuracao.txt
+docs/evidencias/10-subida-copia-limpa.txt
+docs/evidencias/README.md
+docs/evidencias/foto-retornada-4.png
+docs/evidencias/foto-retornada-5.png
+docs/evidencias/foto-teste-1.png
+docs/evidencias/foto-teste-2.png
+
+Diretório: /tmp/g1-nuvem-aceite-yn37aotl
+$ cp .env.example .env
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-nuvem-aceite-yn37aotl
+$ docker compose config --quiet
+
+Código de saída: 0.
+
+Nome do projeto isolado: g1-nuvem-aceite-yn37aotl
+Diretório: /home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem
+$ docker compose stop web
+ Container g1-nuvem-web-1 Stopping 
+ Container g1-nuvem-web-1 Stopped
+Código de saída: 0.
+
+Diretório: /tmp/g1-nuvem-aceite-yn37aotl
+$ docker compose up -d --build
+ Image g1-nuvem-aceite-yn37aotl-web Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 540B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 632B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12-slim
+#3 DONE 1.2s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 97B done
+#4 DONE 0.0s
+
+#5 [1/6] FROM docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1
+#5 resolve docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 63B done
+#6 DONE 0.0s
+
+#7 [2/6] WORKDIR /app
+#7 CACHED
+
+#8 [4/6] RUN pip install --no-cache-dir -r requirements.txt
+#8 CACHED
+
+#9 [3/6] COPY requirements.txt .
+#9 CACHED
+
+#10 [5/6] COPY app.py .
+#10 CACHED
+
+#11 [6/6] RUN groupadd --system app     && useradd --system --gid app --no-create-home --shell /usr/sbin/nologin app     && mkdir -p /app/uploads     && chown app:app /app/uploads
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:24862b2e7afd64e74fe378d9dca03bfcaaa35fee1003d534c264483219c11ffd 0.0s done
+#12 exporting config sha256:26bae86354ecc8875a5bd173a1ae4df9b30f4618ab2eed1b67b770706301650c
+#12 exporting config sha256:26bae86354ecc8875a5bd173a1ae4df9b30f4618ab2eed1b67b770706301650c 0.0s done
+#12 exporting attestation manifest sha256:76b3242fe004e214ec02e2d8ed64b6278c7cf182fc24d0c4f23d73518c8101d0 0.0s done
+#12 exporting manifest list sha256:2601b729bb47a1d060a7a105963eee4820c7b094d9d92c55fea1a95340c44512 0.0s done
+#12 naming to docker.io/library/g1-nuvem-aceite-yn37aotl-web:latest done
+#12 unpacking to docker.io/library/g1-nuvem-aceite-yn37aotl-web:latest 0.0s done
+#12 DONE 0.1s
+
+#13 resolving provenance for metadata file
+#13 DONE 0.0s
+ Image g1-nuvem-aceite-yn37aotl-web Built 
+ Network g1-nuvem-aceite-yn37aotl_rede_interna Creating 
+ Volume g1-nuvem-aceite-yn37aotl_dados_banco Creating 
+ Volume g1-nuvem-aceite-yn37aotl_fotos Creating 
+ Volume g1-nuvem-aceite-yn37aotl_dados_banco Creating 
+ Volume g1-nuvem-aceite-yn37aotl_fotos Creating 
+ Network g1-nuvem-aceite-yn37aotl_rede_interna Creating 
+ Volume g1-nuvem-aceite-yn37aotl_dados_banco Created 
+ Volume g1-nuvem-aceite-yn37aotl_dados_banco Created 
+ Volume g1-nuvem-aceite-yn37aotl_fotos Created 
+ Volume g1-nuvem-aceite-yn37aotl_fotos Created 
+ Network g1-nuvem-aceite-yn37aotl_rede_interna Created 
+ Network g1-nuvem-aceite-yn37aotl_rede_interna Created 
+ Container g1-nuvem-aceite-yn37aotl-db-1 Creating 
+ Container g1-nuvem-aceite-yn37aotl-db-1 Created 
+ Container g1-nuvem-aceite-yn37aotl-web-1 Creating 
+ Container g1-nuvem-aceite-yn37aotl-web-1 Created 
+ Container g1-nuvem-aceite-yn37aotl-db-1 Starting 
+ Container g1-nuvem-aceite-yn37aotl-db-1 Started 
+ Container g1-nuvem-aceite-yn37aotl-db-1 Waiting 
+ Container g1-nuvem-aceite-yn37aotl-db-1 Healthy 
+ Container g1-nuvem-aceite-yn37aotl-web-1 Starting 
+ Container g1-nuvem-aceite-yn37aotl-web-1 Started
+Código de saída: 0.
+
+$ curl --silent --show-error --fail --max-time 2 http://localhost:8080/health (sondagem de prontidão da cópia limpa)
+{"banco":"conectado","container":"822995260dec","status":"ok"}
+Código de saída: 0.
+
+Diretório: /tmp/g1-nuvem-aceite-yn37aotl
+$ docker compose ps
+NAME                             IMAGE                          COMMAND                  SERVICE   CREATED         STATUS                   PORTS
+g1-nuvem-aceite-yn37aotl-db-1    postgres:16-alpine             "docker-entrypoint.s…"   db        6 seconds ago   Up 6 seconds (healthy)   5432/tcp
+g1-nuvem-aceite-yn37aotl-web-1   g1-nuvem-aceite-yn37aotl-web   "gunicorn --bind 0.0…"   web       6 seconds ago   Up Less than a second    0.0.0.0:8080->5000/tcp, [::]:8080->5000/tcp
+Código de saída: 0.
+
+Diretório: /tmp/g1-nuvem-aceite-yn37aotl
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/health
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:38:03 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 63
+
+{"banco":"conectado","container":"822995260dec","status":"ok"}
+Código de saída: 0.
+
+Diretório: /tmp/g1-nuvem-aceite-yn37aotl
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:38:03 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 366
+
+[{"criado_em":"2026-10-19T23:37:59.482424","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-19T23:37:59.482424","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-19T23:37:59.482424","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+Código de saída: 0.
+
+Diretório: /tmp/g1-nuvem-aceite-yn37aotl
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:38:03 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 41
+
+{"fotos_no_volume":0,"itens_no_banco":3}
+Código de saída: 0.
+
+CONFIRMADO: cópia limpa subiu com docker compose up -d --build, banco saudável, três itens iniciais e nenhuma foto, usando somente .env.example.
+
+Limpeza somente dos recursos descartáveis criados pelo projeto isolado; os volumes do projeto original não são removidos.
+Diretório: /tmp/g1-nuvem-aceite-yn37aotl
+$ docker compose down -v
+ Container g1-nuvem-aceite-yn37aotl-web-1 Stopping 
+ Container g1-nuvem-aceite-yn37aotl-web-1 Stopped 
+ Container g1-nuvem-aceite-yn37aotl-web-1 Removing 
+ Container g1-nuvem-aceite-yn37aotl-web-1 Removed 
+ Container g1-nuvem-aceite-yn37aotl-db-1 Stopping 
+ Container g1-nuvem-aceite-yn37aotl-db-1 Stopped 
+ Container g1-nuvem-aceite-yn37aotl-db-1 Removing 
+ Container g1-nuvem-aceite-yn37aotl-db-1 Removed 
+ Volume g1-nuvem-aceite-yn37aotl_fotos Removing 
+ Volume g1-nuvem-aceite-yn37aotl_dados_banco Removing 
+ Network g1-nuvem-aceite-yn37aotl_rede_interna Removing 
+ Volume g1-nuvem-aceite-yn37aotl_fotos Removed 
+ Volume g1-nuvem-aceite-yn37aotl_dados_banco Removed 
+ Network g1-nuvem-aceite-yn37aotl_rede_interna Removed
+Código de saída: 0.
+
+Diretório: /home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem
+$ docker compose start web
+ Container g1-nuvem-db-1 Waiting 
+ Container g1-nuvem-db-1 Healthy 
+ Container g1-nuvem-web-1 Starting 
+ Container g1-nuvem-web-1 Started
+Código de saída: 0.
+
+Diretório: /home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem
+$ docker compose ps
+NAME             IMAGE                COMMAND                  SERVICE   CREATED         STATUS                   PORTS
+g1-nuvem-db-1    postgres:16-alpine   "docker-entrypoint.s…"   db        2 minutes ago   Up 2 minutes (healthy)   5432/tcp
+g1-nuvem-web-1   g1-nuvem-web         "gunicorn --bind 0.0…"   web       2 minutes ago   Up Less than a second    0.0.0.0:8080->5000/tcp, [::]:8080->5000/tcp
+Código de saída: 0.
+
+Diretório: /home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:38:04 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 41
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+Código de saída: 0.
+
+CONFIRMADO: ambiente original restaurado, com seis itens e duas fotos.
+
+RESULTADO: RNF01 demonstrado em cópia limpa da versão de trabalho. A verificação de clone do commit de entrega continua pendente até as alterações serem commitadas; o ensaio não instalou dependências locais da aplicação.
+

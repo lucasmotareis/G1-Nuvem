@@ -1,0 +1,125 @@
+Legenda: Q7 após ajuste do timeout do proxy: três réplicas saudáveis, balanceamento, fotos compartilhadas e retorno a uma réplica em 19/10/2026; a tentativa anterior e seu timeout permanecem em 21-replicas-com-proxy.txt.
+
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:08:46 GMT
+Content-Type: application/json
+Content-Length: 41
+Connection: keep-alive
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200 via Nginx
+$ docker compose up -d --scale web=3
+ Container g1-nuvem-nginx-1 Running 
+ Container g1-nuvem-db-1 Running 
+ Container g1-nuvem-web-1 Running 
+ Container g1-nuvem-web-3 Creating 
+ Container g1-nuvem-web-2 Creating 
+ Container g1-nuvem-web-3 Created 
+ Container g1-nuvem-web-2 Created 
+ Container g1-nuvem-db-1 Waiting 
+ Container g1-nuvem-db-1 Healthy 
+ Container g1-nuvem-web-2 Starting 
+ Container g1-nuvem-web-2 Started 
+ Container g1-nuvem-web-3 Starting 
+ Container g1-nuvem-web-3 Started 
+ Container g1-nuvem-web-2 Waiting 
+ Container g1-nuvem-web-3 Waiting 
+ Container g1-nuvem-web-1 Waiting 
+ Container g1-nuvem-web-2 Healthy 
+ Container g1-nuvem-web-3 Healthy 
+ Container g1-nuvem-web-1 Healthy 
+
+Código de saída: 0.
+
+$ docker compose ps -q web
+4d37a85c14e7461578b0699b25b24ed092ce4d0003c5b677d96759b824a4122d
+f19cfd8daf2a4a60529d3a7a75815ab95d9e5fff86c8bc4af70cb1be5c934155
+17ab32369a435fe19cf46a0f2ed86be62c54726d6fe6985061e266a86767bb2e
+
+Código de saída: 0.
+
+CONFIRMADO: Três contêineres web em execução
+$ docker inspect --format '{{.Config.Hostname}}' 4d37a85c14e7461578b0699b25b24ed092ce4d0003c5b677d96759b824a4122d f19cfd8daf2a4a60529d3a7a75815ab95d9e5fff86c8bc4af70cb1be5c934155 17ab32369a435fe19cf46a0f2ed86be62c54726d6fe6985061e266a86767bb2e
+4d37a85c14e7
+f19cfd8daf2a
+17ab32369a43
+
+Código de saída: 0.
+
+$ docker inspect --format '{{.Name}} | portas_publicadas={{json .HostConfig.PortBindings}} | saude={{.State.Health.Status}}' 4d37a85c14e7461578b0699b25b24ed092ce4d0003c5b677d96759b824a4122d f19cfd8daf2a4a60529d3a7a75815ab95d9e5fff86c8bc4af70cb1be5c934155 17ab32369a435fe19cf46a0f2ed86be62c54726d6fe6985061e266a86767bb2e
+/g1-nuvem-web-1 | portas_publicadas={} | saude=healthy
+/g1-nuvem-web-2 | portas_publicadas={} | saude=healthy
+/g1-nuvem-web-3 | portas_publicadas={} | saude=healthy
+
+Código de saída: 0.
+
+CONFIRMADO: Resposta saudável de uma réplica
+CONFIRMADO: Resposta saudável de uma réplica
+CONFIRMADO: Resposta saudável de uma réplica
+Hostnames observados nas respostas HTTP via Nginx: 17ab32369a43, 4d37a85c14e7, f19cfd8daf2a
+CONFIRMADO: O proxy encaminhou requisições para as três réplicas
+$ docker compose exec -T --index 1 web python -c 'import hashlib,json,pathlib; p=pathlib.Path("/app/uploads"); print(json.dumps({f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(p.iterdir()) if f.is_file()},sort_keys=True))'
+{"32ca639243894b06b6a718d246401cef.png": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf", "92ededde7bb3412799c5f85173cbd1cc.png": "160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562"}
+
+Código de saída: 0.
+
+CONFIRMADO: Réplica 1 enxerga as mesmas fotos e hashes no volume compartilhado
+$ docker compose exec -T --index 2 web python -c 'import hashlib,json,pathlib; p=pathlib.Path("/app/uploads"); print(json.dumps({f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(p.iterdir()) if f.is_file()},sort_keys=True))'
+{"32ca639243894b06b6a718d246401cef.png": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf", "92ededde7bb3412799c5f85173cbd1cc.png": "160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562"}
+
+Código de saída: 0.
+
+CONFIRMADO: Réplica 2 enxerga as mesmas fotos e hashes no volume compartilhado
+$ docker compose exec -T --index 3 web python -c 'import hashlib,json,pathlib; p=pathlib.Path("/app/uploads"); print(json.dumps({f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(p.iterdir()) if f.is_file()},sort_keys=True))'
+{"32ca639243894b06b6a718d246401cef.png": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf", "92ededde7bb3412799c5f85173cbd1cc.png": "160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562"}
+
+Código de saída: 0.
+
+CONFIRMADO: Réplica 3 enxerga as mesmas fotos e hashes no volume compartilhado
+$ docker compose up -d --scale web=1
+ Container g1-nuvem-nginx-1 Running 
+ Container g1-nuvem-db-1 Running 
+ Container g1-nuvem-web-1 Running 
+ Container g1-nuvem-web-3 Stopping 
+ Container g1-nuvem-web-2 Stopping 
+ Container g1-nuvem-web-2 Stopped 
+ Container g1-nuvem-web-2 Removing 
+ Container g1-nuvem-web-3 Stopped 
+ Container g1-nuvem-web-3 Removing 
+ Container g1-nuvem-web-2 Removed 
+ Container g1-nuvem-web-3 Removed 
+ Container g1-nuvem-db-1 Waiting 
+ Container g1-nuvem-db-1 Healthy 
+ Container g1-nuvem-web-1 Waiting 
+ Container g1-nuvem-web-1 Healthy 
+
+Código de saída: 0.
+
+$ curl --silent --show-error --fail --max-time 2 http://localhost:8080/health (sondagem de prontidão)
+{"banco":"conectado","container":"4d37a85c14e7","status":"ok"}
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/estatisticas
+curl: (22) The requested URL returned error: 504
+HTTP/1.1 504 Gateway Time-out
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:08:57 GMT
+Content-Type: text/html
+Content-Length: 167
+Connection: keep-alive
+
+<html>
+<head><title>504 Gateway Time-out</title></head>
+<body>
+<center><h1>504 Gateway Time-out</h1></center>
+<hr><center>nginx/1.30.6</center>
+</body>
+</html>
+
+Código de saída: 22.
+
+
+Nota de análise: as três réplicas e o compartilhamento das fotos foram confirmados, mas a checagem imediata após a redução falhou durante a atualização dos destinos. Esta tentativa não aprova o retorno sem erros; a validação do procedimento com reinício explícito do proxy será registrada separadamente.

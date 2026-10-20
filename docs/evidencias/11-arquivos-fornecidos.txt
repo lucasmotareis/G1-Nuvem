@@ -1,0 +1,23 @@
+Legenda: seção 3, comparação dos três arquivos fornecidos com o texto do Apêndice A de G1-CN-2N.pdf em 19/10/2026; nenhum arquivo fornecido foi alterado.
+
+$ pdftotext -layout G1-CN-2N.pdf /tmp/g1-enunciado.txt
+Extração executada com código de saída 0.
+
+$ git diff HEAD -- app/app.py app/requirements.txt db/init.sql
+(sem saída)
+Código de saída: 0.
+
+CONFIRMADO: app/app.py: mesmos tokens Python do Apêndice A, desconsiderando apenas espaços de diagramação e linhas em branco
+CONFIRMADO: app/requirements.txt: mesmas três dependências e versões do Apêndice A
+CONFIRMADO: db/init.sql: mesmo SQL do Apêndice A, normalizando somente espaços de diagramação
+CONFIRMADO: Os três arquivos estão sem diferenças em relação ao commit inicial HEAD
+
+Leitura da configuração:
+app/app.py:6: UPLOAD_DIR tem padrão /app/uploads.
+app/app.py:7: DB_HOST tem padrão db; DB_PORT tem padrão 5432 (porta do PostgreSQL).
+app/app.py: não define a porta HTTP nem chama app.run.
+app/Dockerfile:24: Gunicorn escuta em 0.0.0.0:5000, conforme o requisito do PDF.
+docker-compose.yml:5: publicação 8080:5000.
+docker-compose.yml:7-14: DB_HOST=db, DB_PORT=5432, UPLOAD_DIR=/app/uploads e volume fotos nesse diretório.
+
+A comparação com o texto extraído não significa identidade byte a byte com a diagramação do PDF; nenhuma divergência de instruções, conteúdo SQL ou versões foi encontrada.

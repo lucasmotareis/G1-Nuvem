@@ -1,0 +1,142 @@
+Legenda: RNF02 e Tarefa 5, ensaio de recriação em 19/10/2026; comparação de estatísticas, registros completos, IDs, URLs e bytes de duas fotos após down e up sem remoção dos volumes.
+
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:35:57 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 41
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:35:57 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 867
+
+[{"criado_em":"2026-10-19T23:35:57.547917","descricao":"Objeto de teste RF03 sem foto","foto":null,"id":6,"local":"Laboratorio - teste G1"},{"criado_em":"2026-10-19T23:35:57.535191","descricao":"Objeto de teste RF03 com foto 2","foto":"/fotos/846af42ade3f45d6b3f769a9e63e47be.png","id":5,"local":"Biblioteca - teste G1"},{"criado_em":"2026-10-19T23:35:57.520363","descricao":"Objeto de teste RF03 com foto 1","foto":"/fotos/d1db8ccebee64116af60f2b39b324e6d.png","id":4,"local":"Biblioteca - teste G1"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 200
+Antes da recriação: id=4; URL=http://localhost:8080/fotos/d1db8ccebee64116af60f2b39b324e6d.png; SHA-256=0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf
+Antes da recriação: id=5; URL=http://localhost:8080/fotos/846af42ade3f45d6b3f769a9e63e47be.png; SHA-256=160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562
+$ docker compose down
+ Container g1-nuvem-web-1 Stopping 
+ Container g1-nuvem-web-1 Stopped 
+ Container g1-nuvem-web-1 Removing 
+ Container g1-nuvem-web-1 Removed 
+ Container g1-nuvem-db-1 Stopping 
+ Container g1-nuvem-db-1 Stopped 
+ Container g1-nuvem-db-1 Removing 
+ Container g1-nuvem-db-1 Removed 
+ Network g1-nuvem_rede_interna Removing 
+ Network g1-nuvem_rede_interna Removed
+Código de saída: 0.
+
+$ docker compose up -d
+ Network g1-nuvem_rede_interna Creating 
+ Network g1-nuvem_rede_interna Creating 
+ Network g1-nuvem_rede_interna Created 
+ Network g1-nuvem_rede_interna Created 
+ Container g1-nuvem-db-1 Creating 
+ Container g1-nuvem-db-1 Created 
+ Container g1-nuvem-web-1 Creating 
+ Container g1-nuvem-web-1 Created 
+ Container g1-nuvem-db-1 Starting 
+ Container g1-nuvem-db-1 Started 
+ Container g1-nuvem-db-1 Waiting 
+ Container g1-nuvem-db-1 Healthy 
+ Container g1-nuvem-web-1 Starting 
+ Container g1-nuvem-web-1 Started
+Código de saída: 0.
+
+$ curl --silent --show-error --fail --max-time 2 http://localhost:8080/health (sondagem de prontidão após a subida)
+{"banco":"conectado","container":"96a424e255af","status":"ok"}
+Código de saída: 0.
+
+$ docker compose ps
+NAME             IMAGE                COMMAND                  SERVICE   CREATED         STATUS                   PORTS
+g1-nuvem-db-1    postgres:16-alpine   "docker-entrypoint.s…"   db        6 seconds ago   Up 6 seconds (healthy)   5432/tcp
+g1-nuvem-web-1   g1-nuvem-web         "gunicorn --bind 0.0…"   web       6 seconds ago   Up Less than a second    0.0.0.0:8080->5000/tcp, [::]:8080->5000/tcp
+Código de saída: 0.
+
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/health
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:36:04 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 63
+
+{"banco":"conectado","container":"96a424e255af","status":"ok"}
+Código de saída: 0.
+
+CONFIRMADO: /health: HTTP 200
+CONFIRMADO: API saudável após a recriação
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:36:04 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 41
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:36:04 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 867
+
+[{"criado_em":"2026-10-19T23:35:57.547917","descricao":"Objeto de teste RF03 sem foto","foto":null,"id":6,"local":"Laboratorio - teste G1"},{"criado_em":"2026-10-19T23:35:57.535191","descricao":"Objeto de teste RF03 com foto 2","foto":"/fotos/846af42ade3f45d6b3f769a9e63e47be.png","id":5,"local":"Biblioteca - teste G1"},{"criado_em":"2026-10-19T23:35:57.520363","descricao":"Objeto de teste RF03 com foto 1","foto":"/fotos/d1db8ccebee64116af60f2b39b324e6d.png","id":4,"local":"Biblioteca - teste G1"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 200
+CONFIRMADO: RNF02: contagens de itens e fotos preservadas
+CONFIRMADO: RNF02: todos os registros, IDs, descrições, locais, datas e URLs preservados
+$ curl --silent --show-error --fail-with-body --max-time 15 -D - -o docs/evidencias/foto-retornada-4.png http://localhost:8080/fotos/d1db8ccebee64116af60f2b39b324e6d.png
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:36:04 GMT
+Connection: close
+Content-Disposition: inline; filename=d1db8ccebee64116af60f2b39b324e6d.png
+Content-Type: image/png
+Content-Length: 179
+Last-Modified: Mon, 19 Oct 2026 23:35:57 GMT
+Cache-Control: no-cache
+ETag: "1792452957.5162961-179-2575306675"
+Accept-Ranges: bytes
+Código de saída: 0.
+
+CONFIRMADO: /fotos/d1db8ccebee64116af60f2b39b324e6d.png: HTTP 200
+CONFIRMADO: /fotos/d1db8ccebee64116af60f2b39b324e6d.png: bytes idênticos à imagem enviada
+SHA-256: 0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf
+$ curl --silent --show-error --fail-with-body --max-time 15 -D - -o docs/evidencias/foto-retornada-5.png http://localhost:8080/fotos/846af42ade3f45d6b3f769a9e63e47be.png
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:36:04 GMT
+Connection: close
+Content-Disposition: inline; filename=846af42ade3f45d6b3f769a9e63e47be.png
+Content-Type: image/png
+Content-Length: 179
+Last-Modified: Mon, 19 Oct 2026 23:35:57 GMT
+Cache-Control: no-cache
+ETag: "1792452957.5310264-179-2339901295"
+Accept-Ranges: bytes
+Código de saída: 0.
+
+CONFIRMADO: /fotos/846af42ade3f45d6b3f769a9e63e47be.png: HTTP 200
+CONFIRMADO: /fotos/846af42ade3f45d6b3f769a9e63e47be.png: bytes idênticos à imagem enviada
+SHA-256: 160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562
+RESULTADO: RNF02 confirmado; mesmos registros e duas fotos acessíveis com bytes idênticos após down e up. Nenhum volume foi removido.

@@ -1,0 +1,1091 @@
+Legenda: checklist de entrega, RF01 a RF04 e Tarefa 5 na versão com bônus em 19/10/2026; clone local de snapshot Git dos arquivos atuais, sem .env local, com volumes novos, seguido de recriação, inspeção e remoção somente dos recursos isolados.
+
+O repositório de trabalho não é commitado nem publicado por este teste. O snapshot temporário serve para testar a versão destinada ao ZIP; o manifesto permite comparar os arquivos operacionais do clone com os da entrega.
+
+CONFIRMADO: Snapshot não contém o .env local
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/snapshot
+$ git init --initial-branch=codex/validacao-local
+Initialized empty Git repository in /tmp/g1-aceite-bonus-ugfh24gi/snapshot/.git/
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/snapshot
+$ git add --all
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/snapshot
+$ git -c 'user.name=Validacao local' -c user.email=validacao@example.invalid -c commit.gpgsign=false commit -m 'Snapshot local da versao de entrega'
+[codex/validacao-local (root-commit) d5f2408] Snapshot local da versao de entrega
+ 51 files changed, 4510 insertions(+)
+ create mode 100644 .env.example
+ create mode 100644 .gitignore
+ create mode 100644 AGENTS.md
+ create mode 100644 G1-CN-2N.pdf
+ create mode 100644 README.md
+ create mode 100644 app/.dockerignore
+ create mode 100644 app/Dockerfile
+ create mode 100644 app/app.py
+ create mode 100644 app/requirements.txt
+ create mode 100644 db/init.sql
+ create mode 100644 docker-compose.yml
+ create mode 100644 docs/ARQUITETURA.md
+ create mode 100644 docs/BONUS.md
+ create mode 100644 docs/REFLEXAO.md
+ create mode 100644 docs/RELATORIO.md
+ create mode 100644 docs/evidencias/01-validacao-configuracao.txt
+ create mode 100644 docs/evidencias/02-tentativa-subida.txt
+ create mode 100644 docs/evidencias/03-subida.txt
+ create mode 100644 docs/evidencias/04-verificacao-inicial.txt
+ create mode 100644 docs/evidencias/05-rotas-funcionais.txt
+ create mode 100644 docs/evidencias/06-persistencia-recriacao.txt
+ create mode 100644 docs/evidencias/07-usuario-prontidao.txt
+ create mode 100644 docs/evidencias/08-foto-no-navegador.png
+ create mode 100644 docs/evidencias/09-credenciais-e-configuracao.txt
+ create mode 100644 docs/evidencias/10-subida-copia-limpa.txt
+ create mode 100644 docs/evidencias/11-arquivos-fornecidos.txt
+ create mode 100644 docs/evidencias/12-inspecao-volumes.txt
+ create mode 100644 docs/evidencias/13-preservacao-antes-remocao.txt
+ create mode 100644 docs/evidencias/14-remocao-volumes.txt
+ create mode 100644 docs/evidencias/15-inspecao-infraestrutura.txt
+ create mode 100644 docs/evidencias/16-teste-replicas.txt
+ create mode 100644 docs/evidencias/17-parada-retomada.txt
+ create mode 100644 docs/evidencias/18-foto-4.png
+ create mode 100644 docs/evidencias/18-foto-5.png
+ create mode 100644 docs/evidencias/18-proxy-e-rotas.txt
+ create mode 100644 docs/evidencias/19-backup-restauracao.txt
+ create mode 100644 docs/evidencias/19-fotos-backup.tar.gz
+ create mode 100644 docs/evidencias/20-adminer-debug.txt
+ create mode 100644 docs/evidencias/21-replicas-com-proxy-tentativa-2.txt
+ create mode 100644 docs/evidencias/21-replicas-com-proxy-validado.txt
+ create mode 100644 docs/evidencias/21-replicas-com-proxy.txt
+ create mode 100644 docs/evidencias/22-foto-4.png
+ create mode 100644 docs/evidencias/22-foto-5.png
+ create mode 100644 docs/evidencias/22-persistencia-com-proxy.txt
+ create mode 100644 docs/evidencias/23-clone-e-aceite.txt
+ create mode 100644 docs/evidencias/README.md
+ create mode 100644 docs/evidencias/foto-retornada-4.png
+ create mode 100644 docs/evidencias/foto-retornada-5.png
+ create mode 100644 docs/evidencias/foto-teste-1.png
+ create mode 100644 docs/evidencias/foto-teste-2.png
+ create mode 100644 nginx/default.conf
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi
+$ git clone --no-hardlinks /tmp/g1-aceite-bonus-ugfh24gi/snapshot /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+Cloning into '/tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi'...
+done.
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ git rev-parse HEAD
+d5f240828a24a07f71de2333834d95bb5bd39c9d
+
+Código de saída: 0.
+
+CONFIRMADO: Pasta recém-clonada não contém .env
+CONFIRMADO: Todos os arquivos operacionais do clone são idênticos aos da versão de trabalho
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ cp .env.example .env
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose config --quiet
+
+Código de saída: 0.
+
+CONFIRMADO: Projeto Compose isolado: g1-clone-ugfh24gi
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose config --services
+db
+web
+nginx
+
+Código de saída: 0.
+
+CONFIRMADO: Adminer ausente da subida padrão
+Diretório: /home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:11:32 GMT
+Content-Type: application/json
+Content-Length: 41
+Connection: keep-alive
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200
+Diretório: /home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:11:32 GMT
+Content-Type: application/json
+Content-Length: 834
+Connection: keep-alive
+
+[{"criado_em":"2026-10-20T00:03:45.602009","descricao":"Objeto bonus sem foto","foto":null,"id":6,"local":"Laboratorio - bonus"},{"criado_em":"2026-10-20T00:03:45.587067","descricao":"Objeto bonus com foto 2","foto":"/fotos/92ededde7bb3412799c5f85173cbd1cc.png","id":5,"local":"Biblioteca - bonus"},{"criado_em":"2026-10-20T00:03:45.572265","descricao":"Objeto bonus com foto 1","foto":"/fotos/32ca639243894b06b6a718d246401cef.png","id":4,"local":"Biblioteca - bonus"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 200
+Diretório: /home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem
+$ docker compose exec -T web python -c 'import hashlib,json,pathlib; p=pathlib.Path("/app/uploads"); print(json.dumps({f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(p.iterdir()) if f.is_file()},sort_keys=True))'
+{"32ca639243894b06b6a718d246401cef.png": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf", "92ededde7bb3412799c5f85173cbd1cc.png": "160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562"}
+
+Código de saída: 0.
+
+Diretório: /home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem
+$ docker compose stop nginx
+ Container g1-nuvem-nginx-1 Stopping 
+ Container g1-nuvem-nginx-1 Stopped 
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose up -d --build
+ Image g1-clone-ugfh24gi-web Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 562B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 632B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12-slim
+#3 DONE 6.8s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 97B done
+#4 DONE 0.0s
+
+#5 [1/6] FROM docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1
+#5 resolve docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 2.48kB done
+#6 DONE 0.0s
+
+#7 [5/6] COPY app.py .
+#7 CACHED
+
+#8 [2/6] WORKDIR /app
+#8 CACHED
+
+#9 [3/6] COPY requirements.txt .
+#9 CACHED
+
+#10 [4/6] RUN pip install --no-cache-dir -r requirements.txt
+#10 CACHED
+
+#11 [6/6] RUN groupadd --system app     && useradd --system --gid app --no-create-home --shell /usr/sbin/nologin app     && mkdir -p /app/uploads     && chown app:app /app/uploads
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers done
+#12 exporting manifest sha256:c77765d4f43711899dd2f70b20195e73215842f9b115ce9b2461b552b06a7119 0.0s done
+#12 exporting config sha256:e4a276b8c6715b8c07c7e7a4b34d27f129554cbc9454d725db365236bd449cbc
+#12 exporting config sha256:e4a276b8c6715b8c07c7e7a4b34d27f129554cbc9454d725db365236bd449cbc 0.0s done
+#12 exporting attestation manifest sha256:5f4cf0012cfe4eabf09eaffb9e5f7453db1af86250615aca6a0beed8f100d4cf 0.0s done
+#12 exporting manifest list sha256:af51db0375d8c15099efb562e91fca945ef7a0498749ed7deccb7b6f32e723b5 0.0s done
+#12 naming to docker.io/library/g1-clone-ugfh24gi-web:latest done
+#12 unpacking to docker.io/library/g1-clone-ugfh24gi-web:latest 0.0s done
+#12 DONE 0.1s
+
+#13 resolving provenance for metadata file
+#13 DONE 0.0s
+ Image g1-clone-ugfh24gi-web Built 
+ Network g1-clone-ugfh24gi_rede_interna Creating 
+ Volume g1-clone-ugfh24gi_fotos Creating 
+ Volume g1-clone-ugfh24gi_fotos Creating 
+ Volume g1-clone-ugfh24gi_dados_banco Creating 
+ Volume g1-clone-ugfh24gi_dados_banco Creating 
+ Network g1-clone-ugfh24gi_rede_interna Creating 
+ Volume g1-clone-ugfh24gi_fotos Created 
+ Volume g1-clone-ugfh24gi_fotos Created 
+ Volume g1-clone-ugfh24gi_dados_banco Created 
+ Volume g1-clone-ugfh24gi_dados_banco Created 
+ Network g1-clone-ugfh24gi_rede_interna Created 
+ Network g1-clone-ugfh24gi_rede_interna Created 
+ Container g1-clone-ugfh24gi-db-1 Creating 
+ Container g1-clone-ugfh24gi-db-1 Created 
+ Container g1-clone-ugfh24gi-web-1 Creating 
+ Container g1-clone-ugfh24gi-web-1 Created 
+ Container g1-clone-ugfh24gi-nginx-1 Creating 
+ Container g1-clone-ugfh24gi-nginx-1 Created 
+ Container g1-clone-ugfh24gi-db-1 Starting 
+ Container g1-clone-ugfh24gi-db-1 Started 
+ Container g1-clone-ugfh24gi-db-1 Waiting 
+ Container g1-clone-ugfh24gi-db-1 Healthy 
+ Container g1-clone-ugfh24gi-web-1 Starting 
+ Container g1-clone-ugfh24gi-web-1 Started 
+ Container g1-clone-ugfh24gi-web-1 Waiting 
+ Container g1-clone-ugfh24gi-web-1 Healthy 
+ Container g1-clone-ugfh24gi-nginx-1 Starting 
+ Container g1-clone-ugfh24gi-nginx-1 Started 
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/health
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:11:51 GMT
+Content-Type: application/json
+Content-Length: 63
+Connection: keep-alive
+
+{"banco":"conectado","container":"e88d9c4ce370","status":"ok"}
+
+Código de saída: 0.
+
+CONFIRMADO: /health: HTTP 200
+CONFIRMADO: RF01: saúde e conexão SQL confirmadas
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose ps
+NAME                        IMAGE                   COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+g1-clone-ugfh24gi-db-1      postgres:16-alpine      "docker-entrypoint.s…"   db        11 seconds ago   Up 11 seconds (healthy)   5432/tcp
+g1-clone-ugfh24gi-nginx-1   nginx:1.30-alpine       "/docker-entrypoint.…"   nginx     11 seconds ago   Up Less than a second     0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+g1-clone-ugfh24gi-web-1     g1-clone-ugfh24gi-web   "gunicorn --bind 0.0…"   web       11 seconds ago   Up 5 seconds (healthy)    5000/tcp
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:11:51 GMT
+Content-Type: application/json
+Content-Length: 41
+Connection: keep-alive
+
+{"fotos_no_volume":0,"itens_no_banco":3}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200
+CONFIRMADO: RNF01: ambiente novo com três exemplos e nenhuma foto
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:11:51 GMT
+Content-Type: application/json
+Content-Length: 366
+Connection: keep-alive
+
+[{"criado_em":"2026-10-20T00:11:43.167159","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-20T00:11:43.167159","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-20T00:11:43.167159","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 200
+CONFIRMADO: RF02: três registros iniciais
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i 'http://localhost:8080/itens?local=biblio'
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:11:51 GMT
+Content-Type: application/json
+Content-Length: 120
+Connection: keep-alive
+
+[{"criado_em":"2026-10-20T00:11:43.167159","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"}]
+
+Código de saída: 0.
+
+CONFIRMADO: /itens?local=biblio: HTTP 200
+CONFIRMADO: RF02: filtro por local
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i -X POST -F 'descricao=Objeto do clone com foto 1' -F 'local=Biblioteca - clone' -F foto=@docs/evidencias/foto-teste-1.png http://localhost:8080/itens
+HTTP/1.1 201 CREATED
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:11:51 GMT
+Content-Type: application/json
+Content-Length: 55
+Connection: keep-alive
+
+{"foto":"138d4a0aa59c4c7da8d832d126c8bc1a.png","id":4}
+
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 201
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i -X POST -F 'descricao=Objeto do clone com foto 2' -F 'local=Biblioteca - clone' -F foto=@docs/evidencias/foto-teste-2.png http://localhost:8080/itens
+HTTP/1.1 201 CREATED
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:11:51 GMT
+Content-Type: application/json
+Content-Length: 55
+Connection: keep-alive
+
+{"foto":"aebf22e53b2b43f3a0b6a5d4a30a8408.png","id":5}
+
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 201
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i -X POST -F 'descricao=Objeto do clone sem foto' -F 'local=Laboratorio - clone' http://localhost:8080/itens
+HTTP/1.1 201 CREATED
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:11:51 GMT
+Content-Type: application/json
+Content-Length: 21
+Connection: keep-alive
+
+{"foto":null,"id":6}
+
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 201
+CONFIRMADO: RF03: foto é opcional
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:11:51 GMT
+Content-Type: application/json
+Content-Length: 41
+Connection: keep-alive
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200
+CONFIRMADO: RF04: contagem de seis itens e duas fotos após cadastros
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:11:51 GMT
+Content-Type: application/json
+Content-Length: 843
+Connection: keep-alive
+
+[{"criado_em":"2026-10-20T00:11:51.874698","descricao":"Objeto do clone sem foto","foto":null,"id":6,"local":"Laboratorio - clone"},{"criado_em":"2026-10-20T00:11:51.860964","descricao":"Objeto do clone com foto 2","foto":"/fotos/aebf22e53b2b43f3a0b6a5d4a30a8408.png","id":5,"local":"Biblioteca - clone"},{"criado_em":"2026-10-20T00:11:51.847987","descricao":"Objeto do clone com foto 1","foto":"/fotos/138d4a0aa59c4c7da8d832d126c8bc1a.png","id":4,"local":"Biblioteca - clone"},{"criado_em":"2026-10-20T00:11:43.167159","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-20T00:11:43.167159","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-20T00:11:43.167159","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 200
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose exec -T web python -c 'import hashlib,json,pathlib; p=pathlib.Path("/app/uploads"); print(json.dumps({f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(p.iterdir()) if f.is_file()},sort_keys=True))'
+{"138d4a0aa59c4c7da8d832d126c8bc1a.png": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf", "aebf22e53b2b43f3a0b6a5d4a30a8408.png": "160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562"}
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --fail --max-time 15 -D - -o /tmp/g1-aceite-bonus-ugfh24gi/foto-5.png http://localhost:8080/fotos/aebf22e53b2b43f3a0b6a5d4a30a8408.png
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:11:52 GMT
+Content-Type: image/png
+Content-Length: 179
+Connection: keep-alive
+Content-Disposition: inline; filename=aebf22e53b2b43f3a0b6a5d4a30a8408.png
+Last-Modified: Tue, 20 Oct 2026 00:11:51 GMT
+Cache-Control: no-cache
+ETag: "1792455111.857336-179-2439122751"
+Accept-Ranges: bytes
+
+
+Código de saída: 0.
+
+CONFIRMADO: RF04: imagem acessível por sua URL
+CONFIRMADO: Bytes da imagem preservados: 160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --fail --max-time 15 -D - -o /tmp/g1-aceite-bonus-ugfh24gi/foto-4.png http://localhost:8080/fotos/138d4a0aa59c4c7da8d832d126c8bc1a.png
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:11:52 GMT
+Content-Type: image/png
+Content-Length: 179
+Connection: keep-alive
+Content-Disposition: inline; filename=138d4a0aa59c4c7da8d832d126c8bc1a.png
+Last-Modified: Tue, 20 Oct 2026 00:11:51 GMT
+Cache-Control: no-cache
+ETag: "1792455111.8443592-179-2275413837"
+Accept-Ranges: bytes
+
+
+Código de saída: 0.
+
+CONFIRMADO: RF04: imagem acessível por sua URL
+CONFIRMADO: Bytes da imagem preservados: 0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose logs web --tail 20
+web-1  | [2026-10-20 00:11:46 +0000] [1] [INFO] Starting gunicorn 23.0.0
+web-1  | [2026-10-20 00:11:46 +0000] [1] [INFO] Listening at: http://0.0.0.0:5000 (1)
+web-1  | [2026-10-20 00:11:46 +0000] [1] [INFO] Using worker: sync
+web-1  | [2026-10-20 00:11:46 +0000] [7] [INFO] Booting worker with pid: 7
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose ps -q web
+e88d9c4ce370487ee4435a7bf0a6f51785c781f34dfdc20b3640f5d6b6f5a5ef
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose ps -q db
+0b491ae495188c75fd15e1fcb0420ff0ea4205e0a4b4c7eb3133bc8e504879b7
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker inspect --format '{{json .HostConfig.PortBindings}}' e88d9c4ce370487ee4435a7bf0a6f51785c781f34dfdc20b3640f5d6b6f5a5ef
+{}
+
+Código de saída: 0.
+
+CONFIRMADO: Nenhuma porta publicada por e88d9c4ce370
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker inspect --format '{{json .HostConfig.PortBindings}}' 0b491ae495188c75fd15e1fcb0420ff0ea4205e0a4b4c7eb3133bc8e504879b7
+{}
+
+Código de saída: 0.
+
+CONFIRMADO: Nenhuma porta publicada por 0b491ae49518
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose exec -T web whoami
+app
+
+Código de saída: 0.
+
+CONFIRMADO: RNF04: usuário app, diferente de root
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose exec -T web id -u
+999
+
+Código de saída: 0.
+
+CONFIRMADO: RNF04: UID diferente de zero
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose down
+ Container g1-clone-ugfh24gi-nginx-1 Stopping 
+ Container g1-clone-ugfh24gi-nginx-1 Stopped 
+ Container g1-clone-ugfh24gi-nginx-1 Removing 
+ Container g1-clone-ugfh24gi-nginx-1 Removed 
+ Container g1-clone-ugfh24gi-web-1 Stopping 
+ Container g1-clone-ugfh24gi-web-1 Stopped 
+ Container g1-clone-ugfh24gi-web-1 Removing 
+ Container g1-clone-ugfh24gi-web-1 Removed 
+ Container g1-clone-ugfh24gi-db-1 Stopping 
+ Container g1-clone-ugfh24gi-db-1 Stopped 
+ Container g1-clone-ugfh24gi-db-1 Removing 
+ Container g1-clone-ugfh24gi-db-1 Removed 
+ Network g1-clone-ugfh24gi_rede_interna Removing 
+ Network g1-clone-ugfh24gi_rede_interna Removed 
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose up -d
+ Network g1-clone-ugfh24gi_rede_interna Creating 
+ Network g1-clone-ugfh24gi_rede_interna Creating 
+ Network g1-clone-ugfh24gi_rede_interna Created 
+ Network g1-clone-ugfh24gi_rede_interna Created 
+ Container g1-clone-ugfh24gi-db-1 Creating 
+ Container g1-clone-ugfh24gi-db-1 Created 
+ Container g1-clone-ugfh24gi-web-1 Creating 
+ Container g1-clone-ugfh24gi-web-1 Created 
+ Container g1-clone-ugfh24gi-nginx-1 Creating 
+ Container g1-clone-ugfh24gi-nginx-1 Created 
+ Container g1-clone-ugfh24gi-db-1 Starting 
+ Container g1-clone-ugfh24gi-db-1 Started 
+ Container g1-clone-ugfh24gi-db-1 Waiting 
+ Container g1-clone-ugfh24gi-db-1 Healthy 
+ Container g1-clone-ugfh24gi-web-1 Starting 
+ Container g1-clone-ugfh24gi-web-1 Started 
+ Container g1-clone-ugfh24gi-web-1 Waiting 
+ Container g1-clone-ugfh24gi-web-1 Healthy 
+ Container g1-clone-ugfh24gi-nginx-1 Starting 
+ Container g1-clone-ugfh24gi-nginx-1 Started 
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/health
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:12:04 GMT
+Content-Type: application/json
+Content-Length: 63
+Connection: keep-alive
+
+{"banco":"conectado","container":"c8b2d2714eef","status":"ok"}
+
+Código de saída: 0.
+
+CONFIRMADO: /health: HTTP 200
+CONFIRMADO: RF01: saúde e conexão SQL confirmadas
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:12:04 GMT
+Content-Type: application/json
+Content-Length: 41
+Connection: keep-alive
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200
+CONFIRMADO: RNF02: contagens preservadas após down e up
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:12:04 GMT
+Content-Type: application/json
+Content-Length: 843
+Connection: keep-alive
+
+[{"criado_em":"2026-10-20T00:11:51.874698","descricao":"Objeto do clone sem foto","foto":null,"id":6,"local":"Laboratorio - clone"},{"criado_em":"2026-10-20T00:11:51.860964","descricao":"Objeto do clone com foto 2","foto":"/fotos/aebf22e53b2b43f3a0b6a5d4a30a8408.png","id":5,"local":"Biblioteca - clone"},{"criado_em":"2026-10-20T00:11:51.847987","descricao":"Objeto do clone com foto 1","foto":"/fotos/138d4a0aa59c4c7da8d832d126c8bc1a.png","id":4,"local":"Biblioteca - clone"},{"criado_em":"2026-10-20T00:11:43.167159","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-20T00:11:43.167159","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-20T00:11:43.167159","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 200
+CONFIRMADO: RNF02: mesmos registros completos, IDs e URLs
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose exec -T web python -c 'import hashlib,json,pathlib; p=pathlib.Path("/app/uploads"); print(json.dumps({f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(p.iterdir()) if f.is_file()},sort_keys=True))'
+{"138d4a0aa59c4c7da8d832d126c8bc1a.png": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf", "aebf22e53b2b43f3a0b6a5d4a30a8408.png": "160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562"}
+
+Código de saída: 0.
+
+CONFIRMADO: RNF02: mesmos hashes das duas fotos
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --fail --max-time 15 -D - -o /tmp/g1-aceite-bonus-ugfh24gi/foto-5.png http://localhost:8080/fotos/aebf22e53b2b43f3a0b6a5d4a30a8408.png
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:12:05 GMT
+Content-Type: image/png
+Content-Length: 179
+Connection: keep-alive
+Content-Disposition: inline; filename=aebf22e53b2b43f3a0b6a5d4a30a8408.png
+Last-Modified: Tue, 20 Oct 2026 00:11:51 GMT
+Cache-Control: no-cache
+ETag: "1792455111.857336-179-2439122751"
+Accept-Ranges: bytes
+
+
+Código de saída: 0.
+
+CONFIRMADO: RF04: imagem acessível por sua URL
+CONFIRMADO: Bytes da imagem preservados: 160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --fail --max-time 15 -D - -o /tmp/g1-aceite-bonus-ugfh24gi/foto-4.png http://localhost:8080/fotos/138d4a0aa59c4c7da8d832d126c8bc1a.png
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:12:05 GMT
+Content-Type: image/png
+Content-Length: 179
+Connection: keep-alive
+Content-Disposition: inline; filename=138d4a0aa59c4c7da8d832d126c8bc1a.png
+Last-Modified: Tue, 20 Oct 2026 00:11:51 GMT
+Cache-Control: no-cache
+ETag: "1792455111.8443592-179-2275413837"
+Accept-Ranges: bytes
+
+
+Código de saída: 0.
+
+CONFIRMADO: RF04: imagem acessível por sua URL
+CONFIRMADO: Bytes da imagem preservados: 0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf
+INSPEÇÃO: estatísticas antes e depois dos comandos seguintes devem permanecer iguais.
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:12:05 GMT
+Content-Type: application/json
+Content-Length: 41
+Connection: keep-alive
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker volume ls
+DRIVER    VOLUME NAME
+local     8aa43ec64a617160a29cc41c200fdf11db8928e64a16d208f8c8fe4252481c71
+local     g1-clone-ugfh24gi_dados_banco
+local     g1-clone-ugfh24gi_fotos
+local     g1-nuvem_dados_banco
+local     g1-nuvem_fotos
+local     g1-nuvem_fotos_restauradas_1dfb978f
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker volume inspect g1-clone-ugfh24gi_dados_banco g1-clone-ugfh24gi_fotos
+[
+    {
+        "CreatedAt": "2026-10-19T21:11:40-03:00",
+        "Driver": "local",
+        "Labels": {
+            "com.docker.compose.config-hash": "93f14adb9b3e36bd0b315672145aa611da5236fce39c664700f239b182880779",
+            "com.docker.compose.project": "g1-clone-ugfh24gi",
+            "com.docker.compose.version": "5.6.0",
+            "com.docker.compose.volume": "dados_banco"
+        },
+        "Mountpoint": "/var/lib/docker/volumes/g1-clone-ugfh24gi_dados_banco/_data",
+        "Name": "g1-clone-ugfh24gi_dados_banco",
+        "Options": null,
+        "Scope": "local"
+    },
+    {
+        "CreatedAt": "2026-10-19T21:11:40-03:00",
+        "Driver": "local",
+        "Labels": {
+            "com.docker.compose.config-hash": "2fd0274803862ab8145c2c246b54a077d79057f4264603f57f39e39ce8b3a106",
+            "com.docker.compose.project": "g1-clone-ugfh24gi",
+            "com.docker.compose.version": "5.6.0",
+            "com.docker.compose.volume": "fotos"
+        },
+        "Mountpoint": "/var/lib/docker/volumes/g1-clone-ugfh24gi_fotos/_data",
+        "Name": "g1-clone-ugfh24gi_fotos",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose exec -T web ls -l /app/uploads
+total 8
+-rw-r--r-- 1 app app 179 Oct 20 00:11 138d4a0aa59c4c7da8d832d126c8bc1a.png
+-rw-r--r-- 1 app app 179 Oct 20 00:11 aebf22e53b2b43f3a0b6a5d4a30a8408.png
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker network inspect g1-clone-ugfh24gi_rede_interna
+[
+    {
+        "Name": "g1-clone-ugfh24gi_rede_interna",
+        "Id": "47af23ecfc5c3c73294491bbb52fe1eadac5ea0a830db85d11965664da76ad85",
+        "Created": "2026-10-19T21:11:53.207173564-03:00",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.19.0.0/16",
+                    "Gateway": "172.19.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {},
+        "Labels": {
+            "com.docker.compose.config-hash": "132dc58694447cab470163ab7d8d5d361ecf49ebdfcb3ceea1520ae0ad68107e",
+            "com.docker.compose.network": "rede_interna",
+            "com.docker.compose.project": "g1-clone-ugfh24gi",
+            "com.docker.compose.version": "5.6.0"
+        },
+        "Containers": {
+            "55201e9bc239926f4af506b4d1180c1c5f80acb7f91a636810b655700c596532": {
+                "Name": "g1-clone-ugfh24gi-db-1",
+                "EndpointID": "7273540966b23a046efe060aa07a50b1235f99df96c91266c35ea2f802e60ff3",
+                "MacAddress": "66:98:ac:bc:66:be",
+                "IPv4Address": "172.19.0.2/16",
+                "IPv6Address": ""
+            },
+            "c8b2d2714eefdf3789e342f8a8393fb0de3fef0960369d8a02f725417ffb9bcc": {
+                "Name": "g1-clone-ugfh24gi-web-1",
+                "EndpointID": "8076a3c3bf600a5b30f81427ec83d95f8b28c4b43f7afedc20a100c4fd9d61ee",
+                "MacAddress": "4a:72:9c:d0:e9:07",
+                "IPv4Address": "172.19.0.3/16",
+                "IPv6Address": ""
+            },
+            "ffbe7a815f1ff4b63b81118521f0468b1639c0a3092661c2fe1a8a6b176b5467": {
+                "Name": "g1-clone-ugfh24gi-nginx-1",
+                "EndpointID": "681c451497f7e1b9435aa87438b1e79b540a8f8745029f92d7cfb85ec9b5fe5a",
+                "MacAddress": "16:62:7c:ec:72:54",
+                "IPv4Address": "172.19.0.4/16",
+                "IPv6Address": ""
+            }
+        },
+        "Status": {
+            "IPAM": {
+                "Subnets": {
+                    "172.19.0.0/16": {
+                        "IPsInUse": 6,
+                        "DynamicIPsAvailable": 65530
+                    }
+                }
+            }
+        }
+    }
+]
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker image ls g1-clone-ugfh24gi-web
+IMAGE                          ID             DISK USAGE   CONTENT SIZE   EXTRA
+g1-clone-ugfh24gi-web:latest   af51db0375d8        204MB         50.5MB   U    
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:12:05 GMT
+Content-Type: application/json
+Content-Length: 41
+Connection: keep-alive
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200
+CONFIRMADO: Inspeção não alterou os dados
+REMOÇÃO: os próximos comandos destroem somente os volumes do projeto isolado g1-clone-ugfh24gi
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:12:05 GMT
+Content-Type: application/json
+Content-Length: 41
+Connection: keep-alive
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200
+CONFIRMADO: Contagens registradas imediatamente antes da remoção
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose down -v
+ Container g1-clone-ugfh24gi-nginx-1 Stopping 
+ Container g1-clone-ugfh24gi-nginx-1 Stopped 
+ Container g1-clone-ugfh24gi-nginx-1 Removing 
+ Container g1-clone-ugfh24gi-nginx-1 Removed 
+ Container g1-clone-ugfh24gi-web-1 Stopping 
+ Container g1-clone-ugfh24gi-web-1 Stopped 
+ Container g1-clone-ugfh24gi-web-1 Removing 
+ Container g1-clone-ugfh24gi-web-1 Removed 
+ Container g1-clone-ugfh24gi-db-1 Stopping 
+ Container g1-clone-ugfh24gi-db-1 Stopped 
+ Container g1-clone-ugfh24gi-db-1 Removing 
+ Container g1-clone-ugfh24gi-db-1 Removed 
+ Volume g1-clone-ugfh24gi_fotos Removing 
+ Volume g1-clone-ugfh24gi_dados_banco Removing 
+ Network g1-clone-ugfh24gi_rede_interna Removing 
+ Volume g1-clone-ugfh24gi_fotos Removed 
+ Volume g1-clone-ugfh24gi_dados_banco Removed 
+ Network g1-clone-ugfh24gi_rede_interna Removed 
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose up -d
+ Network g1-clone-ugfh24gi_rede_interna Creating 
+ Network g1-clone-ugfh24gi_rede_interna Creating 
+ Volume g1-clone-ugfh24gi_fotos Creating 
+ Volume g1-clone-ugfh24gi_fotos Creating 
+ Volume g1-clone-ugfh24gi_dados_banco Creating 
+ Volume g1-clone-ugfh24gi_dados_banco Creating 
+ Volume g1-clone-ugfh24gi_fotos Created 
+ Volume g1-clone-ugfh24gi_fotos Created 
+ Volume g1-clone-ugfh24gi_dados_banco Created 
+ Volume g1-clone-ugfh24gi_dados_banco Created 
+ Network g1-clone-ugfh24gi_rede_interna Created 
+ Network g1-clone-ugfh24gi_rede_interna Created 
+ Container g1-clone-ugfh24gi-db-1 Creating 
+ Container g1-clone-ugfh24gi-db-1 Created 
+ Container g1-clone-ugfh24gi-web-1 Creating 
+ Container g1-clone-ugfh24gi-web-1 Created 
+ Container g1-clone-ugfh24gi-nginx-1 Creating 
+ Container g1-clone-ugfh24gi-nginx-1 Created 
+ Container g1-clone-ugfh24gi-db-1 Starting 
+ Container g1-clone-ugfh24gi-db-1 Started 
+ Container g1-clone-ugfh24gi-db-1 Waiting 
+ Container g1-clone-ugfh24gi-db-1 Healthy 
+ Container g1-clone-ugfh24gi-web-1 Starting 
+ Container g1-clone-ugfh24gi-web-1 Started 
+ Container g1-clone-ugfh24gi-web-1 Waiting 
+ Container g1-clone-ugfh24gi-web-1 Healthy 
+ Container g1-clone-ugfh24gi-nginx-1 Starting 
+ Container g1-clone-ugfh24gi-nginx-1 Started 
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/health
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:12:17 GMT
+Content-Type: application/json
+Content-Length: 63
+Connection: keep-alive
+
+{"banco":"conectado","container":"702216752b81","status":"ok"}
+
+Código de saída: 0.
+
+CONFIRMADO: /health: HTTP 200
+CONFIRMADO: RF01: saúde e conexão SQL confirmadas
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:12:17 GMT
+Content-Type: application/json
+Content-Length: 41
+Connection: keep-alive
+
+{"fotos_no_volume":0,"itens_no_banco":3}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200
+CONFIRMADO: Após remoção: três exemplos recriados e nenhuma foto
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:12:17 GMT
+Content-Type: application/json
+Content-Length: 366
+Connection: keep-alive
+
+[{"criado_em":"2026-10-20T00:12:09.201426","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-20T00:12:09.201426","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-20T00:12:09.201426","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 200
+CONFIRMADO: init.sql recriou os três exemplos
+CONFIRMADO: Datas de criação diferentes confirmam reinicialização, não persistência dos exemplos
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/fotos/aebf22e53b2b43f3a0b6a5d4a30a8408.png
+HTTP/1.1 404 NOT FOUND
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:12:17 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 207
+Connection: keep-alive
+
+<!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+Código de saída: 0.
+
+CONFIRMADO: /fotos/aebf22e53b2b43f3a0b6a5d4a30a8408.png: HTTP 404
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/fotos/138d4a0aa59c4c7da8d832d126c8bc1a.png
+HTTP/1.1 404 NOT FOUND
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:12:17 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 207
+Connection: keep-alive
+
+<!doctype html>
+<html lang=en>
+<title>404 Not Found</title>
+<h1>Not Found</h1>
+<p>The requested URL was not found on the server. If you entered the URL manually please check your spelling and try again.</p>
+
+Código de saída: 0.
+
+CONFIRMADO: /fotos/138d4a0aa59c4c7da8d832d126c8bc1a.png: HTTP 404
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose exec -T web ls -l /app/uploads
+total 0
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose stop
+ Container g1-clone-ugfh24gi-nginx-1 Stopping 
+ Container g1-clone-ugfh24gi-nginx-1 Stopped 
+ Container g1-clone-ugfh24gi-web-1 Stopping 
+ Container g1-clone-ugfh24gi-web-1 Stopped 
+ Container g1-clone-ugfh24gi-db-1 Stopping 
+ Container g1-clone-ugfh24gi-db-1 Stopped 
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose ps -a
+NAME                        IMAGE                   COMMAND                  SERVICE   CREATED          STATUS                              PORTS
+g1-clone-ugfh24gi-db-1      postgres:16-alpine      "docker-entrypoint.s…"   db        12 seconds ago   Exited (0) Less than a second ago   
+g1-clone-ugfh24gi-nginx-1   nginx:1.30-alpine       "/docker-entrypoint.…"   nginx     12 seconds ago   Exited (0) Less than a second ago   
+g1-clone-ugfh24gi-web-1     g1-clone-ugfh24gi-web   "gunicorn --bind 0.0…"   web       12 seconds ago   Exited (0) Less than a second ago   
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose start
+ Container g1-clone-ugfh24gi-db-1 Starting 
+ Container g1-clone-ugfh24gi-db-1 Started 
+ Container g1-clone-ugfh24gi-db-1 Waiting 
+ Container g1-clone-ugfh24gi-db-1 Healthy 
+ Container g1-clone-ugfh24gi-web-1 Starting 
+ Container g1-clone-ugfh24gi-web-1 Started 
+ Container g1-clone-ugfh24gi-web-1 Waiting 
+ Container g1-clone-ugfh24gi-web-1 Healthy 
+ Container g1-clone-ugfh24gi-nginx-1 Starting 
+ Container g1-clone-ugfh24gi-nginx-1 Started 
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/health
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:12:29 GMT
+Content-Type: application/json
+Content-Length: 63
+Connection: keep-alive
+
+{"banco":"conectado","container":"702216752b81","status":"ok"}
+
+Código de saída: 0.
+
+CONFIRMADO: /health: HTTP 200
+CONFIRMADO: RF01: saúde e conexão SQL confirmadas
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:12:29 GMT
+Content-Type: application/json
+Content-Length: 41
+Connection: keep-alive
+
+{"fotos_no_volume":0,"itens_no_banco":3}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200
+CONFIRMADO: Roteiro stop/start preservou o estado da cópia limpa
+CONFIRMADO: checklist funcional do clone e três ensaios da Tarefa 5 aprovados com a versão com bônus.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ docker compose down -v
+ Container g1-clone-ugfh24gi-nginx-1 Stopping 
+ Container g1-clone-ugfh24gi-nginx-1 Stopped 
+ Container g1-clone-ugfh24gi-nginx-1 Removing 
+ Container g1-clone-ugfh24gi-nginx-1 Removed 
+ Container g1-clone-ugfh24gi-web-1 Stopping 
+ Container g1-clone-ugfh24gi-web-1 Stopped 
+ Container g1-clone-ugfh24gi-web-1 Removing 
+ Container g1-clone-ugfh24gi-web-1 Removed 
+ Container g1-clone-ugfh24gi-db-1 Stopping 
+ Container g1-clone-ugfh24gi-db-1 Stopped 
+ Container g1-clone-ugfh24gi-db-1 Removing 
+ Container g1-clone-ugfh24gi-db-1 Removed 
+ Volume g1-clone-ugfh24gi_fotos Removing 
+ Volume g1-clone-ugfh24gi_dados_banco Removing 
+ Network g1-clone-ugfh24gi_rede_interna Removing 
+ Volume g1-clone-ugfh24gi_dados_banco Removed 
+ Volume g1-clone-ugfh24gi_fotos Removed 
+ Network g1-clone-ugfh24gi_rede_interna Removed 
+
+Código de saída: 0.
+
+Diretório: /home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem
+$ docker compose start nginx
+ Container g1-nuvem-db-1 Waiting 
+ Container g1-nuvem-db-1 Healthy 
+ Container g1-nuvem-web-1 Waiting 
+ Container g1-nuvem-web-1 Healthy 
+ Container g1-nuvem-nginx-1 Starting 
+ Container g1-nuvem-nginx-1 Started 
+
+Código de saída: 0.
+
+Diretório: /tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/health
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:12:31 GMT
+Content-Type: application/json
+Content-Length: 63
+Connection: keep-alive
+
+{"banco":"conectado","container":"5911efc8efac","status":"ok"}
+
+Código de saída: 0.
+
+CONFIRMADO: /health: HTTP 200
+CONFIRMADO: RF01: saúde e conexão SQL confirmadas
+Diretório: /home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:12:31 GMT
+Content-Type: application/json
+Content-Length: 41
+Connection: keep-alive
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200
+CONFIRMADO: Ambiente original retomado com as contagens anteriores
+Diretório: /home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:12:31 GMT
+Content-Type: application/json
+Content-Length: 834
+Connection: keep-alive
+
+[{"criado_em":"2026-10-20T00:03:45.602009","descricao":"Objeto bonus sem foto","foto":null,"id":6,"local":"Laboratorio - bonus"},{"criado_em":"2026-10-20T00:03:45.587067","descricao":"Objeto bonus com foto 2","foto":"/fotos/92ededde7bb3412799c5f85173cbd1cc.png","id":5,"local":"Biblioteca - bonus"},{"criado_em":"2026-10-20T00:03:45.572265","descricao":"Objeto bonus com foto 1","foto":"/fotos/32ca639243894b06b6a718d246401cef.png","id":4,"local":"Biblioteca - bonus"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 200
+Diretório: /home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem
+$ docker compose exec -T web python -c 'import hashlib,json,pathlib; p=pathlib.Path("/app/uploads"); print(json.dumps({f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(p.iterdir()) if f.is_file()},sort_keys=True))'
+{"32ca639243894b06b6a718d246401cef.png": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf", "92ededde7bb3412799c5f85173cbd1cc.png": "160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562"}
+
+Código de saída: 0.
+
+CONFIRMADO: Registros e fotos do ambiente original preservados
+Diretório: /home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem
+$ docker compose ps
+NAME               IMAGE                COMMAND                  SERVICE   CREATED         STATUS                   PORTS
+g1-nuvem-db-1      postgres:16-alpine   "docker-entrypoint.s…"   db        2 minutes ago   Up 2 minutes (healthy)   5432/tcp
+g1-nuvem-nginx-1   nginx:1.30-alpine    "/docker-entrypoint.…"   nginx     2 minutes ago   Up Less than a second    0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+g1-nuvem-web-1     g1-nuvem-web         "gunicorn --bind 0.0…"   web       2 minutes ago   Up 2 minutes (healthy)   5000/tcp
+
+Código de saída: 0.
+
+RESULTADO: validação concluída; recursos descartáveis do clone removidos, ambiente original restaurado e manifesto operacional salvo.

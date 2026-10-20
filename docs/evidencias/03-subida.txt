@@ -1,0 +1,333 @@
+Legenda: subida real do ambiente em 19/10/2026; build e inicialização dos serviços do projeto.
+
+$ docker compose up -d --build
+permission denied while trying to connect to the docker API at unix:///var/run/docker.sock
+
+Código de saída: 1.
+
+Nova tentativa autorizada fora do sandbox:
+$ docker compose up -d --build
+ Image postgres:16-alpine Pulling 
+ e2de96513ba9 Pulling fs layer 0B
+ 509688edf37b Pulling fs layer 0B
+ 3ae6141cfd99 Pulling fs layer 0B
+ 25b77f59fd95 Pulling fs layer 0B
+ 210b280f9556 Pulling fs layer 0B
+ 6c25da34e03f Pulling fs layer 0B
+ a88782f92806 Pulling fs layer 0B
+ d8d21be4bf02 Pulling fs layer 0B
+ 81717818649a Pulling fs layer 0B
+ 1b7f9cd581ee Pulling fs layer 0B
+ 6117bd39f23f Pulling fs layer 0B
+ 509688edf37b Download complete 0B
+ e2de96513ba9 Downloading 1.049MB
+ e2de96513ba9 Downloading 1.049MB
+ e2de96513ba9 Downloading 2.097MB
+ e2de96513ba9 Download complete 0B
+ e2de96513ba9 Extracting 1B
+ 210b280f9556 Download complete 0B
+ e2de96513ba9 Extracting 1B
+ e2de96513ba9 Extracting 1B
+ 25b77f59fd95 Downloading 1.049MB
+ e2de96513ba9 Extracting 1B
+ 25b77f59fd95 Downloading 1.049MB
+ e2de96513ba9 Extracting 1B
+ 6c25da34e03f Downloading 9.669kB
+ 3ae6141cfd99 Download complete 0B
+ 25b77f59fd95 Downloading 2.097MB
+ e2de96513ba9 Extracting 1B
+ 25b77f59fd95 Downloading 4.194MB
+ 6c25da34e03f Download complete 0B
+ e2de96513ba9 Extracting 1B
+ 25b77f59fd95 Downloading 5.243MB
+ e2de96513ba9 Extracting 1B
+ 25b77f59fd95 Downloading 6.291MB
+ 81717818649a Download complete 0B
+ a88782f92806 Download complete 0B
+ e2de96513ba9 Extracting 1B
+ 25b77f59fd95 Downloading 7.34MB
+ e2de96513ba9 Extracting 1B
+ 25b77f59fd95 Downloading 8.389MB
+ 6117bd39f23f Download complete 0B
+ e2de96513ba9 Extracting 1B
+ 25b77f59fd95 Downloading 10.49MB
+ e2de96513ba9 Extracting 2B
+ 25b77f59fd95 Downloading 11.53MB
+ e2de96513ba9 Extracting 2B
+ 25b77f59fd95 Downloading 11.53MB
+ 1b7f9cd581ee Download complete 0B
+ d8d21be4bf02 Download complete 0B
+ e2de96513ba9 Extracting 2B
+ 25b77f59fd95 Downloading 13.63MB
+ e2de96513ba9 Extracting 2B
+ 25b77f59fd95 Downloading 13.63MB
+ e2de96513ba9 Pull complete 0B
+ 1b7f9cd581ee Extracting 1B
+ 25b77f59fd95 Downloading 14.68MB
+ 210b280f9556 Pull complete 0B
+ 3ae6141cfd99 Extracting 1B
+ 81717818649a Pull complete 0B
+ 1b7f9cd581ee Pull complete 0B
+ 25b77f59fd95 Downloading 15.73MB
+ 3ae6141cfd99 Pull complete 0B
+ 25b77f59fd95 Downloading 15.73MB
+ 25b77f59fd95 Downloading 16.78MB
+ 25b77f59fd95 Downloading 17.83MB
+ 25b77f59fd95 Downloading 19.92MB
+ 021b01ea4cc2 Download complete 0B
+ 25b77f59fd95 Downloading 20.97MB
+ 25b77f59fd95 Downloading 20.97MB
+ 25b77f59fd95 Downloading 22.02MB
+ 25b77f59fd95 Downloading 23.07MB
+ 25b77f59fd95 Downloading 24.12MB
+ 25b77f59fd95 Downloading 25.17MB
+ e6b147246a89 Download complete 0B
+ 25b77f59fd95 Downloading 26.21MB
+ 25b77f59fd95 Downloading 27.26MB
+ 25b77f59fd95 Downloading 28.31MB
+ 25b77f59fd95 Downloading 29.36MB
+ 25b77f59fd95 Downloading 30.41MB
+ 25b77f59fd95 Downloading 31.46MB
+ 25b77f59fd95 Downloading 32.51MB
+ 25b77f59fd95 Downloading 33.55MB
+ 25b77f59fd95 Downloading 34.6MB
+ 25b77f59fd95 Downloading 34.6MB
+ 25b77f59fd95 Downloading 35.65MB
+ 25b77f59fd95 Downloading 36.7MB
+ 25b77f59fd95 Downloading 37.75MB
+ 25b77f59fd95 Downloading 38.8MB
+ 25b77f59fd95 Downloading 39.85MB
+ 25b77f59fd95 Downloading 40.89MB
+ 25b77f59fd95 Downloading 41.94MB
+ 25b77f59fd95 Downloading 42.99MB
+ 25b77f59fd95 Downloading 44.04MB
+ 25b77f59fd95 Downloading 45.09MB
+ 25b77f59fd95 Downloading 46.14MB
+ 25b77f59fd95 Downloading 47.19MB
+ 25b77f59fd95 Downloading 49.28MB
+ 25b77f59fd95 Downloading 50.33MB
+ 25b77f59fd95 Downloading 51.38MB
+ 25b77f59fd95 Downloading 52.43MB
+ 25b77f59fd95 Downloading 53.48MB
+ 25b77f59fd95 Downloading 54.53MB
+ 25b77f59fd95 Downloading 55.57MB
+ 25b77f59fd95 Downloading 56.62MB
+ 25b77f59fd95 Downloading 56.62MB
+ 25b77f59fd95 Downloading 58.72MB
+ 25b77f59fd95 Downloading 59.77MB
+ 25b77f59fd95 Downloading 60.82MB
+ 25b77f59fd95 Downloading 61.87MB
+ 25b77f59fd95 Downloading 63.96MB
+ 25b77f59fd95 Downloading 65.01MB
+ 25b77f59fd95 Downloading 66.06MB
+ 25b77f59fd95 Downloading 67.11MB
+ 25b77f59fd95 Downloading 67.11MB
+ 25b77f59fd95 Downloading 69.21MB
+ 25b77f59fd95 Downloading 70.25MB
+ 25b77f59fd95 Downloading 71.3MB
+ 25b77f59fd95 Downloading 72.35MB
+ 25b77f59fd95 Downloading 73.4MB
+ 25b77f59fd95 Downloading 75.5MB
+ 25b77f59fd95 Downloading 76.55MB
+ 25b77f59fd95 Downloading 77.59MB
+ 25b77f59fd95 Downloading 78.64MB
+ 25b77f59fd95 Downloading 79.69MB
+ 25b77f59fd95 Downloading 79.69MB
+ 25b77f59fd95 Downloading 80.74MB
+ 25b77f59fd95 Downloading 82.84MB
+ 25b77f59fd95 Downloading 83.89MB
+ 25b77f59fd95 Downloading 84.93MB
+ 25b77f59fd95 Downloading 85.98MB
+ 25b77f59fd95 Downloading 87.03MB
+ 25b77f59fd95 Downloading 88.08MB
+ 25b77f59fd95 Downloading 89.13MB
+ 25b77f59fd95 Downloading 91.23MB
+ 25b77f59fd95 Downloading 92.27MB
+ 25b77f59fd95 Downloading 93.32MB
+ 25b77f59fd95 Downloading 94.37MB
+ 25b77f59fd95 Downloading 95.42MB
+ 25b77f59fd95 Downloading 96.47MB
+ 25b77f59fd95 Downloading 97.52MB
+ 25b77f59fd95 Downloading 98.57MB
+ 25b77f59fd95 Downloading 99.61MB
+ 25b77f59fd95 Downloading 100.7MB
+ 25b77f59fd95 Downloading 101.7MB
+ 25b77f59fd95 Downloading 102.8MB
+ 25b77f59fd95 Downloading 102.8MB
+ 25b77f59fd95 Downloading 103.8MB
+ 25b77f59fd95 Downloading 104.9MB
+ 25b77f59fd95 Downloading 107MB
+ 25b77f59fd95 Downloading 107MB
+ 25b77f59fd95 Downloading 108MB
+ 25b77f59fd95 Downloading 109.1MB
+ 25b77f59fd95 Download complete 0B
+ 25b77f59fd95 Extracting 1B
+ 25b77f59fd95 Extracting 1B
+ 25b77f59fd95 Extracting 1B
+ 25b77f59fd95 Extracting 1B
+ 25b77f59fd95 Extracting 1B
+ 25b77f59fd95 Extracting 1B
+ 25b77f59fd95 Extracting 1B
+ 25b77f59fd95 Extracting 1B
+ 25b77f59fd95 Extracting 1B
+ 25b77f59fd95 Extracting 1B
+ 25b77f59fd95 Extracting 2B
+ 25b77f59fd95 Extracting 2B
+ 6c25da34e03f Pull complete 0B
+ 25b77f59fd95 Pull complete 0B
+ a88782f92806 Pull complete 0B
+ 6117bd39f23f Pull complete 0B
+ d8d21be4bf02 Pull complete 0B
+ 509688edf37b Pull complete 0B
+ Image postgres:16-alpine Pulled 
+ Image g1-nuvem-web Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 606B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile:
+#2 transferring dockerfile: 632B done
+#2 DONE 0.1s
+
+#3 [internal] load metadata for docker.io/library/python:3.12-slim
+#3 DONE 1.8s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 97B done
+#4 DONE 0.1s
+
+#5 [internal] load build context
+#5 DONE 0.0s
+
+#6 [1/6] FROM docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1
+#6 resolve docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1 0.0s done
+#6 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 2.48kB done
+#5 DONE 0.1s
+
+#6 [1/6] FROM docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1
+#6 extracting sha256:ecc510c1e359bdc007b39802570bb7e4dec7d6ebccf357c3201a74299113e05e
+#6 sha256:bbc5a12237474ec0b23b5051260d56d6436a24d70d9cad961adebe7a037ed813 0B / 249B 0.2s
+#6 sha256:bbc5a12237474ec0b23b5051260d56d6436a24d70d9cad961adebe7a037ed813 249B / 249B 0.2s done
+#6 sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 0B / 12.12MB 0.3s
+#6 sha256:75b6a36c64a1cf3520fc4b4aae4739d5caa8a6a05c27835a920a61784c9c32f8 0B / 1.29MB 0.2s
+#6 extracting sha256:ecc510c1e359bdc007b39802570bb7e4dec7d6ebccf357c3201a74299113e05e 0.5s done
+#6 sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 1.05MB / 12.12MB 0.6s
+#6 sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 2.10MB / 12.12MB 0.8s
+#6 sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 3.15MB / 12.12MB 0.9s
+#6 sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 5.24MB / 12.12MB 1.1s
+#6 sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 6.29MB / 12.12MB 1.2s
+#6 sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 8.39MB / 12.12MB 1.4s
+#6 sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 10.49MB / 12.12MB 1.5s
+#6 sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 12.12MB / 12.12MB 1.7s done
+#6 sha256:75b6a36c64a1cf3520fc4b4aae4739d5caa8a6a05c27835a920a61784c9c32f8 1.29MB / 1.29MB 2.5s done
+#6 extracting sha256:75b6a36c64a1cf3520fc4b4aae4739d5caa8a6a05c27835a920a61784c9c32f8 0.1s done
+#6 extracting sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4
+#6 extracting sha256:6912e23eb44595b44dc6d9882b34f305ad6f6e9667cec70b13e5dbc4f8cd97f4 0.2s done
+#6 DONE 3.1s
+
+#6 [1/6] FROM docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1
+#6 extracting sha256:bbc5a12237474ec0b23b5051260d56d6436a24d70d9cad961adebe7a037ed813 0.0s done
+#6 DONE 3.2s
+
+#7 [2/6] WORKDIR /app
+#7 DONE 0.1s
+
+#8 [3/6] COPY requirements.txt .
+#8 DONE 0.1s
+
+#9 [4/6] RUN pip install --no-cache-dir -r requirements.txt
+#9 0.964 Collecting flask==3.0.3 (from -r requirements.txt (line 1))
+#9 1.055   Downloading flask-3.0.3-py3-none-any.whl.metadata (3.2 kB)
+#9 1.108 Collecting psycopg==3.2.3 (from psycopg[binary]==3.2.3->-r requirements.txt (line 2))
+#9 1.136   Downloading psycopg-3.2.3-py3-none-any.whl.metadata (4.3 kB)
+#9 1.190 Collecting gunicorn==23.0.0 (from -r requirements.txt (line 3))
+#9 1.218   Downloading gunicorn-23.0.0-py3-none-any.whl.metadata (4.4 kB)
+#9 1.275 Collecting Werkzeug>=3.0.0 (from flask==3.0.3->-r requirements.txt (line 1))
+#9 1.304   Downloading werkzeug-3.1.9-py3-none-any.whl.metadata (4.1 kB)
+#9 1.345 Collecting Jinja2>=3.1.2 (from flask==3.0.3->-r requirements.txt (line 1))
+#9 1.374   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+#9 1.415 Collecting itsdangerous>=2.1.2 (from flask==3.0.3->-r requirements.txt (line 1))
+#9 1.442   Downloading itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+#9 1.488 Collecting click>=8.1.3 (from flask==3.0.3->-r requirements.txt (line 1))
+#9 1.517   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+#9 1.558 Collecting blinker>=1.6.2 (from flask==3.0.3->-r requirements.txt (line 1))
+#9 1.586   Downloading blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+#9 1.632 Collecting typing-extensions>=4.6 (from psycopg==3.2.3->psycopg[binary]==3.2.3->-r requirements.txt (line 2))
+#9 1.660   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#9 1.709 Collecting packaging (from gunicorn==23.0.0->-r requirements.txt (line 3))
+#9 1.737   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+#9 1.935 Collecting psycopg-binary==3.2.3 (from psycopg[binary]==3.2.3->-r requirements.txt (line 2))
+#9 1.964   Downloading psycopg_binary-3.2.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (2.8 kB)
+#9 2.032 Collecting MarkupSafe>=2.0 (from Jinja2>=3.1.2->flask==3.0.3->-r requirements.txt (line 1))
+#9 2.062   Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+#9 2.093 Downloading flask-3.0.3-py3-none-any.whl (101 kB)
+#9 2.166 Downloading psycopg-3.2.3-py3-none-any.whl (197 kB)
+#9 2.224 Downloading gunicorn-23.0.0-py3-none-any.whl (85 kB)
+#9 2.262 Downloading psycopg_binary-3.2.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (4.2 MB)
+#9 2.644    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.2/4.2 MB 12.6 MB/s eta 0:00:00
+#9 2.671 Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+#9 2.709 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+#9 2.751 Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+#9 2.780 Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+#9 2.821 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+#9 2.850 Downloading werkzeug-3.1.9-py3-none-any.whl (228 kB)
+#9 2.895 Downloading packaging-26.3-py3-none-any.whl (129 kB)
+#9 2.933 Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+#9 2.951 Installing collected packages: typing-extensions, psycopg-binary, packaging, MarkupSafe, itsdangerous, click, blinker, Werkzeug, psycopg, Jinja2, gunicorn, flask
+#9 3.407 Successfully installed Jinja2-3.1.6 MarkupSafe-3.0.4 Werkzeug-3.1.9 blinker-1.9.0 click-8.5.0 flask-3.0.3 gunicorn-23.0.0 itsdangerous-2.2.0 packaging-26.3 psycopg-3.2.3 psycopg-binary-3.2.3 typing-extensions-4.16.0
+#9 3.407 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#9 3.570 
+#9 3.570 [notice] A new release of pip is available: 25.0.1 -> 26.2.1
+#9 3.570 [notice] To update, run: pip install --upgrade pip
+#9 DONE 3.7s
+
+#10 [5/6] COPY app.py .
+#10 DONE 0.1s
+
+#11 [6/6] RUN groupadd --system app     && useradd --system --gid app --no-create-home --shell /usr/sbin/nologin app     && mkdir -p /app/uploads     && chown app:app /app/uploads
+#11 DONE 0.2s
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers 0.5s done
+#12 exporting manifest sha256:9de90dc4b0755a20a4eccfa3a3ce0ea60da3dd965a592fd1646b0e80fbd92840 0.0s done
+#12 exporting config sha256:fce2be711a3c3e325ba21dd588043b73636d4f898afe53bdff8f78a6f92ef410 0.0s done
+#12 exporting attestation manifest sha256:24512bc2404460e19c148187421421a611fb1c6ba107f15d2c22e44d7efe1fda 0.0s done
+#12 exporting manifest list sha256:b3633b8f4b3ec74fec2cc71170fc50d8fbd2298a5fd169f91c1866d68404dd69
+#12 exporting manifest list sha256:b3633b8f4b3ec74fec2cc71170fc50d8fbd2298a5fd169f91c1866d68404dd69 0.0s done
+#12 naming to docker.io/library/g1-nuvem-web:latest done
+#12 unpacking to docker.io/library/g1-nuvem-web:latest
+#12 unpacking to docker.io/library/g1-nuvem-web:latest 0.6s done
+#12 DONE 1.2s
+
+#13 resolving provenance for metadata file
+#13 DONE 0.0s
+ Image g1-nuvem-web Built 
+ Volume g1-nuvem_fotos Creating 
+ Network g1-nuvem_rede_interna Creating 
+ Volume g1-nuvem_dados_banco Creating 
+ Volume g1-nuvem_dados_banco Creating 
+ Network g1-nuvem_rede_interna Creating 
+ Volume g1-nuvem_fotos Creating 
+ Volume g1-nuvem_dados_banco Created 
+ Volume g1-nuvem_dados_banco Created 
+ Volume g1-nuvem_fotos Created 
+ Volume g1-nuvem_fotos Created 
+ Network g1-nuvem_rede_interna Created 
+ Network g1-nuvem_rede_interna Created 
+ Container g1-nuvem-db-1 Creating 
+ Container g1-nuvem-db-1 Created 
+ Container g1-nuvem-web-1 Creating 
+ Container g1-nuvem-web-1 Created 
+ Container g1-nuvem-db-1 Starting 
+ Container g1-nuvem-db-1 Started 
+ Container g1-nuvem-db-1 Waiting 
+ Container g1-nuvem-db-1 Healthy 
+ Container g1-nuvem-web-1 Starting 
+ Container g1-nuvem-web-1 Started 
+
+Código de saída: 0.

@@ -1,0 +1,16 @@
+Legenda: cópia de preservação dos dados de teste antes da remoção solicitada em 19/10/2026; arquivos locais fora do repositório, sem conteúdo de credenciais nas evidências. Não é restauração demonstrada.
+
+Diretório local de preservação: /tmp/g1-nuvem-backup-volumes-s4v788fc
+$ docker compose exec -T db sh -c 'pg_dump -U "$POSTGRES_USER" -d "$POSTGRES_DB" -Fc' (saída binária gravada somente em /tmp/g1-nuvem-backup-volumes-s4v788fc/banco.dump)
+CONFIRMADO: banco.dump: cópia criada, código de saída 0
+Tamanho: 3059 bytes; SHA-256: 80b495d55626ae503e8b96e5da840c24b0f66c721ba5a0ed4983b034d8f424e0
+$ docker compose exec -T web tar -czf - -C /app/uploads . (saída binária gravada somente em /tmp/g1-nuvem-backup-volumes-s4v788fc/fotos.tar.gz)
+CONFIRMADO: fotos.tar.gz: cópia criada, código de saída 0
+Tamanho: 376 bytes; SHA-256: e61a8f7659923f1df13cf55cbfe2bf2c15717d697ddf3118017c4695202bbf01
+$ docker compose exec -T db pg_restore --list (entrada: banco.dump; conteúdo da listagem omitido)
+CONFIRMADO: Arquivo de backup PostgreSQL reconhecido por pg_restore --list
+CONFIRMADO: Arquivo tar contém todas as fotos contadas pela API
+Foto preservada: ./d1db8ccebee64116af60f2b39b324e6d.png; bytes=179; SHA-256=0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf
+Foto preservada: ./846af42ade3f45d6b3f769a9e63e47be.png; bytes=179; SHA-256=160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562
+As cópias foram verificadas quanto à leitura dos formatos. Nenhuma restauração foi executada ou declarada como testada.
+

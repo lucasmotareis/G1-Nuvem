@@ -1,0 +1,133 @@
+Legenda: Q7: três réplicas saudáveis, balanceamento e fotos compartilhadas; retorno a uma réplica com reinício explícito do Nginx em 19/10/2026. As duas tentativas anteriores e suas falhas transitórias permanecem registradas separadamente.
+
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:10:03 GMT
+Content-Type: application/json
+Content-Length: 41
+Connection: keep-alive
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200 via Nginx
+$ docker compose up -d --scale web=3
+ Container g1-nuvem-db-1 Running 
+ Container g1-nuvem-web-1 Running 
+ Container g1-nuvem-nginx-1 Running 
+ Container g1-nuvem-web-3 Creating 
+ Container g1-nuvem-web-2 Creating 
+ Container g1-nuvem-web-3 Created 
+ Container g1-nuvem-web-2 Created 
+ Container g1-nuvem-db-1 Waiting 
+ Container g1-nuvem-db-1 Healthy 
+ Container g1-nuvem-web-2 Starting 
+ Container g1-nuvem-web-2 Started 
+ Container g1-nuvem-web-3 Starting 
+ Container g1-nuvem-web-3 Started 
+ Container g1-nuvem-web-2 Waiting 
+ Container g1-nuvem-web-3 Waiting 
+ Container g1-nuvem-web-1 Waiting 
+ Container g1-nuvem-web-2 Healthy 
+ Container g1-nuvem-web-3 Healthy 
+ Container g1-nuvem-web-1 Healthy 
+
+Código de saída: 0.
+
+$ docker compose ps -q web
+4d37a85c14e7461578b0699b25b24ed092ce4d0003c5b677d96759b824a4122d
+a21fda99511d9d1ab2a273d368782cbd6fdee2a51e0bb6f39e2e208a9a058964
+09e8845584a64cbdc45cfdb95559bcf1389f6ad952b5c8dff0f621004048d4af
+
+Código de saída: 0.
+
+CONFIRMADO: Três contêineres web em execução
+$ docker inspect --format '{{.Config.Hostname}}' 4d37a85c14e7461578b0699b25b24ed092ce4d0003c5b677d96759b824a4122d a21fda99511d9d1ab2a273d368782cbd6fdee2a51e0bb6f39e2e208a9a058964 09e8845584a64cbdc45cfdb95559bcf1389f6ad952b5c8dff0f621004048d4af
+4d37a85c14e7
+a21fda99511d
+09e8845584a6
+
+Código de saída: 0.
+
+$ docker inspect --format '{{.Name}} | portas_publicadas={{json .HostConfig.PortBindings}} | saude={{.State.Health.Status}}' 4d37a85c14e7461578b0699b25b24ed092ce4d0003c5b677d96759b824a4122d a21fda99511d9d1ab2a273d368782cbd6fdee2a51e0bb6f39e2e208a9a058964 09e8845584a64cbdc45cfdb95559bcf1389f6ad952b5c8dff0f621004048d4af
+/g1-nuvem-web-1 | portas_publicadas={} | saude=healthy
+/g1-nuvem-web-2 | portas_publicadas={} | saude=healthy
+/g1-nuvem-web-3 | portas_publicadas={} | saude=healthy
+
+Código de saída: 0.
+
+CONFIRMADO: Resposta saudável de uma réplica
+CONFIRMADO: Resposta saudável de uma réplica
+CONFIRMADO: Resposta saudável de uma réplica
+Hostnames observados nas respostas HTTP via Nginx: 09e8845584a6, 4d37a85c14e7, a21fda99511d
+CONFIRMADO: O proxy encaminhou requisições para as três réplicas
+$ docker compose exec -T --index 1 web python -c 'import hashlib,json,pathlib; p=pathlib.Path("/app/uploads"); print(json.dumps({f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(p.iterdir()) if f.is_file()},sort_keys=True))'
+{"32ca639243894b06b6a718d246401cef.png": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf", "92ededde7bb3412799c5f85173cbd1cc.png": "160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562"}
+
+Código de saída: 0.
+
+CONFIRMADO: Réplica 1 enxerga as mesmas fotos e hashes no volume compartilhado
+$ docker compose exec -T --index 2 web python -c 'import hashlib,json,pathlib; p=pathlib.Path("/app/uploads"); print(json.dumps({f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(p.iterdir()) if f.is_file()},sort_keys=True))'
+{"32ca639243894b06b6a718d246401cef.png": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf", "92ededde7bb3412799c5f85173cbd1cc.png": "160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562"}
+
+Código de saída: 0.
+
+CONFIRMADO: Réplica 2 enxerga as mesmas fotos e hashes no volume compartilhado
+$ docker compose exec -T --index 3 web python -c 'import hashlib,json,pathlib; p=pathlib.Path("/app/uploads"); print(json.dumps({f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(p.iterdir()) if f.is_file()},sort_keys=True))'
+{"32ca639243894b06b6a718d246401cef.png": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf", "92ededde7bb3412799c5f85173cbd1cc.png": "160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562"}
+
+Código de saída: 0.
+
+CONFIRMADO: Réplica 3 enxerga as mesmas fotos e hashes no volume compartilhado
+$ docker compose up -d --scale web=1
+ Container g1-nuvem-db-1 Running 
+ Container g1-nuvem-web-1 Running 
+ Container g1-nuvem-nginx-1 Running 
+ Container g1-nuvem-web-2 Stopping 
+ Container g1-nuvem-web-3 Stopping 
+ Container g1-nuvem-web-2 Stopped 
+ Container g1-nuvem-web-2 Removing 
+ Container g1-nuvem-web-3 Stopped 
+ Container g1-nuvem-web-3 Removing 
+ Container g1-nuvem-web-2 Removed 
+ Container g1-nuvem-web-3 Removed 
+ Container g1-nuvem-db-1 Waiting 
+ Container g1-nuvem-db-1 Healthy 
+ Container g1-nuvem-web-1 Waiting 
+ Container g1-nuvem-web-1 Healthy 
+
+Código de saída: 0.
+
+$ docker compose restart nginx
+ Container g1-nuvem-nginx-1 Restarting 
+ Container g1-nuvem-nginx-1 Started 
+
+Código de saída: 0.
+
+$ curl --silent --show-error --fail --max-time 2 http://localhost:8080/health (sondagem de prontidão)
+{"banco":"conectado","container":"4d37a85c14e7","status":"ok"}
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:10:12 GMT
+Content-Type: application/json
+Content-Length: 41
+Connection: keep-alive
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200 via Nginx
+CONFIRMADO: Retorno a uma réplica sem alterar contagens
+$ docker compose ps -a
+NAME               IMAGE                COMMAND                  SERVICE   CREATED              STATUS                    PORTS
+g1-nuvem-db-1      postgres:16-alpine   "docker-entrypoint.s…"   db        24 minutes ago       Up 17 minutes (healthy)   5432/tcp
+g1-nuvem-nginx-1   nginx:1.30-alpine    "/docker-entrypoint.…"   nginx     About a minute ago   Up Less than a second     0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+g1-nuvem-web-1     g1-nuvem-web         "gunicorn --bind 0.0…"   web       6 minutes ago        Up 5 minutes (healthy)    5000/tcp
+
+Código de saída: 0.
+
+RESULTADO: verificações desta etapa concluídas sem falhas.

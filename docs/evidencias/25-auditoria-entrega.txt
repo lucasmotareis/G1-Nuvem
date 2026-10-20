@@ -1,0 +1,131 @@
+Legenda: auditoria final em 19/10/2026; arquivos fornecidos, Git, credenciais sem valores expostos, perfis efetivos, documentação e inventário para o ZIP.
+
+Método: a definição JSON pode incluir serviços de perfis desativados. A seleção padrão é conferida por config --services e a execução por compose ps; não se interpreta a mera presença de uma definição como ativação do perfil.
+
+$ git diff HEAD -- app/app.py app/requirements.txt db/init.sql
+(sem saída)
+Código de saída: 0.
+
+CONFIRMADO: Três arquivos fornecidos preservados
+$ git check-ignore .env backups/fotos.tar.gz
+.env
+backups/fotos.tar.gz
+Código de saída: 0.
+
+$ git ls-files -- .env
+(sem saída)
+Código de saída: 0.
+
+CONFIRMADO: .env ausente do índice e dos arquivos rastreados
+$ git log --all '--format=%h %s' -- .env
+(sem saída)
+Código de saída: 0.
+
+CONFIRMADO: .env ausente do histórico Git local disponível
+$ docker compose config --quiet
+(sem saída)
+Código de saída: 0.
+
+$ docker compose exec -T nginx nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+Código de saída: 0.
+
+CONFIRMADO: POSTGRES_DB/DB_NAME: variável externa, sem credencial literal
+CONFIRMADO: POSTGRES_USER/DB_USER: variável externa, sem credencial literal
+CONFIRMADO: POSTGRES_PASSWORD/DB_PASSWORD: variável externa, sem credencial literal
+CONFIRMADO: Banco e web sem portas publicadas
+CONFIRMADO: Adminer associado somente ao perfil debug
+$ docker compose config --services
+db
+web
+nginx
+Código de saída: 0.
+
+CONFIRMADO: Adminer excluído da seleção padrão
+$ docker compose ps --services
+db
+nginx
+web
+Código de saída: 0.
+
+CONFIRMADO: Adminer não está em execução no estado final
+CONFIRMADO: .env local usa os valores fictícios do exemplo; conteúdo omitido
+CONFIRMADO: Links locais dos 6 arquivos Markdown válidos
+CONFIRMADO: Q1: 5 linhas no Markdown
+CONFIRMADO: Q2: 5 linhas no Markdown
+CONFIRMADO: Q3: 5 linhas no Markdown
+CONFIRMADO: Q4: 5 linhas no Markdown
+CONFIRMADO: Q5: 5 linhas no Markdown
+CONFIRMADO: Q6: 6 linhas no Markdown
+CONFIRMADO: Q7: 7 linhas no Markdown
+CONFIRMADO: Tabela 5.1 com seis peças, três provedores e 18 referências oficiais
+CONFIRMADO: Relatório com quatro partes
+CONFIRMADO: Todas as evidências indexadas
+CONFIRMADO: Todos os textos de evidência têm legenda inicial
+CONFIRMADO: Nove arquivos operacionais idênticos aos testados no clone
+CONFIRMADO: Backup de demonstração contém somente os dois PNGs testados, com hashes iguais
+CONFIRMADO: Inventário não inclui .env, .git ou backups locais
+CONFIRMADO: Valor da senha local ausente dos arquivos de entrega, exceto exemplo fictício permitido
+$ git diff --check
+(sem saída)
+Código de saída: 0.
+
+
+Inventário destinado ao ZIP:
+.env.example
+.gitignore
+AGENTS.md
+G1-CN-2N.pdf
+README.md
+app/.dockerignore
+app/Dockerfile
+app/app.py
+app/requirements.txt
+db/init.sql
+docker-compose.yml
+docs/ARQUITETURA.md
+docs/BONUS.md
+docs/REFLEXAO.md
+docs/RELATORIO.md
+docs/evidencias/01-validacao-configuracao.txt
+docs/evidencias/02-tentativa-subida.txt
+docs/evidencias/03-subida.txt
+docs/evidencias/04-verificacao-inicial.txt
+docs/evidencias/05-rotas-funcionais.txt
+docs/evidencias/06-persistencia-recriacao.txt
+docs/evidencias/07-usuario-prontidao.txt
+docs/evidencias/08-foto-no-navegador.png
+docs/evidencias/09-credenciais-e-configuracao.txt
+docs/evidencias/10-subida-copia-limpa.txt
+docs/evidencias/11-arquivos-fornecidos.txt
+docs/evidencias/12-inspecao-volumes.txt
+docs/evidencias/13-preservacao-antes-remocao.txt
+docs/evidencias/14-remocao-volumes.txt
+docs/evidencias/15-inspecao-infraestrutura.txt
+docs/evidencias/16-teste-replicas.txt
+docs/evidencias/17-parada-retomada.txt
+docs/evidencias/18-foto-4.png
+docs/evidencias/18-foto-5.png
+docs/evidencias/18-proxy-e-rotas.txt
+docs/evidencias/19-backup-restauracao.txt
+docs/evidencias/19-fotos-backup.tar.gz
+docs/evidencias/20-adminer-debug.txt
+docs/evidencias/21-replicas-com-proxy-tentativa-2.txt
+docs/evidencias/21-replicas-com-proxy-validado.txt
+docs/evidencias/21-replicas-com-proxy.txt
+docs/evidencias/22-foto-4.png
+docs/evidencias/22-foto-5.png
+docs/evidencias/22-persistencia-com-proxy.txt
+docs/evidencias/23-clone-e-aceite.txt
+docs/evidencias/23-manifesto-operacional.json
+docs/evidencias/24-foto-com-proxy.png
+docs/evidencias/25-auditoria-entrega.txt
+docs/evidencias/README.md
+docs/evidencias/foto-retornada-4.png
+docs/evidencias/foto-retornada-5.png
+docs/evidencias/foto-teste-1.png
+docs/evidencias/foto-teste-2.png
+nginx/default.conf
+
+RESULTADO: auditoria aprovada. A senha fictícia aparece somente no exemplo permitido e no .env local ignorado. O ZIP será verificado após sua criação contra este inventário e o manifesto operacional.

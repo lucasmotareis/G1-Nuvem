@@ -1,0 +1,602 @@
+Legenda: Bônus Nginx e RF01 a RF04 em 19/10/2026; primeira estatística é o baseline da arquitetura anterior; após up com build, os testes HTTP passam pelo Nginx.
+
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Tue, 20 Oct 2026 00:02:46 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 41
+
+{"fotos_no_volume":0,"itens_no_banco":3}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200 (baseline da arquitetura anterior, antes da atualização)
+$ docker compose config --quiet
+
+Código de saída: 0.
+
+$ docker compose config --services
+db
+web
+nginx
+
+Código de saída: 0.
+
+$ docker compose up -d --build
+ Image nginx:1.30-alpine Pulling 
+ 28929cdf5be0 Pulling fs layer 0B
+ 7b5202971cfe Pulling fs layer 0B
+ b40d04ac48f7 Pulling fs layer 0B
+ 258d8d3acc3e Pulling fs layer 0B
+ 9aab0913f304 Pulling fs layer 0B
+ a9bafeab4f16 Pulling fs layer 0B
+ f6591080e8dd Pulling fs layer 0B
+ e2de96513ba9 Pulling fs layer 0B
+ e2de96513ba9 Already exists 0B
+ 8e81c1160a80 Download complete 0B
+ b40d04ac48f7 Downloading 1.049MB
+ b40d04ac48f7 Downloading 1.049MB
+ b40d04ac48f7 Downloading 1.049MB
+ b40d04ac48f7 Downloading 1.049MB
+ b40d04ac48f7 Downloading 1.049MB
+ b40d04ac48f7 Downloading 1.049MB
+ b40d04ac48f7 Downloading 1.049MB
+ 5485e156bedb Download complete 0B
+ b40d04ac48f7 Downloading 1.049MB
+ b40d04ac48f7 Downloading 1.049MB
+ b40d04ac48f7 Downloading 1.049MB
+ 7b5202971cfe Download complete 0B
+ b40d04ac48f7 Downloading 1.049MB
+ b40d04ac48f7 Downloading 2.097MB
+ b40d04ac48f7 Downloading 2.097MB
+ b40d04ac48f7 Downloading 2.097MB
+ b40d04ac48f7 Downloading 2.097MB
+ b40d04ac48f7 Downloading 2.097MB
+ a9bafeab4f16 Download complete 0B
+ b40d04ac48f7 Downloading 2.097MB
+ b40d04ac48f7 Downloading 2.097MB
+ b40d04ac48f7 Downloading 2.097MB
+ 258d8d3acc3e Download complete 0B
+ b40d04ac48f7 Downloading 2.097MB
+ b40d04ac48f7 Downloading 2.097MB
+ b40d04ac48f7 Downloading 2.097MB
+ b40d04ac48f7 Downloading 3.146MB
+ b40d04ac48f7 Downloading 3.146MB
+ b40d04ac48f7 Downloading 3.146MB
+ 9aab0913f304 Download complete 0B
+ b40d04ac48f7 Downloading 3.146MB
+ b40d04ac48f7 Downloading 3.146MB
+ b40d04ac48f7 Downloading 3.146MB
+ f6591080e8dd Download complete 0B
+ b40d04ac48f7 Downloading 3.146MB
+ b40d04ac48f7 Downloading 3.146MB
+ b40d04ac48f7 Downloading 3.146MB
+ b40d04ac48f7 Downloading 3.146MB
+ b40d04ac48f7 Downloading 3.146MB
+ b40d04ac48f7 Downloading 3.146MB
+ b40d04ac48f7 Downloading 3.146MB
+ b40d04ac48f7 Downloading 3.146MB
+ b40d04ac48f7 Downloading 3.146MB
+ b40d04ac48f7 Downloading 3.146MB
+ b40d04ac48f7 Downloading 3.146MB
+ b40d04ac48f7 Downloading 4.194MB
+ b40d04ac48f7 Download complete 0B
+ b40d04ac48f7 Extracting 1B
+ a9bafeab4f16 Pull complete 0B
+ 258d8d3acc3e Pull complete 0B
+ b40d04ac48f7 Pull complete 0B
+ 7b5202971cfe Pull complete 0B
+ 9aab0913f304 Pull complete 0B
+ f6591080e8dd Pull complete 0B
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 1.049MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 2.097MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 3.146MB
+ 28929cdf5be0 Downloading 4.194MB
+ 28929cdf5be0 Downloading 4.194MB
+ 28929cdf5be0 Downloading 4.194MB
+ 28929cdf5be0 Downloading 4.194MB
+ 28929cdf5be0 Downloading 5.243MB
+ 28929cdf5be0 Downloading 5.243MB
+ 28929cdf5be0 Downloading 5.243MB
+ 28929cdf5be0 Downloading 5.243MB
+ 28929cdf5be0 Downloading 5.243MB
+ 28929cdf5be0 Downloading 5.243MB
+ 28929cdf5be0 Downloading 5.243MB
+ 28929cdf5be0 Downloading 5.243MB
+ 28929cdf5be0 Downloading 5.243MB
+ 28929cdf5be0 Downloading 5.243MB
+ 28929cdf5be0 Downloading 5.243MB
+ 28929cdf5be0 Downloading 6.291MB
+ 28929cdf5be0 Downloading 6.291MB
+ 28929cdf5be0 Downloading 6.291MB
+ 28929cdf5be0 Downloading 7.34MB
+ 28929cdf5be0 Downloading 7.34MB
+ 28929cdf5be0 Downloading 7.34MB
+ 28929cdf5be0 Downloading 7.34MB
+ 28929cdf5be0 Downloading 8.389MB
+ 28929cdf5be0 Downloading 8.389MB
+ 28929cdf5be0 Downloading 8.389MB
+ 28929cdf5be0 Downloading 8.389MB
+ 28929cdf5be0 Downloading 9.437MB
+ 28929cdf5be0 Downloading 9.437MB
+ 28929cdf5be0 Downloading 9.437MB
+ 28929cdf5be0 Downloading 9.437MB
+ 28929cdf5be0 Downloading 10.49MB
+ 28929cdf5be0 Downloading 10.49MB
+ 28929cdf5be0 Downloading 11.53MB
+ 28929cdf5be0 Downloading 11.53MB
+ 28929cdf5be0 Downloading 11.53MB
+ 28929cdf5be0 Downloading 12.58MB
+ 28929cdf5be0 Downloading 12.58MB
+ 28929cdf5be0 Downloading 13.63MB
+ 28929cdf5be0 Downloading 13.63MB
+ 28929cdf5be0 Downloading 14.68MB
+ 28929cdf5be0 Downloading 14.68MB
+ 28929cdf5be0 Downloading 15.73MB
+ 28929cdf5be0 Downloading 15.73MB
+ 28929cdf5be0 Downloading 16.78MB
+ 28929cdf5be0 Downloading 17.83MB
+ 28929cdf5be0 Downloading 17.83MB
+ 28929cdf5be0 Downloading 19.92MB
+ 28929cdf5be0 Download complete 0B
+ 28929cdf5be0 Extracting 1B
+ 28929cdf5be0 Extracting 1B
+ 28929cdf5be0 Pull complete 0B
+ Image nginx:1.30-alpine Pulled 
+ Image g1-nuvem-web Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 606B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 632B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12-slim
+#3 DONE 1.2s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 97B done
+#4 DONE 0.0s
+
+#5 [1/6] FROM docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1
+#5 resolve docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 63B done
+#6 DONE 0.0s
+
+#7 [3/6] COPY requirements.txt .
+#7 CACHED
+
+#8 [4/6] RUN pip install --no-cache-dir -r requirements.txt
+#8 CACHED
+
+#9 [5/6] COPY app.py .
+#9 CACHED
+
+#10 [2/6] WORKDIR /app
+#10 CACHED
+
+#11 [6/6] RUN groupadd --system app     && useradd --system --gid app --no-create-home --shell /usr/sbin/nologin app     && mkdir -p /app/uploads     && chown app:app /app/uploads
+#11 CACHED
+
+#12 exporting to image
+#12 exporting layers
+#12 exporting layers done
+#12 exporting manifest sha256:9de90dc4b0755a20a4eccfa3a3ce0ea60da3dd965a592fd1646b0e80fbd92840 0.0s done
+#12 exporting config sha256:fce2be711a3c3e325ba21dd588043b73636d4f898afe53bdff8f78a6f92ef410 done
+#12 exporting attestation manifest sha256:55553fc6a8b3761f382e7ffb3a77ecd1be32beabcfeb802cdd1743bbefa62601 0.0s done
+#12 exporting manifest list sha256:fdb0753a0b4e6aaf4d3b9f5807f87b05549d1023460d752887c9ae99dbc2d8a5 0.0s done
+#12 naming to docker.io/library/g1-nuvem-web:latest done
+#12 unpacking to docker.io/library/g1-nuvem-web:latest done
+#12 DONE 0.1s
+
+#13 resolving provenance for metadata file
+#13 DONE 0.0s
+ Image g1-nuvem-web Built 
+ Container g1-nuvem-db-1 Running 
+ Container g1-nuvem-web-1 Recreate 
+ Container g1-nuvem-web-1 Recreated 
+ Container g1-nuvem-nginx-1 Creating 
+ Container g1-nuvem-nginx-1 Created 
+ Container g1-nuvem-db-1 Waiting 
+ Container g1-nuvem-db-1 Healthy 
+ Container g1-nuvem-web-1 Starting 
+ Container g1-nuvem-web-1 Started 
+ Container g1-nuvem-web-1 Waiting 
+ Container g1-nuvem-web-1 Healthy 
+ Container g1-nuvem-nginx-1 Starting 
+ Container g1-nuvem-nginx-1 Started 
+
+Código de saída: 0.
+
+$ curl --silent --show-error --fail --max-time 2 http://localhost:8080/health (sondagem de prontidão)
+{"banco":"conectado","container":"4d37a85c14e7","status":"ok"}
+$ docker compose ps -a
+NAME               IMAGE                COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+g1-nuvem-db-1      postgres:16-alpine   "docker-entrypoint.s…"   db        17 minutes ago   Up 10 minutes (healthy)   5432/tcp
+g1-nuvem-nginx-1   nginx:1.30-alpine    "/docker-entrypoint.…"   nginx     7 seconds ago    Up Less than a second     0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+g1-nuvem-web-1     g1-nuvem-web         "gunicorn --bind 0.0…"   web       7 seconds ago    Up 5 seconds (healthy)    5000/tcp
+
+Código de saída: 0.
+
+$ docker compose exec -T nginx nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+
+Código de saída: 0.
+
+$ docker compose exec -T nginx nginx -v
+nginx version: nginx/1.30.6
+
+Código de saída: 0.
+
+$ docker inspect --format '{{.Name}} | portas_publicadas={{json .HostConfig.PortBindings}} | usuario={{.Config.User}}' g1-nuvem-nginx-1 g1-nuvem-web-1 g1-nuvem-db-1
+/g1-nuvem-nginx-1 | portas_publicadas={"80/tcp":[{"HostIp":"","HostPort":"8080"}]} | usuario=
+/g1-nuvem-web-1 | portas_publicadas={} | usuario=app:app
+/g1-nuvem-db-1 | portas_publicadas={} | usuario=
+
+Código de saída: 0.
+
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/health
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:03:45 GMT
+Content-Type: application/json
+Content-Length: 63
+Connection: keep-alive
+
+{"banco":"conectado","container":"4d37a85c14e7","status":"ok"}
+
+Código de saída: 0.
+
+CONFIRMADO: /health: HTTP 200 via Nginx
+CONFIRMADO: RF01: banco conectado por meio do proxy
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:03:45 GMT
+Content-Type: application/json
+Content-Length: 366
+Connection: keep-alive
+
+[{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 200 via Nginx
+$ curl --silent --show-error --fail-with-body --max-time 15 -i 'http://localhost:8080/itens?local=biblio'
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:03:45 GMT
+Content-Type: application/json
+Content-Length: 120
+Connection: keep-alive
+
+[{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"}]
+
+Código de saída: 0.
+
+CONFIRMADO: /itens?local=biblio: HTTP 200 via Nginx
+CONFIRMADO: RF02: filtro correto via proxy
+$ curl --silent --show-error --fail-with-body --max-time 15 -i -X POST -F 'descricao=Objeto bonus com foto 1' -F 'local=Biblioteca - bonus' -F foto=@docs/evidencias/foto-teste-1.png http://localhost:8080/itens
+HTTP/1.1 201 CREATED
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:03:45 GMT
+Content-Type: application/json
+Content-Length: 55
+Connection: keep-alive
+
+{"foto":"32ca639243894b06b6a718d246401cef.png","id":4}
+
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 201 via Nginx
+$ curl --silent --show-error --fail-with-body --max-time 15 -i -X POST -F 'descricao=Objeto bonus com foto 2' -F 'local=Biblioteca - bonus' -F foto=@docs/evidencias/foto-teste-2.png http://localhost:8080/itens
+HTTP/1.1 201 CREATED
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:03:45 GMT
+Content-Type: application/json
+Content-Length: 55
+Connection: keep-alive
+
+{"foto":"92ededde7bb3412799c5f85173cbd1cc.png","id":5}
+
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 201 via Nginx
+$ curl --silent --show-error --fail-with-body --max-time 15 -i -X POST -F 'descricao=Objeto bonus sem foto' -F 'local=Laboratorio - bonus' http://localhost:8080/itens
+HTTP/1.1 201 CREATED
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:03:45 GMT
+Content-Type: application/json
+Content-Length: 21
+Connection: keep-alive
+
+{"foto":null,"id":6}
+
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 201 via Nginx
+CONFIRMADO: RF03: cadastro sem foto via proxy
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:03:45 GMT
+Content-Type: application/json
+Content-Length: 834
+Connection: keep-alive
+
+[{"criado_em":"2026-10-20T00:03:45.602009","descricao":"Objeto bonus sem foto","foto":null,"id":6,"local":"Laboratorio - bonus"},{"criado_em":"2026-10-20T00:03:45.587067","descricao":"Objeto bonus com foto 2","foto":"/fotos/92ededde7bb3412799c5f85173cbd1cc.png","id":5,"local":"Biblioteca - bonus"},{"criado_em":"2026-10-20T00:03:45.572265","descricao":"Objeto bonus com foto 1","foto":"/fotos/32ca639243894b06b6a718d246401cef.png","id":4,"local":"Biblioteca - bonus"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 200 via Nginx
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:03:45 GMT
+Content-Type: application/json
+Content-Length: 41
+Connection: keep-alive
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200 via Nginx
+CONFIRMADO: RF04: contagens correspondem aos novos cadastros
+$ docker compose exec -T web python -c 'import hashlib,json,pathlib; p=pathlib.Path("/app/uploads"); print(json.dumps({f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(p.iterdir()) if f.is_file()},sort_keys=True))'
+{"32ca639243894b06b6a718d246401cef.png": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf", "92ededde7bb3412799c5f85173cbd1cc.png": "160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562"}
+
+Código de saída: 0.
+
+$ curl --silent --show-error --fail-with-body --max-time 15 -D - -o '/home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem/docs/evidencias/18-foto-5.png' http://localhost:8080/fotos/92ededde7bb3412799c5f85173cbd1cc.png
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:03:45 GMT
+Content-Type: image/png
+Content-Length: 179
+Connection: keep-alive
+Content-Disposition: inline; filename=92ededde7bb3412799c5f85173cbd1cc.png
+Last-Modified: Tue, 20 Oct 2026 00:03:45 GMT
+Cache-Control: no-cache
+ETag: "1792454625.5824363-179-2445741972"
+Accept-Ranges: bytes
+
+
+Código de saída: 0.
+
+CONFIRMADO: /fotos/92ededde7bb3412799c5f85173cbd1cc.png: HTTP 200
+CONFIRMADO: Foto recebida tem o mesmo SHA-256 da origem: 160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562
+$ curl --silent --show-error --fail-with-body --max-time 15 -D - -o '/home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem/docs/evidencias/18-foto-4.png' http://localhost:8080/fotos/32ca639243894b06b6a718d246401cef.png
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:03:45 GMT
+Content-Type: image/png
+Content-Length: 179
+Connection: keep-alive
+Content-Disposition: inline; filename=32ca639243894b06b6a718d246401cef.png
+Last-Modified: Tue, 20 Oct 2026 00:03:45 GMT
+Cache-Control: no-cache
+ETag: "1792454625.5678222-179-1936002663"
+Accept-Ranges: bytes
+
+
+Código de saída: 0.
+
+CONFIRMADO: /fotos/32ca639243894b06b6a718d246401cef.png: HTTP 200
+CONFIRMADO: Foto recebida tem o mesmo SHA-256 da origem: 0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf
+$ docker compose exec -T web whoami
+app
+
+Código de saída: 0.
+
+$ docker compose logs web --tail 20
+web-1  | [2026-10-20 00:03:39 +0000] [1] [INFO] Starting gunicorn 23.0.0
+web-1  | [2026-10-20 00:03:39 +0000] [1] [INFO] Listening at: http://0.0.0.0:5000 (1)
+web-1  | [2026-10-20 00:03:39 +0000] [1] [INFO] Using worker: sync
+web-1  | [2026-10-20 00:03:39 +0000] [7] [INFO] Booting worker with pid: 7
+
+Código de saída: 0.
+
+$ docker compose logs nginx --tail 20
+nginx-1  | 2026/10/20 00:03:45 [notice] 1#1: start worker process 24
+nginx-1  | 2026/10/20 00:03:45 [notice] 1#1: start worker process 25
+nginx-1  | 2026/10/20 00:03:45 [notice] 1#1: start worker process 26
+nginx-1  | 2026/10/20 00:03:45 [notice] 1#1: start worker process 27
+nginx-1  | 2026/10/20 00:03:45 [notice] 1#1: start worker process 28
+nginx-1  | 2026/10/20 00:03:45 [notice] 1#1: start worker process 29
+nginx-1  | 2026/10/20 00:03:45 [notice] 1#1: start worker process 30
+nginx-1  | 2026/10/20 00:03:45 [notice] 1#1: start worker process 31
+nginx-1  | 2026/10/20 00:03:45 [notice] 1#1: start worker process 32
+nginx-1  | 172.18.0.1 - - [20/Oct/2026:00:03:45 +0000] "GET /health HTTP/1.1" 200 63 "-" "curl/8.23.0" "-"
+nginx-1  | 172.18.0.1 - - [20/Oct/2026:00:03:45 +0000] "GET /health HTTP/1.1" 200 63 "-" "curl/8.23.0" "-"
+nginx-1  | 172.18.0.1 - - [20/Oct/2026:00:03:45 +0000] "GET /itens HTTP/1.1" 200 366 "-" "curl/8.23.0" "-"
+nginx-1  | 172.18.0.1 - - [20/Oct/2026:00:03:45 +0000] "GET /itens?local=biblio HTTP/1.1" 200 120 "-" "curl/8.23.0" "-"
+nginx-1  | 172.18.0.1 - - [20/Oct/2026:00:03:45 +0000] "POST /itens HTTP/1.1" 201 55 "-" "curl/8.23.0" "-"
+nginx-1  | 172.18.0.1 - - [20/Oct/2026:00:03:45 +0000] "POST /itens HTTP/1.1" 201 55 "-" "curl/8.23.0" "-"
+nginx-1  | 172.18.0.1 - - [20/Oct/2026:00:03:45 +0000] "POST /itens HTTP/1.1" 201 21 "-" "curl/8.23.0" "-"
+nginx-1  | 172.18.0.1 - - [20/Oct/2026:00:03:45 +0000] "GET /itens HTTP/1.1" 200 834 "-" "curl/8.23.0" "-"
+nginx-1  | 172.18.0.1 - - [20/Oct/2026:00:03:45 +0000] "GET /estatisticas HTTP/1.1" 200 41 "-" "curl/8.23.0" "-"
+nginx-1  | 172.18.0.1 - - [20/Oct/2026:00:03:45 +0000] "GET /fotos/92ededde7bb3412799c5f85173cbd1cc.png HTTP/1.1" 200 179 "-" "curl/8.23.0" "-"
+nginx-1  | 172.18.0.1 - - [20/Oct/2026:00:03:45 +0000] "GET /fotos/32ca639243894b06b6a718d246401cef.png HTTP/1.1" 200 179 "-" "curl/8.23.0" "-"
+
+Código de saída: 0.
+
+RESULTADO: verificações desta etapa concluídas sem falhas.

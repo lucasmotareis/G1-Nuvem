@@ -1,0 +1,340 @@
+Legenda: Checklist na versão com bônus: down e up sem remover volumes, comparação dos registros, URLs e fotos, rede, imagens e usuário em 19/10/2026.
+
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:10:21 GMT
+Content-Type: application/json
+Content-Length: 41
+Connection: keep-alive
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200 via Nginx
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:10:21 GMT
+Content-Type: application/json
+Content-Length: 834
+Connection: keep-alive
+
+[{"criado_em":"2026-10-20T00:03:45.602009","descricao":"Objeto bonus sem foto","foto":null,"id":6,"local":"Laboratorio - bonus"},{"criado_em":"2026-10-20T00:03:45.587067","descricao":"Objeto bonus com foto 2","foto":"/fotos/92ededde7bb3412799c5f85173cbd1cc.png","id":5,"local":"Biblioteca - bonus"},{"criado_em":"2026-10-20T00:03:45.572265","descricao":"Objeto bonus com foto 1","foto":"/fotos/32ca639243894b06b6a718d246401cef.png","id":4,"local":"Biblioteca - bonus"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 200 via Nginx
+$ docker compose exec -T web python -c 'import hashlib,json,pathlib; p=pathlib.Path("/app/uploads"); print(json.dumps({f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(p.iterdir()) if f.is_file()},sort_keys=True))'
+{"32ca639243894b06b6a718d246401cef.png": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf", "92ededde7bb3412799c5f85173cbd1cc.png": "160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562"}
+
+Código de saída: 0.
+
+$ curl --silent --show-error --fail-with-body --max-time 15 -D - -o '/home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem/docs/evidencias/22-foto-5.png' http://localhost:8080/fotos/92ededde7bb3412799c5f85173cbd1cc.png
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:10:21 GMT
+Content-Type: image/png
+Content-Length: 179
+Connection: keep-alive
+Content-Disposition: inline; filename=92ededde7bb3412799c5f85173cbd1cc.png
+Last-Modified: Tue, 20 Oct 2026 00:03:45 GMT
+Cache-Control: no-cache
+ETag: "1792454625.5824363-179-2445741972"
+Accept-Ranges: bytes
+
+
+Código de saída: 0.
+
+CONFIRMADO: /fotos/92ededde7bb3412799c5f85173cbd1cc.png: HTTP 200
+CONFIRMADO: Foto recebida tem o mesmo SHA-256 da origem: 160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562
+$ curl --silent --show-error --fail-with-body --max-time 15 -D - -o '/home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem/docs/evidencias/22-foto-4.png' http://localhost:8080/fotos/32ca639243894b06b6a718d246401cef.png
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:10:22 GMT
+Content-Type: image/png
+Content-Length: 179
+Connection: keep-alive
+Content-Disposition: inline; filename=32ca639243894b06b6a718d246401cef.png
+Last-Modified: Tue, 20 Oct 2026 00:03:45 GMT
+Cache-Control: no-cache
+ETag: "1792454625.5678222-179-1936002663"
+Accept-Ranges: bytes
+
+
+Código de saída: 0.
+
+CONFIRMADO: /fotos/32ca639243894b06b6a718d246401cef.png: HTTP 200
+CONFIRMADO: Foto recebida tem o mesmo SHA-256 da origem: 0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf
+$ docker compose down
+ Container g1-nuvem-nginx-1 Stopping 
+ Container g1-nuvem-nginx-1 Stopped 
+ Container g1-nuvem-nginx-1 Removing 
+ Container g1-nuvem-nginx-1 Removed 
+ Container g1-nuvem-web-1 Stopping 
+ Container g1-nuvem-web-1 Stopped 
+ Container g1-nuvem-web-1 Removing 
+ Container g1-nuvem-web-1 Removed 
+ Container g1-nuvem-db-1 Stopping 
+ Container g1-nuvem-db-1 Stopped 
+ Container g1-nuvem-db-1 Removing 
+ Container g1-nuvem-db-1 Removed 
+ Network g1-nuvem_rede_interna Removing 
+ Network g1-nuvem_rede_interna Removed 
+
+Código de saída: 0.
+
+$ docker compose up -d
+ Network g1-nuvem_rede_interna Creating 
+ Network g1-nuvem_rede_interna Creating 
+ Network g1-nuvem_rede_interna Created 
+ Network g1-nuvem_rede_interna Created 
+ Container g1-nuvem-db-1 Creating 
+ Container g1-nuvem-db-1 Created 
+ Container g1-nuvem-web-1 Creating 
+ Container g1-nuvem-web-1 Created 
+ Container g1-nuvem-nginx-1 Creating 
+ Container g1-nuvem-nginx-1 Created 
+ Container g1-nuvem-db-1 Starting 
+ Container g1-nuvem-db-1 Started 
+ Container g1-nuvem-db-1 Waiting 
+ Container g1-nuvem-db-1 Healthy 
+ Container g1-nuvem-web-1 Starting 
+ Container g1-nuvem-web-1 Started 
+ Container g1-nuvem-web-1 Waiting 
+ Container g1-nuvem-web-1 Healthy 
+ Container g1-nuvem-nginx-1 Starting 
+ Container g1-nuvem-nginx-1 Started 
+
+Código de saída: 0.
+
+$ curl --silent --show-error --fail --max-time 2 http://localhost:8080/health (sondagem de prontidão)
+{"banco":"conectado","container":"5911efc8efac","status":"ok"}
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:10:34 GMT
+Content-Type: application/json
+Content-Length: 41
+Connection: keep-alive
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200 via Nginx
+CONFIRMADO: Contagens preservadas após down e up na versão com proxy
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:10:34 GMT
+Content-Type: application/json
+Content-Length: 834
+Connection: keep-alive
+
+[{"criado_em":"2026-10-20T00:03:45.602009","descricao":"Objeto bonus sem foto","foto":null,"id":6,"local":"Laboratorio - bonus"},{"criado_em":"2026-10-20T00:03:45.587067","descricao":"Objeto bonus com foto 2","foto":"/fotos/92ededde7bb3412799c5f85173cbd1cc.png","id":5,"local":"Biblioteca - bonus"},{"criado_em":"2026-10-20T00:03:45.572265","descricao":"Objeto bonus com foto 1","foto":"/fotos/32ca639243894b06b6a718d246401cef.png","id":4,"local":"Biblioteca - bonus"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-19T23:46:13.047181","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 200 via Nginx
+CONFIRMADO: Registros completos, IDs, datas e URLs preservados
+$ docker compose exec -T web python -c 'import hashlib,json,pathlib; p=pathlib.Path("/app/uploads"); print(json.dumps({f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(p.iterdir()) if f.is_file()},sort_keys=True))'
+{"32ca639243894b06b6a718d246401cef.png": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf", "92ededde7bb3412799c5f85173cbd1cc.png": "160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562"}
+
+Código de saída: 0.
+
+CONFIRMADO: Fotos preservadas com os mesmos bytes
+$ curl --silent --show-error --fail-with-body --max-time 15 -D - -o '/home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem/docs/evidencias/22-foto-5.png' http://localhost:8080/fotos/92ededde7bb3412799c5f85173cbd1cc.png
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:10:34 GMT
+Content-Type: image/png
+Content-Length: 179
+Connection: keep-alive
+Content-Disposition: inline; filename=92ededde7bb3412799c5f85173cbd1cc.png
+Last-Modified: Tue, 20 Oct 2026 00:03:45 GMT
+Cache-Control: no-cache
+ETag: "1792454625.5824363-179-2445741972"
+Accept-Ranges: bytes
+
+
+Código de saída: 0.
+
+CONFIRMADO: /fotos/92ededde7bb3412799c5f85173cbd1cc.png: HTTP 200
+CONFIRMADO: Foto recebida tem o mesmo SHA-256 da origem: 160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562
+$ curl --silent --show-error --fail-with-body --max-time 15 -D - -o '/home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem/docs/evidencias/22-foto-4.png' http://localhost:8080/fotos/32ca639243894b06b6a718d246401cef.png
+HTTP/1.1 200 OK
+Server: nginx/1.30.6
+Date: Tue, 20 Oct 2026 00:10:34 GMT
+Content-Type: image/png
+Content-Length: 179
+Connection: keep-alive
+Content-Disposition: inline; filename=32ca639243894b06b6a718d246401cef.png
+Last-Modified: Tue, 20 Oct 2026 00:03:45 GMT
+Cache-Control: no-cache
+ETag: "1792454625.5678222-179-1936002663"
+Accept-Ranges: bytes
+
+
+Código de saída: 0.
+
+CONFIRMADO: /fotos/32ca639243894b06b6a718d246401cef.png: HTTP 200
+CONFIRMADO: Foto recebida tem o mesmo SHA-256 da origem: 0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf
+$ docker compose ps
+NAME               IMAGE                COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+g1-nuvem-db-1      postgres:16-alpine   "docker-entrypoint.s…"   db        12 seconds ago   Up 11 seconds (healthy)   5432/tcp
+g1-nuvem-nginx-1   nginx:1.30-alpine    "/docker-entrypoint.…"   nginx     11 seconds ago   Up Less than a second     0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+g1-nuvem-web-1     g1-nuvem-web         "gunicorn --bind 0.0…"   web       12 seconds ago   Up 5 seconds (healthy)    5000/tcp
+
+Código de saída: 0.
+
+$ docker volume ls
+DRIVER    VOLUME NAME
+local     8aa43ec64a617160a29cc41c200fdf11db8928e64a16d208f8c8fe4252481c71
+local     g1-nuvem_dados_banco
+local     g1-nuvem_fotos
+local     g1-nuvem_fotos_restauradas_1dfb978f
+
+Código de saída: 0.
+
+$ docker volume inspect g1-nuvem_dados_banco g1-nuvem_fotos
+[
+    {
+        "CreatedAt": "2026-10-19T20:46:10-03:00",
+        "Driver": "local",
+        "Labels": {
+            "com.docker.compose.config-hash": "249bc5761c906ea61c63ee88492b6d145c57d40025f32c6f2d73d295c4fae0c8",
+            "com.docker.compose.project": "g1-nuvem",
+            "com.docker.compose.version": "5.6.0",
+            "com.docker.compose.volume": "dados_banco"
+        },
+        "Mountpoint": "/var/lib/docker/volumes/g1-nuvem_dados_banco/_data",
+        "Name": "g1-nuvem_dados_banco",
+        "Options": null,
+        "Scope": "local"
+    },
+    {
+        "CreatedAt": "2026-10-19T20:46:10-03:00",
+        "Driver": "local",
+        "Labels": {
+            "com.docker.compose.config-hash": "262c287537992d5ee80f9facd05ee05fc75d8cba005ff87fe6a2163336d7a97c",
+            "com.docker.compose.project": "g1-nuvem",
+            "com.docker.compose.version": "5.6.0",
+            "com.docker.compose.volume": "fotos"
+        },
+        "Mountpoint": "/var/lib/docker/volumes/g1-nuvem_fotos/_data",
+        "Name": "g1-nuvem_fotos",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+
+Código de saída: 0.
+
+$ docker network inspect g1-nuvem_rede_interna
+[
+    {
+        "Name": "g1-nuvem_rede_interna",
+        "Id": "1bb4d8b6cabcaf4b1e4f6bef0e815e6ab61ef31f794d9db10f32baccc67ee13a",
+        "Created": "2026-10-19T21:10:22.863061057-03:00",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {},
+        "Labels": {
+            "com.docker.compose.config-hash": "89390464e5749f28952752594a1b3802d5dc1944b207269a0f92fdc6a75f6ac3",
+            "com.docker.compose.network": "rede_interna",
+            "com.docker.compose.project": "g1-nuvem",
+            "com.docker.compose.version": "5.6.0"
+        },
+        "Containers": {
+            "3ad5b00cb4979b740511a85baadc22ae73b87829d54d7ce45ad07c3ce4fc8c89": {
+                "Name": "g1-nuvem-nginx-1",
+                "EndpointID": "4724257fc09c5ac88a1cc422e6598c29be3358c3bc1c1e0f02e987a3ba160dd8",
+                "MacAddress": "8a:c9:b8:db:ab:ec",
+                "IPv4Address": "172.18.0.4/16",
+                "IPv6Address": ""
+            },
+            "5911efc8efac0417319641ded10d801b136f479c798910f0c65fa513dfc964d8": {
+                "Name": "g1-nuvem-web-1",
+                "EndpointID": "d5af7bda8c4f4bff5cda326556db18aeaa8f96f329629f29f7bfac94add8aae6",
+                "MacAddress": "be:f7:c8:fa:6f:d3",
+                "IPv4Address": "172.18.0.3/16",
+                "IPv6Address": ""
+            },
+            "8a1da0d97192fb5ef52974f6f7bbe1db54c8baa384a2b19fcc5ef50a3800daad": {
+                "Name": "g1-nuvem-db-1",
+                "EndpointID": "4e7d5b72a54022bd70836dcaf3e8b7bef951b71727791c889c5de5c443b0aa38",
+                "MacAddress": "9a:60:ce:5a:c9:9c",
+                "IPv4Address": "172.18.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+        "Status": {
+            "IPAM": {
+                "Subnets": {
+                    "172.18.0.0/16": {
+                        "IPsInUse": 6,
+                        "DynamicIPsAvailable": 65530
+                    }
+                }
+            }
+        }
+    }
+]
+
+Código de saída: 0.
+
+$ docker image ls g1-nuvem-web
+IMAGE                 ID             DISK USAGE   CONTENT SIZE   EXTRA
+g1-nuvem-web:latest   fdb0753a0b4e        204MB         50.5MB   U    
+
+Código de saída: 0.
+
+$ docker inspect --format '{{.Name}} | portas_publicadas={{json .HostConfig.PortBindings}} | usuario={{.Config.User}}' g1-nuvem-nginx-1 g1-nuvem-web-1 g1-nuvem-db-1
+/g1-nuvem-nginx-1 | portas_publicadas={"80/tcp":[{"HostIp":"","HostPort":"8080"}]} | usuario=
+/g1-nuvem-web-1 | portas_publicadas={} | usuario=app:app
+/g1-nuvem-db-1 | portas_publicadas={} | usuario=
+
+Código de saída: 0.
+
+$ docker compose exec -T web whoami
+app
+
+Código de saída: 0.
+
+$ docker compose exec -T web ls -l /app/uploads
+total 8
+-rw-r--r-- 1 app app 179 Oct 20 00:03 32ca639243894b06b6a718d246401cef.png
+-rw-r--r-- 1 app app 179 Oct 20 00:03 92ededde7bb3412799c5f85173cbd1cc.png
+
+Código de saída: 0.
+
+$ docker compose logs web --tail 20
+web-1  | [2026-10-20 00:10:29 +0000] [1] [INFO] Starting gunicorn 23.0.0
+web-1  | [2026-10-20 00:10:29 +0000] [1] [INFO] Listening at: http://0.0.0.0:5000 (1)
+web-1  | [2026-10-20 00:10:29 +0000] [1] [INFO] Using worker: sync
+web-1  | [2026-10-20 00:10:29 +0000] [7] [INFO] Booting worker with pid: 7
+
+Código de saída: 0.
+
+RESULTADO: verificações desta etapa concluídas sem falhas.

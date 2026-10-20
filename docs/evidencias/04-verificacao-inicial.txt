@@ -1,0 +1,58 @@
+Legenda: verificação inicial real em 19/10/2026; estado dos serviços, saúde da API, itens iniciais, contagens, usuário e logs. Não inclui upload nem persistência.
+
+$ docker compose ps
+NAME             IMAGE                COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+g1-nuvem-db-1    postgres:16-alpine   "docker-entrypoint.s…"   db        27 seconds ago   Up 26 seconds (healthy)   5432/tcp
+g1-nuvem-web-1   g1-nuvem-web         "gunicorn --bind 0.0…"   web       27 seconds ago   Up 21 seconds             0.0.0.0:8080->5000/tcp, [::]:8080->5000/tcp
+
+Código de saída: 0.
+
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/health
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:22:12 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 63
+
+{"banco":"conectado","container":"46842cad8834","status":"ok"}
+
+Código de saída: 0.
+
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:22:12 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 366
+
+[{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+
+Código de saída: 0.
+
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:22:12 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 41
+
+{"fotos_no_volume":0,"itens_no_banco":3}
+
+Código de saída: 0.
+
+$ docker compose exec -T web whoami
+app
+
+Código de saída: 0.
+
+$ docker compose logs web --tail 20
+web-1  | [2026-10-19 23:21:51 +0000] [1] [INFO] Starting gunicorn 23.0.0
+web-1  | [2026-10-19 23:21:51 +0000] [1] [INFO] Listening at: http://0.0.0.0:5000 (1)
+web-1  | [2026-10-19 23:21:51 +0000] [1] [INFO] Using worker: sync
+web-1  | [2026-10-19 23:21:51 +0000] [7] [INFO] Booting worker with pid: 7
+
+Código de saída: 0.
+

@@ -1,0 +1,30 @@
+Legenda: RNF04 e RNF05, usuário efetivo, diretório de fotos e horários de criação/início dos novos contêineres em 19/10/2026. A condição service_healthy está no Compose; a ordem Healthy -> web Starting está em 06-persistencia-recriacao.txt.
+
+$ docker compose exec -T web whoami
+app
+Código de saída: 0.
+
+CONFIRMADO: RNF04: usuário efetivo app, diferente de root
+$ docker compose exec -T web id -u
+999
+Código de saída: 0.
+
+CONFIRMADO: RNF04: UID diferente de zero
+$ docker compose exec -T web ls -l /app/uploads
+total 8
+-rw-r--r-- 1 app app 179 Oct 19 23:35 846af42ade3f45d6b3f769a9e63e47be.png
+-rw-r--r-- 1 app app 179 Oct 19 23:35 d1db8ccebee64116af60f2b39b324e6d.png
+Código de saída: 0.
+
+$ docker inspect --format '{{.Name}} | iniciado={{.State.StartedAt}} | usuario={{.Config.User}}{{if .State.Health}} | saude={{.State.Health.Status}}{{end}}' g1-nuvem-web-1 g1-nuvem-db-1
+/g1-nuvem-web-1 | iniciado=2026-10-19T23:36:04.094445482Z | usuario=app:app
+/g1-nuvem-db-1 | iniciado=2026-10-19T23:35:58.467300951Z | usuario= | saude=healthy
+Código de saída: 0.
+
+$ docker compose logs web --tail 20
+web-1  | [2026-10-19 23:36:04 +0000] [1] [INFO] Starting gunicorn 23.0.0
+web-1  | [2026-10-19 23:36:04 +0000] [1] [INFO] Listening at: http://0.0.0.0:5000 (1)
+web-1  | [2026-10-19 23:36:04 +0000] [1] [INFO] Using worker: sync
+web-1  | [2026-10-19 23:36:04 +0000] [7] [INFO] Booting worker with pid: 7
+Código de saída: 0.
+

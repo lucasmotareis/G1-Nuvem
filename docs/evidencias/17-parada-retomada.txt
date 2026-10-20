@@ -1,0 +1,57 @@
+Legenda: validação dos comandos de parada e retomada do README em 19/10/2026, com comparação de estatísticas e manutenção dos volumes.
+
+$ curl --silent --show-error --fail --max-time 15 http://localhost:8080/estatisticas
+{"fotos_no_volume":0,"itens_no_banco":3}
+
+Código de saída: 0.
+
+$ docker compose stop
+ Container g1-nuvem-web-1 Stopping 
+ Container g1-nuvem-web-1 Stopped 
+ Container g1-nuvem-db-1 Stopping 
+ Container g1-nuvem-db-1 Stopped 
+
+Código de saída: 0.
+
+$ docker compose ps -a
+NAME             IMAGE                COMMAND                  SERVICE   CREATED         STATUS                              PORTS
+g1-nuvem-db-1    postgres:16-alpine   "docker-entrypoint.s…"   db        6 minutes ago   Exited (0) Less than a second ago   
+g1-nuvem-web-1   g1-nuvem-web         "gunicorn --bind 0.0…"   web       6 minutes ago   Exited (0) Less than a second ago   
+
+Código de saída: 0.
+
+$ docker compose start
+ Container g1-nuvem-db-1 Starting 
+ Container g1-nuvem-db-1 Started 
+ Container g1-nuvem-db-1 Waiting 
+ Container g1-nuvem-db-1 Healthy 
+ Container g1-nuvem-web-1 Starting 
+ Container g1-nuvem-web-1 Started 
+
+Código de saída: 0.
+
+$ curl --silent --show-error --fail --max-time 15 -i http://localhost:8080/health
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:52:51 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 63
+
+{"banco":"conectado","container":"1753a7633ece","status":"ok"}
+
+Código de saída: 0.
+
+$ curl --silent --show-error --fail --max-time 15 http://localhost:8080/estatisticas
+{"fotos_no_volume":0,"itens_no_banco":3}
+
+Código de saída: 0.
+
+$ docker compose ps
+NAME             IMAGE                COMMAND                  SERVICE   CREATED         STATUS                   PORTS
+g1-nuvem-db-1    postgres:16-alpine   "docker-entrypoint.s…"   db        6 minutes ago   Up 6 seconds (healthy)   5432/tcp
+g1-nuvem-web-1   g1-nuvem-web         "gunicorn --bind 0.0…"   web       6 minutes ago   Up Less than a second    0.0.0.0:8080->5000/tcp, [::]:8080->5000/tcp
+
+Código de saída: 0.
+
+CONFIRMADO: stop e start executados, saúde restaurada e estatísticas preservadas. Estado final: três itens e nenhuma foto.

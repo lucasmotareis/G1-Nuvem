@@ -1,0 +1,32 @@
+Legenda: RNF03 e RNF05, inspeção de configuração e rastreamento do .env em 19/10/2026, sem registrar valores de credenciais.
+
+$ git check-ignore .env
+.env
+Código de saída: 0.
+
+CONFIRMADO: .env ignorado pelo Git
+$ git ls-files -- .env
+(sem saída)
+Código de saída: 0.
+
+CONFIRMADO: .env ausente do índice e dos arquivos rastreados
+$ git log --all '--format=%h %s' -- .env
+(sem saída)
+Código de saída: 0.
+
+CONFIRMADO: Nenhum registro de .env no histórico Git local disponível
+$ docker compose config --no-interpolate --format json (inspeção interna; saída completa omitida)
+CONFIRMADO: Compose: POSTGRES_DB e DB_NAME recebem a mesma variável externa, sem valor literal
+CONFIRMADO: Compose: POSTGRES_USER e DB_USER recebem a mesma variável externa, sem valor literal
+CONFIRMADO: Compose: POSTGRES_PASSWORD e DB_PASSWORD recebem a mesma variável externa, sem valor literal
+CONFIRMADO: app.py: DB_NAME vem de os.getenv, sem credencial padrão literal
+CONFIRMADO: app.py: DB_USER vem de os.getenv, sem credencial padrão literal
+CONFIRMADO: app.py: DB_PASSWORD vem de os.getenv, sem credencial padrão literal
+CONFIRMADO: Dockerfile não define senha nem copia .env
+CONFIRMADO: .env local existe
+CONFIRMADO: .env local contém somente os valores fictícios do exemplo (conteúdo omitido)
+CONFIRMADO: .env local com permissões 600
+CONFIRMADO: RNF05: web depende de db com condition: service_healthy
+CONFIRMADO: RNF05: healthcheck usa pg_isready
+A ordem real de inicialização está registrada em 03-subida.txt e 06-persistencia-recriacao.txt.
+

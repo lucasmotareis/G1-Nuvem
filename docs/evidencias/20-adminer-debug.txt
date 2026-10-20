@@ -1,0 +1,210 @@
+Legenda: Bônus Adminer: ausente do perfil padrão, ativação com debug, HTTP 200 e consulta PostgreSQL a partir do contêiner Adminer; desativação ao final em 19/10/2026.
+
+$ docker compose config --services
+db
+web
+nginx
+
+Código de saída: 0.
+
+CONFIRMADO: Adminer não pertence ao perfil padrão
+$ docker compose --profile debug config --services
+db
+web
+nginx
+adminer
+
+Código de saída: 0.
+
+$ docker compose --profile debug up -d
+ Image adminer:6 Pulling 
+ 667617fe9bbf Pulling fs layer 0B
+ e2de96513ba9 Pulling fs layer 0B
+ 25acc1dfd0bf Pulling fs layer 0B
+ 4632e7d2f0f5 Pulling fs layer 0B
+ 2a5a3e2bbe84 Pulling fs layer 0B
+ 82617a20cbd0 Pulling fs layer 0B
+ 4f4fb700ef54 Pulling fs layer 0B
+ ce39ffdcaed9 Pulling fs layer 0B
+ fa572f072d85 Pulling fs layer 0B
+ 72cf678f86f9 Pulling fs layer 0B
+ 4a92ee9be23c Pulling fs layer 0B
+ a224c7120d7e Pulling fs layer 0B
+ 28fc39bda447 Pulling fs layer 0B
+ 973adf3097e9 Pulling fs layer 0B
+ 5ebf0ecf7551 Pulling fs layer 0B
+ de67e1069755 Pulling fs layer 0B
+ dbcb6a80c1f6 Pulling fs layer 0B
+ e2de96513ba9 Already exists 0B
+ 03318fe33ed5 Download complete 0B
+ 4632e7d2f0f5 Download complete 0B
+ 25acc1dfd0bf Download complete 0B
+ 667617fe9bbf Download complete 0B
+ 4f4fb700ef54 Download complete 0B
+ 82617a20cbd0 Download complete 0B
+ 2a5a3e2bbe84 Downloading 1.049MB
+ 2a5a3e2bbe84 Downloading 2.097MB
+ 2a5a3e2bbe84 Downloading 3.146MB
+ 2a5a3e2bbe84 Downloading 4.194MB
+ 2a5a3e2bbe84 Downloading 4.194MB
+ 2a5a3e2bbe84 Downloading 5.243MB
+ 2a5a3e2bbe84 Downloading 5.243MB
+ 2a5a3e2bbe84 Downloading 6.291MB
+ ce39ffdcaed9 Downloading 1.049MB
+ 2a5a3e2bbe84 Downloading 7.34MB
+ ce39ffdcaed9 Downloading 1.049MB
+ 2a5a3e2bbe84 Downloading 8.389MB
+ ce39ffdcaed9 Downloading 1.049MB
+ 2a5a3e2bbe84 Downloading 8.389MB
+ ce39ffdcaed9 Downloading 1.049MB
+ 2a5a3e2bbe84 Downloading 9.437MB
+ ce39ffdcaed9 Downloading 1.049MB
+ ce39ffdcaed9 Downloading 1.049MB
+ 2a5a3e2bbe84 Downloading 10.49MB
+ 2a5a3e2bbe84 Downloading 11.53MB
+ ce39ffdcaed9 Downloading 1.049MB
+ 2a5a3e2bbe84 Downloading 12.58MB
+ ce39ffdcaed9 Downloading 1.049MB
+ 2a5a3e2bbe84 Downloading 12.58MB
+ ce39ffdcaed9 Downloading 1.049MB
+ 2a5a3e2bbe84 Download complete 0B
+ ce39ffdcaed9 Downloading 2.097MB
+ ce39ffdcaed9 Downloading 2.097MB
+ fa572f072d85 Download complete 0B
+ ce39ffdcaed9 Downloading 2.097MB
+ ce39ffdcaed9 Downloading 2.097MB
+ ce39ffdcaed9 Downloading 2.097MB
+ 4a92ee9be23c Download complete 0B
+ 72cf678f86f9 Download complete 0B
+ ce39ffdcaed9 Downloading 2.097MB
+ ce39ffdcaed9 Downloading 2.097MB
+ ce39ffdcaed9 Downloading 2.097MB
+ 5ebf0ecf7551 Downloading 1.049MB
+ a224c7120d7e Download complete 0B
+ ce39ffdcaed9 Downloading 2.097MB
+ 5ebf0ecf7551 Downloading 2.097MB
+ ce39ffdcaed9 Downloading 2.097MB
+ 973adf3097e9 Download complete 0B
+ 5ebf0ecf7551 Downloading 2.097MB
+ ce39ffdcaed9 Downloading 3.146MB
+ 5ebf0ecf7551 Downloading 3.146MB
+ ce39ffdcaed9 Downloading 3.146MB
+ 5ebf0ecf7551 Downloading 4.194MB
+ 28fc39bda447 Download complete 0B
+ ce39ffdcaed9 Downloading 3.146MB
+ 5ebf0ecf7551 Downloading 5.243MB
+ ce39ffdcaed9 Downloading 3.146MB
+ 5ebf0ecf7551 Downloading 6.291MB
+ ce39ffdcaed9 Downloading 3.146MB
+ 5ebf0ecf7551 Downloading 7.34MB
+ de67e1069755 Downloading 930B
+ 5ebf0ecf7551 Downloading 8.389MB
+ de67e1069755 Download complete 0B
+ ce39ffdcaed9 Downloading 3.146MB
+ ce39ffdcaed9 Downloading 3.146MB
+ 5ebf0ecf7551 Downloading 9.437MB
+ ce39ffdcaed9 Downloading 3.146MB
+ 5ebf0ecf7551 Downloading 10.49MB
+ ce39ffdcaed9 Downloading 3.146MB
+ 5ebf0ecf7551 Downloading 11.53MB
+ ce39ffdcaed9 Downloading 3.146MB
+ 5ebf0ecf7551 Downloading 12.58MB
+ ce39ffdcaed9 Downloading 4.194MB
+ 5ebf0ecf7551 Downloading 12.58MB
+ ce39ffdcaed9 Downloading 4.194MB
+ 5ebf0ecf7551 Downloading 13.63MB
+ ce39ffdcaed9 Downloading 4.194MB
+ 5ebf0ecf7551 Downloading 14.68MB
+ ce39ffdcaed9 Downloading 4.194MB
+ 5ebf0ecf7551 Downloading 15.73MB
+ ce39ffdcaed9 Downloading 4.194MB
+ 5ebf0ecf7551 Downloading 16.78MB
+ ce39ffdcaed9 Download complete 0B
+ 5ebf0ecf7551 Downloading 18.35MB
+ 5ebf0ecf7551 Downloading 19.92MB
+ 5ebf0ecf7551 Download complete 0B
+ dbcb6a80c1f6 Downloading 1.049MB
+ dbcb6a80c1f6 Downloading 1.049MB
+ dbcb6a80c1f6 Downloading 1.049MB
+ dbcb6a80c1f6 Downloading 2.097MB
+ dbcb6a80c1f6 Downloading 3.146MB
+ dbcb6a80c1f6 Download complete 0B
+ dbcb6a80c1f6 Pull complete 0B
+ 667617fe9bbf Pull complete 0B
+ 2a5a3e2bbe84 Pull complete 0B
+ de67e1069755 Pull complete 0B
+ 25acc1dfd0bf Pull complete 0B
+ 5ebf0ecf7551 Extracting 1B
+ 5ebf0ecf7551 Extracting 1B
+ a224c7120d7e Pull complete 0B
+ 973adf3097e9 Pull complete 0B
+ 5ebf0ecf7551 Pull complete 0B
+ 4f4fb700ef54 Extracting 1B
+ 82617a20cbd0 Pull complete 0B
+ 4a92ee9be23c Pull complete 0B
+ 28fc39bda447 Pull complete 0B
+ 4f4fb700ef54 Pull complete 0B
+ ce39ffdcaed9 Pull complete 0B
+ 4632e7d2f0f5 Pull complete 0B
+ fa572f072d85 Pull complete 0B
+ 72cf678f86f9 Pull complete 0B
+ Image adminer:6 Pulled 
+ Container g1-nuvem-nginx-1 Running 
+ Container g1-nuvem-db-1 Running 
+ Container g1-nuvem-web-1 Running 
+ Container g1-nuvem-adminer-1 Creating 
+ Container g1-nuvem-adminer-1 Created 
+ Container g1-nuvem-db-1 Waiting 
+ Container g1-nuvem-db-1 Waiting 
+ Container g1-nuvem-db-1 Healthy 
+ Container g1-nuvem-db-1 Healthy 
+ Container g1-nuvem-adminer-1 Starting 
+ Container g1-nuvem-web-1 Waiting 
+ Container g1-nuvem-adminer-1 Started 
+ Container g1-nuvem-web-1 Healthy 
+
+Código de saída: 0.
+
+$ curl --silent --show-error --fail --max-time 5 -o /tmp/g1-adminer.html -w '%{http_code}' http://127.0.0.1:8081
+200
+Código de saída: 0.
+
+CONFIRMADO: Página Adminer retorna HTTP 200
+CONFIRMADO: HTML recebido identifica o Adminer
+Credenciais obtidas internamente do Compose e passadas por ambiente, sem valores na linha de comando ou nesta evidência.
+$ docker compose exec -T -e BONUS_DB_NAME -e BONUS_DB_USER -e BONUS_DB_PASSWORD adminer php -r '$c=new PDO("pgsql:host=db;port=5432;dbname=".getenv("BONUS_DB_NAME"),getenv("BONUS_DB_USER"),getenv("BONUS_DB_PASSWORD")); echo "PostgreSQL conectado; itens=".$c->query("SELECT COUNT(*) FROM itens")->fetchColumn().PHP_EOL;'
+PostgreSQL conectado; itens=6
+
+Código de saída: 0.
+
+$ docker compose --profile debug ps
+NAME                 IMAGE                COMMAND                  SERVICE   CREATED          STATUS                        PORTS
+g1-nuvem-adminer-1   adminer:6            "entrypoint.sh docke…"   adminer   1 second ago     Up Less than a second         127.0.0.1:8081->8080/tcp
+g1-nuvem-db-1        postgres:16-alpine   "docker-entrypoint.s…"   db        20 minutes ago   Up 13 minutes (healthy)       5432/tcp
+g1-nuvem-nginx-1     nginx:1.30-alpine    "/docker-entrypoint.…"   nginx     2 minutes ago    Up 2 minutes                  0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+g1-nuvem-web-1       g1-nuvem-web         "gunicorn --bind 0.0…"   web       2 minutes ago    Up About a minute (healthy)   5000/tcp
+
+Código de saída: 0.
+
+$ docker compose --profile debug stop adminer
+ Container g1-nuvem-adminer-1 Stopping 
+ Container g1-nuvem-adminer-1 Stopped 
+
+Código de saída: 0.
+
+$ docker compose --profile debug rm -f adminer
+Going to remove g1-nuvem-adminer-1
+ Container g1-nuvem-adminer-1 Removing 
+ Container g1-nuvem-adminer-1 Removed 
+
+Código de saída: 0.
+
+$ docker compose ps -a
+NAME               IMAGE                COMMAND                  SERVICE   CREATED          STATUS                        PORTS
+g1-nuvem-db-1      postgres:16-alpine   "docker-entrypoint.s…"   db        20 minutes ago   Up 13 minutes (healthy)       5432/tcp
+g1-nuvem-nginx-1   nginx:1.30-alpine    "/docker-entrypoint.…"   nginx     2 minutes ago    Up 2 minutes                  0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+g1-nuvem-web-1     g1-nuvem-web         "gunicorn --bind 0.0…"   web       2 minutes ago    Up About a minute (healthy)   5000/tcp
+
+Código de saída: 0.
+
+RESULTADO: verificações desta etapa concluídas sem falhas.

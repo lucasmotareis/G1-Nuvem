@@ -1,0 +1,100 @@
+Legenda: Tarefa 5, inspeção dos dois volumes em 19/10/2026; estatísticas antes/depois, nomes reais, pontos de montagem e conteúdo de fotos.
+
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:46:08 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 41
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:46:08 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 867
+
+[{"criado_em":"2026-10-19T23:35:57.547917","descricao":"Objeto de teste RF03 sem foto","foto":null,"id":6,"local":"Laboratorio - teste G1"},{"criado_em":"2026-10-19T23:35:57.535191","descricao":"Objeto de teste RF03 com foto 2","foto":"/fotos/846af42ade3f45d6b3f769a9e63e47be.png","id":5,"local":"Biblioteca - teste G1"},{"criado_em":"2026-10-19T23:35:57.520363","descricao":"Objeto de teste RF03 com foto 1","foto":"/fotos/d1db8ccebee64116af60f2b39b324e6d.png","id":4,"local":"Biblioteca - teste G1"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 200
+$ docker volume ls
+DRIVER    VOLUME NAME
+local     8aa43ec64a617160a29cc41c200fdf11db8928e64a16d208f8c8fe4252481c71
+local     g1-nuvem_dados_banco
+local     g1-nuvem_fotos
+Código de saída: 0.
+
+$ docker inspect --format '{{json .Mounts}}' g1-nuvem-db-1
+[{"Type":"bind","Source":"/home/lucasmotareis/Projects/Ulbra/7 periodo/Computação em Nuvem/G1/G1-Nuvem/db/init.sql","Destination":"/docker-entrypoint-initdb.d/init.sql","Mode":"ro","RW":false,"Propagation":"rprivate"},{"Type":"volume","Name":"g1-nuvem_dados_banco","Source":"/var/lib/docker/volumes/g1-nuvem_dados_banco/_data","Destination":"/var/lib/postgresql/data","Driver":"local","Mode":"rw","RW":true,"Propagation":""}]
+Código de saída: 0.
+
+$ docker inspect --format '{{json .Mounts}}' g1-nuvem-web-1
+[{"Type":"volume","Name":"g1-nuvem_fotos","Source":"/var/lib/docker/volumes/g1-nuvem_fotos/_data","Destination":"/app/uploads","Driver":"local","Mode":"rw","RW":true,"Propagation":""}]
+Código de saída: 0.
+
+CONFIRMADO: Ensaio limitado aos dois volumes deste projeto
+$ docker volume inspect g1-nuvem_dados_banco g1-nuvem_fotos
+[
+    {
+        "CreatedAt": "2026-10-19T20:21:45-03:00",
+        "Driver": "local",
+        "Labels": {
+            "com.docker.compose.config-hash": "249bc5761c906ea61c63ee88492b6d145c57d40025f32c6f2d73d295c4fae0c8",
+            "com.docker.compose.project": "g1-nuvem",
+            "com.docker.compose.version": "5.6.0",
+            "com.docker.compose.volume": "dados_banco"
+        },
+        "Mountpoint": "/var/lib/docker/volumes/g1-nuvem_dados_banco/_data",
+        "Name": "g1-nuvem_dados_banco",
+        "Options": null,
+        "Scope": "local"
+    },
+    {
+        "CreatedAt": "2026-10-19T20:21:45-03:00",
+        "Driver": "local",
+        "Labels": {
+            "com.docker.compose.config-hash": "262c287537992d5ee80f9facd05ee05fc75d8cba005ff87fe6a2163336d7a97c",
+            "com.docker.compose.project": "g1-nuvem",
+            "com.docker.compose.version": "5.6.0",
+            "com.docker.compose.volume": "fotos"
+        },
+        "Mountpoint": "/var/lib/docker/volumes/g1-nuvem_fotos/_data",
+        "Name": "g1-nuvem_fotos",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+Código de saída: 0.
+
+$ docker info --format 'Sistema do daemon={{.OperatingSystem}} | DockerRootDir={{.DockerRootDir}}'
+Sistema do daemon=Omarchy | DockerRootDir=/var/lib/docker
+Código de saída: 0.
+
+$ docker compose exec -T web ls -l /app/uploads
+total 8
+-rw-r--r-- 1 app app 179 Oct 19 23:35 846af42ade3f45d6b3f769a9e63e47be.png
+-rw-r--r-- 1 app app 179 Oct 19 23:35 d1db8ccebee64116af60f2b39b324e6d.png
+Código de saída: 0.
+
+$ curl --silent --show-error --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:46:09 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 41
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200
+CONFIRMADO: Inspeção preservou as contagens
+Os Mountpoints do volume inspect são caminhos no sistema de arquivos do host do daemon Docker. Os arquivos não ficam na pasta do repositório. No Docker Desktop, esses caminhos normalmente ficam dentro da VM Linux do Docker, não diretamente na pasta do Windows/macOS.
+

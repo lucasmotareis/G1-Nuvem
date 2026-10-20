@@ -1,0 +1,16 @@
+{
+  "snapshot_commit": "d5f240828a24a07f71de2333834d95bb5bd39c9d",
+  "clone_directory": "/tmp/g1-aceite-bonus-ugfh24gi/g1-clone-ugfh24gi",
+  "files_sha256": {
+    "docker-compose.yml": "b641ca0d495fb8fc4c20ca575c51c0425267d03ec1cb5a09c4d27fda97fbda1c",
+    "nginx/default.conf": "371df4d44649bc79b0de564d2b5bbee6e1328d53189969f2b7d426997fc540c3",
+    "app/Dockerfile": "84099d99f1af62979ed90077b5dbe780840a334f829757bbeebd3a5e42ef675f",
+    "app/.dockerignore": "78617b237556217da333be50eee5db5e2a0e37acbb6e76191959fa9c6e8ec849",
+    "app/app.py": "8f61e3d2cdac5a5c877eec897b5e6ebdb74b90db01bee25ee26a12d14cdf0f38",
+    "app/requirements.txt": "932fc64d54c56d3216fada731c679105224632aad38e1d2a88968f153ed83ba4",
+    "db/init.sql": "41d6655f432e1ad26c5c06c57b9e782da75f3578b17a061af1166b6c791225b2",
+    ".env.example": "11875b97eac8df7b1e750002fc758afe16b77fae07dffb3d12e6e60aae5fedd5",
+    ".gitignore": "7100f1b6c7c540788d36b5c3b70f80619710422bfd62bda4542998c0520b200d"
+  },
+  "note": "Clone local de snapshot tempor\u00e1rio; reposit\u00f3rio de trabalho n\u00e3o commitado nem publicado. Os arquivos operacionais devem ter os mesmos hashes no ZIP de entrega."
+}

@@ -1,0 +1,161 @@
+Legenda: RF01 a RF04, executados em 19/10/2026; GETs, filtro, POST multipart com e sem foto e comparação dos arquivos retornados.
+
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/health
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:35:57 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 63
+
+{"banco":"conectado","container":"46842cad8834","status":"ok"}
+Código de saída: 0.
+
+CONFIRMADO: /health: HTTP 200
+CONFIRMADO: RF01: status ok e banco conectado
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:35:57 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 41
+
+{"fotos_no_volume":0,"itens_no_banco":3}
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:35:57 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 366
+
+[{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 200
+$ curl --silent --show-error --fail-with-body --max-time 15 -i 'http://localhost:8080/itens?local=biblio'
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:35:57 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 120
+
+[{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"}]
+Código de saída: 0.
+
+CONFIRMADO: /itens?local=biblio: HTTP 200
+CONFIRMADO: RF02: filtro retorna exatamente os itens com biblio no local
+Imagem de teste sem dados pessoais: docs/evidencias/foto-teste-1.png, PNG 64x64 de cor uniforme.
+$ curl --silent --show-error --fail-with-body --max-time 15 -i -X POST -F 'descricao=Objeto de teste RF03 com foto 1' -F 'local=Biblioteca - teste G1' -F foto=@docs/evidencias/foto-teste-1.png http://localhost:8080/itens
+HTTP/1.1 201 CREATED
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:35:57 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 55
+
+{"foto":"d1db8ccebee64116af60f2b39b324e6d.png","id":4}
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 201
+CONFIRMADO: RF03: cadastro com foto retorna nome de arquivo
+Imagem de teste sem dados pessoais: docs/evidencias/foto-teste-2.png, PNG 64x64 de cor uniforme.
+$ curl --silent --show-error --fail-with-body --max-time 15 -i -X POST -F 'descricao=Objeto de teste RF03 com foto 2' -F 'local=Biblioteca - teste G1' -F foto=@docs/evidencias/foto-teste-2.png http://localhost:8080/itens
+HTTP/1.1 201 CREATED
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:35:57 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 55
+
+{"foto":"846af42ade3f45d6b3f769a9e63e47be.png","id":5}
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 201
+CONFIRMADO: RF03: cadastro com foto retorna nome de arquivo
+$ curl --silent --show-error --fail-with-body --max-time 15 -i -X POST -F 'descricao=Objeto de teste RF03 sem foto' -F 'local=Laboratorio - teste G1' http://localhost:8080/itens
+HTTP/1.1 201 CREATED
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:35:57 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 21
+
+{"foto":null,"id":6}
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 201
+CONFIRMADO: RF03: cadastro sem foto permitido
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/itens
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:35:57 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 867
+
+[{"criado_em":"2026-10-19T23:35:57.547917","descricao":"Objeto de teste RF03 sem foto","foto":null,"id":6,"local":"Laboratorio - teste G1"},{"criado_em":"2026-10-19T23:35:57.535191","descricao":"Objeto de teste RF03 com foto 2","foto":"/fotos/846af42ade3f45d6b3f769a9e63e47be.png","id":5,"local":"Biblioteca - teste G1"},{"criado_em":"2026-10-19T23:35:57.520363","descricao":"Objeto de teste RF03 com foto 1","foto":"/fotos/d1db8ccebee64116af60f2b39b324e6d.png","id":4,"local":"Biblioteca - teste G1"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-19T23:21:48.414634","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+Código de saída: 0.
+
+CONFIRMADO: /itens: HTTP 200
+CONFIRMADO: RF02: item cadastrado 4 aparece na listagem
+CONFIRMADO: RF02: caminho da foto coerente com o cadastro
+CONFIRMADO: RF02: item cadastrado 5 aparece na listagem
+CONFIRMADO: RF02: caminho da foto coerente com o cadastro
+CONFIRMADO: RF02: item cadastrado 6 aparece na listagem
+CONFIRMADO: RF02: caminho da foto coerente com o cadastro
+$ curl --silent --show-error --fail-with-body --max-time 15 -D - -o docs/evidencias/foto-retornada-4.png http://localhost:8080/fotos/d1db8ccebee64116af60f2b39b324e6d.png
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:35:57 GMT
+Connection: close
+Content-Disposition: inline; filename=d1db8ccebee64116af60f2b39b324e6d.png
+Content-Type: image/png
+Content-Length: 179
+Last-Modified: Mon, 19 Oct 2026 23:35:57 GMT
+Cache-Control: no-cache
+ETag: "1792452957.5162961-179-2575306675"
+Accept-Ranges: bytes
+Código de saída: 0.
+
+CONFIRMADO: /fotos/d1db8ccebee64116af60f2b39b324e6d.png: HTTP 200
+CONFIRMADO: /fotos/d1db8ccebee64116af60f2b39b324e6d.png: bytes idênticos à imagem enviada
+SHA-256: 0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf
+$ curl --silent --show-error --fail-with-body --max-time 15 -D - -o docs/evidencias/foto-retornada-5.png http://localhost:8080/fotos/846af42ade3f45d6b3f769a9e63e47be.png
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:35:57 GMT
+Connection: close
+Content-Disposition: inline; filename=846af42ade3f45d6b3f769a9e63e47be.png
+Content-Type: image/png
+Content-Length: 179
+Last-Modified: Mon, 19 Oct 2026 23:35:57 GMT
+Cache-Control: no-cache
+ETag: "1792452957.5310264-179-2339901295"
+Accept-Ranges: bytes
+Código de saída: 0.
+
+CONFIRMADO: /fotos/846af42ade3f45d6b3f769a9e63e47be.png: HTTP 200
+CONFIRMADO: /fotos/846af42ade3f45d6b3f769a9e63e47be.png: bytes idênticos à imagem enviada
+SHA-256: 160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562
+$ curl --silent --show-error --fail-with-body --max-time 15 -i http://localhost:8080/estatisticas
+HTTP/1.1 200 OK
+Server: gunicorn
+Date: Mon, 19 Oct 2026 23:35:57 GMT
+Connection: close
+Content-Type: application/json
+Content-Length: 41
+
+{"fotos_no_volume":2,"itens_no_banco":6}
+Código de saída: 0.
+
+CONFIRMADO: /estatisticas: HTTP 200
+CONFIRMADO: RF04: estatísticas incluem os três novos itens
+CONFIRMADO: RF04: estatísticas incluem as duas novas fotos
+RESULTADO: RF01 a RF04 confirmados pelas verificações acima.
+

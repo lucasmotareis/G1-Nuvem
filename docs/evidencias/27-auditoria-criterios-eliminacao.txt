@@ -1,0 +1,80 @@
+Legenda: auditoria dos três critérios que zeram a avaliação, com foco em credenciais no Git; consulta remota e inspeção local realizadas em 19/10/2026, sem exibir senhas.
+
+1. SENHA REAL VERSIONADA — nenhum indício encontrado no escopo verificado.
+
+$ git rev-parse --is-shallow-repository
+false
+$ git rev-list --all --count
+1
+$ git log --all --format=%h -- .env
+(sem saída)
+$ git ls-files -- .env
+(sem saída)
+$ git diff --cached --stat
+(sem saída)
+$ git check-ignore -v .env
+.gitignore:2:.env .env
+
+Os nomes dos arquivos de cada commit foram percorridos: nenhum .env na raiz
+ou em subpastas. O índice está sem alterações preparadas. O .env local tem
+as mesmas chaves e os mesmos valores fictícios de .env.example; valores omitidos.
+O modelo fictício é expressamente permitido pela Tarefa 3 do enunciado.
+
+Inspeção direta dos objetos Git locais, incluindo árvores auxiliares de
+capturas do Codex e objetos não alcançáveis por referências:
+- 71 blobs examinados.
+- 15 blobs sem referência em rev-list --objects --all, também examinados.
+- Nenhuma ocorrência suspeita de senha literal, chave privada ou formatos
+  pesquisados de tokens GitHub/Slack e identificadores AWS.
+- Senha local pesquisada literalmente, codificada para URL e em Base64:
+  encontrada somente no modelo fictício permitido entre os arquivos analisados.
+- Arquivos atuais destinados ao repositório, inclusive documentação e
+  evidências: nenhuma ocorrência suspeita encontrada.
+- Backup de demonstração inspecionado: somente dois PNGs de teste.
+
+Não foram instalados scanners externos; a inspeção usou leitura dos blobs,
+busca por padrões e comparação com o segredo local, sem imprimir valores.
+Um objeto local auxiliar não equivale a um commit publicado. Nada foi apagado,
+reescrito ou enviado ao GitHub durante a auditoria.
+
+Consulta remota executada com sucesso nesta auditoria:
+$ git ls-remote origin
+2b03ae450c9a7b5aa7d0fa8ddfa200213d29374b	HEAD
+2b03ae450c9a7b5aa7d0fa8ddfa200213d29374b	refs/heads/master
+
+A única branch anunciada pelo remoto aponta ao mesmo commit auditado localmente.
+Não foram anunciadas tags ou outras branches. A consulta inicial dentro do
+sandbox falhou por resolução de DNS; a nova consulta autorizada retornou os
+resultados acima. Não houve publicação de alterações.
+
+Limite: este resultado cobre o histórico Git local disponível, os objetos
+locais existentes, o índice, a versão de trabalho e as referências remotas
+anunciadas no momento da consulta. Não prova ausência de cópias externas,
+forks ou commits remotos antigos que já tenham deixado de ser anunciados.
+
+2. PASSOS MANUAIS NÃO DOCUMENTADOS — versão local testada; entrega remota pendente.
+
+O ensaio 23 registrou clone local de snapshot, cópia de .env.example para .env
+e docker compose up -d --build, com volumes novos e verificações funcionais.
+Os nove arquivos operacionais atuais foram novamente comparados por SHA-256
+ao manifesto 23: todos idênticos. O roteiro não requer Python ou PostgreSQL
+instalados no host. A conferência 26 também comprovou o ambiente atual saudável.
+
+ATENÇÃO À ENTREGA: o GitHub ainda está no commit inicial 2b03ae4.
+O arquivo docker-compose.yml nesse commit tem 0 bytes.
+Assim, o link remoto atual ainda não entrega o ambiente funcional documentado
+localmente. Enviar esse estado ao professor compromete Funcionamento.
+É necessário publicar a versão revisada e conferir seu conteúdo antes da entrega.
+
+3. EVIDÊNCIAS INCOMPATÍVEIS COM O CÓDIGO — nenhuma divergência operacional local encontrada.
+
+Os nove arquivos operacionais conferem com os hashes da versão testada no
+ensaio 23. As evidências 01 a 17 estão identificadas como arquitetura básica;
+as posteriores a 18 documentam os bônus. Tentativas de escala com falha foram
+preservadas como diagnóstico, sem apresentação como sucesso. A limitação na
+redução de escala e o reinício do Nginx estão documentados. A publicação remota
+continua necessária para que o professor receba esses arquivos e evidências.
+
+CONCLUSÃO: nenhum vazamento de senha real encontrado no escopo auditado e
+nenhum motivo para reescrever o histórico identificado. A pendência concreta
+é publicar a versão funcional local antes de entregar o link do repositório.

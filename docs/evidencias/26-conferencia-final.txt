@@ -1,0 +1,247 @@
+Legenda: conferência final contra o PDF em 19/10/2026; documentação e imagem para entrega por repositório, integridade operacional e verificações atuais sem alteração dos dados.
+
+Fonte: G1-CN-2N.pdf, leitura completa das seções 2 a 7 e Apêndice A; Tarefa 6 também conferida na página renderizada.
+CONFIRMADO: docker-compose.yml idêntico ao arquivo operacional do clone testado em 23
+CONFIRMADO: nginx/default.conf idêntico ao arquivo operacional do clone testado em 23
+CONFIRMADO: app/Dockerfile idêntico ao arquivo operacional do clone testado em 23
+CONFIRMADO: app/.dockerignore idêntico ao arquivo operacional do clone testado em 23
+CONFIRMADO: app/app.py idêntico ao arquivo operacional do clone testado em 23
+CONFIRMADO: app/requirements.txt idêntico ao arquivo operacional do clone testado em 23
+CONFIRMADO: db/init.sql idêntico ao arquivo operacional do clone testado em 23
+CONFIRMADO: .env.example idêntico ao arquivo operacional do clone testado em 23
+CONFIRMADO: .gitignore idêntico ao arquivo operacional do clone testado em 23
+CONFIRMADO: Imagem fornecida incluída sem alterações em docs/arquitetura.png
+CONFIRMADO: Imagem é um PNG válido
+Dimensões PNG: (2664, 3043)
+SHA-256 PNG: 788ab2cc188b42956fb08c27f83dd988b646eef8210a90f97b45c3c1eb45acfb
+CONFIRMADO: Fonte Mermaid preservado
+CONFIRMADO: README incorpora a imagem da arquitetura
+$ git diff HEAD -- app/app.py app/requirements.txt db/init.sql
+(sem saída)
+CONFIRMADO: Três arquivos fornecidos preservados no Git
+$ git ls-files -- .env
+(sem saída)
+CONFIRMADO: .env ausente do índice e dos arquivos rastreados
+$ git log --all --format=%h %s -- .env
+(sem saída)
+CONFIRMADO: .env ausente do histórico Git local disponível
+$ git check-ignore .env backups/fotos.tar.gz
+.env
+backups/fotos.tar.gz
+CONFIRMADO: Imagem incluída no inventário do repositório
+CONFIRMADO: Inventário não inclui .env, backups locais ou ZIP do projeto
+CONFIRMADO: .env e .env.example têm as mesmas chaves; valores omitidos
+CONFIRMADO: .env local usa os valores fictícios do exemplo; valores omitidos
+CONFIRMADO: Valor fictício da senha ausente dos arquivos de entrega, exceto exemplo permitido
+CONFIRMADO: Link local válido: README.md -> docs/ARQUITETURA.md
+CONFIRMADO: Link local válido: README.md -> docs/RELATORIO.md
+CONFIRMADO: Link local válido: README.md -> docs/evidencias/README.md
+CONFIRMADO: Link local válido: README.md -> docs/REFLEXAO.md
+CONFIRMADO: Link local válido: README.md -> docs/BONUS.md
+CONFIRMADO: Link local válido: README.md -> docs/arquitetura.png
+CONFIRMADO: Link local válido: README.md -> docs/arquitetura.png
+CONFIRMADO: Link local válido: README.md -> docs/ARQUITETURA.md
+CONFIRMADO: Link local válido: README.md -> nginx/default.conf
+CONFIRMADO: Link local válido: README.md -> docs/BONUS.md
+CONFIRMADO: Link local válido: README.md -> docs/evidencias/README.md
+CONFIRMADO: Link local válido: README.md -> docs/REVISAO_FINAL.md
+CONFIRMADO: Link local válido: README.md -> docs/evidencias/23-clone-e-aceite.txt
+CONFIRMADO: Link local válido: README.md -> docs/evidencias/23-clone-e-aceite.txt
+CONFIRMADO: Link local válido: README.md -> docs/evidencias/25-auditoria-entrega.txt
+CONFIRMADO: Link local válido: README.md -> docs/evidencias/22-persistencia-com-proxy.txt
+CONFIRMADO: Link local válido: README.md -> docs/evidencias/23-clone-e-aceite.txt
+CONFIRMADO: Link local válido: README.md -> docs/evidencias/23-clone-e-aceite.txt
+CONFIRMADO: Link local válido: README.md -> docs/evidencias/23-clone-e-aceite.txt
+CONFIRMADO: Link local válido: README.md -> docs/arquitetura.png
+CONFIRMADO: Link local válido: README.md -> docs/ARQUITETURA.md
+CONFIRMADO: Link local válido: README.md -> docs/RELATORIO.md
+CONFIRMADO: Link local válido: README.md -> docs/evidencias/README.md
+CONFIRMADO: Link local válido: README.md -> docs/REFLEXAO.md
+CONFIRMADO: Link local válido: README.md -> docs/evidencias/23-manifesto-operacional.json
+CONFIRMADO: Link local válido: README.md -> docs/evidencias/26-conferencia-final.txt
+CONFIRMADO: Link local válido: docs/ARQUITETURA.md -> arquitetura.png
+CONFIRMADO: Link local válido: docs/ARQUITETURA.md -> arquitetura.png
+CONFIRMADO: Link local válido: docs/ARQUITETURA.md -> evidencias/22-persistencia-com-proxy.txt
+CONFIRMADO: Link local válido: docs/ARQUITETURA.md -> evidencias/15-inspecao-infraestrutura.txt
+CONFIRMADO: Link local válido: docs/ARQUITETURA.md -> RELATORIO.md
+CONFIRMADO: Link local válido: docs/ARQUITETURA.md -> BONUS.md
+CONFIRMADO: Link local válido: docs/BONUS.md -> ARQUITETURA.md
+CONFIRMADO: Link local válido: docs/BONUS.md -> RELATORIO.md
+CONFIRMADO: Link local válido: docs/BONUS.md -> ../nginx/default.conf
+CONFIRMADO: Link local válido: docs/BONUS.md -> evidencias/19-backup-restauracao.txt
+CONFIRMADO: Link local válido: docs/BONUS.md -> evidencias/19-fotos-backup.tar.gz
+CONFIRMADO: Link local válido: docs/BONUS.md -> evidencias/20-adminer-debug.txt
+CONFIRMADO: Link local válido: docs/BONUS.md -> evidencias/21-replicas-com-proxy-validado.txt
+CONFIRMADO: Link local válido: docs/REFLEXAO.md -> ../docker-compose.yml
+CONFIRMADO: Link local válido: docs/REFLEXAO.md -> evidencias/15-inspecao-infraestrutura.txt
+CONFIRMADO: Link local válido: docs/REFLEXAO.md -> ../docker-compose.yml
+CONFIRMADO: Link local válido: docs/REFLEXAO.md -> evidencias/12-inspecao-volumes.txt
+CONFIRMADO: Link local válido: docs/REFLEXAO.md -> evidencias/14-remocao-volumes.txt
+CONFIRMADO: Link local válido: docs/REFLEXAO.md -> ../docker-compose.yml
+CONFIRMADO: Link local válido: docs/REFLEXAO.md -> evidencias/03-subida.txt
+CONFIRMADO: Link local válido: docs/REFLEXAO.md -> evidencias/18-proxy-e-rotas.txt
+CONFIRMADO: Link local válido: docs/REFLEXAO.md -> ../app/Dockerfile
+CONFIRMADO: Link local válido: docs/REFLEXAO.md -> evidencias/10-subida-copia-limpa.txt
+CONFIRMADO: Link local válido: docs/REFLEXAO.md -> evidencias/18-proxy-e-rotas.txt
+CONFIRMADO: Link local válido: docs/REFLEXAO.md -> evidencias/16-teste-replicas.txt
+CONFIRMADO: Link local válido: docs/REFLEXAO.md -> evidencias/21-replicas-com-proxy-validado.txt
+CONFIRMADO: Link local válido: docs/REFLEXAO.md -> BONUS.md
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> ../docker-compose.yml
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> ../app/Dockerfile
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> BONUS.md
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> evidencias/11-arquivos-fornecidos.txt
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> ARQUITETURA.md
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> evidencias/10-subida-copia-limpa.txt
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> ../app/.dockerignore
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> evidencias/07-usuario-prontidao.txt
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> evidencias/05-rotas-funcionais.txt
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> ../.env.example
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> evidencias/09-credenciais-e-configuracao.txt
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> evidencias/15-inspecao-infraestrutura.txt
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> evidencias/18-proxy-e-rotas.txt
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> ../README.md
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> evidencias/05-rotas-funcionais.txt
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> evidencias/06-persistencia-recriacao.txt
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> evidencias/12-inspecao-volumes.txt
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> evidencias/14-remocao-volumes.txt
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> evidencias/13-preservacao-antes-remocao.txt
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> evidencias/17-parada-retomada.txt
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> evidencias/22-persistencia-com-proxy.txt
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> evidencias/23-clone-e-aceite.txt
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> evidencias/23-manifesto-operacional.json
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> evidencias/19-backup-restauracao.txt
+CONFIRMADO: Link local válido: docs/RELATORIO.md -> BONUS.md
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> evidencias/11-arquivos-fornecidos.txt
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> evidencias/26-conferencia-final.txt
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> ../app/Dockerfile
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> ../app/.dockerignore
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> ../docker-compose.yml
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> RELATORIO.md
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> evidencias/26-conferencia-final.txt
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> evidencias/18-proxy-e-rotas.txt
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> evidencias/23-clone-e-aceite.txt
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> evidencias/24-foto-com-proxy.png
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> evidencias/23-clone-e-aceite.txt
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> evidencias/26-conferencia-final.txt
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> evidencias/22-persistencia-com-proxy.txt
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> evidencias/23-clone-e-aceite.txt
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> RELATORIO.md
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> ../README.md
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> arquitetura.png
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> ARQUITETURA.md
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> RELATORIO.md
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> evidencias/README.md
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> REFLEXAO.md
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> BONUS.md
+CONFIRMADO: Link local válido: docs/REVISAO_FINAL.md -> BONUS.md
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 01-validacao-configuracao.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 02-tentativa-subida.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 03-subida.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 04-verificacao-inicial.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 05-rotas-funcionais.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 06-persistencia-recriacao.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 07-usuario-prontidao.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 08-foto-no-navegador.png
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 09-credenciais-e-configuracao.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 10-subida-copia-limpa.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 11-arquivos-fornecidos.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 12-inspecao-volumes.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 13-preservacao-antes-remocao.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 14-remocao-volumes.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 15-inspecao-infraestrutura.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 16-teste-replicas.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 17-parada-retomada.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 18-proxy-e-rotas.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 18-foto-4.png
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 18-foto-5.png
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 19-backup-restauracao.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 19-fotos-backup.tar.gz
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 20-adminer-debug.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 21-replicas-com-proxy.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 21-replicas-com-proxy-tentativa-2.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 21-replicas-com-proxy-validado.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 22-persistencia-com-proxy.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 22-foto-4.png
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 22-foto-5.png
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 23-clone-e-aceite.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 23-manifesto-operacional.json
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 24-foto-com-proxy.png
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 25-auditoria-entrega.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> 26-conferencia-final.txt
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> foto-teste-1.png
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> foto-teste-2.png
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> foto-retornada-4.png
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> foto-retornada-5.png
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> ../REFLEXAO.md
+CONFIRMADO: Link local válido: docs/evidencias/README.md -> ../../README.md
+CONFIRMADO: Q1: 5 linhas no Markdown
+CONFIRMADO: Q2: 5 linhas no Markdown
+CONFIRMADO: Q3: 5 linhas no Markdown
+CONFIRMADO: Q4: 5 linhas no Markdown
+CONFIRMADO: Q5: 5 linhas no Markdown
+CONFIRMADO: Q6: 6 linhas no Markdown
+CONFIRMADO: Q7: 7 linhas no Markdown
+CONFIRMADO: Equivalência em nuvem: seis peças e três provedores
+CONFIRMADO: Relatório com as quatro partes exigidas
+CONFIRMADO: Todos os arquivos de evidência indexados
+CONFIRMADO: README contempla os 11 itens do checklist do PDF
+$ git diff --check
+(sem saída)
+$ docker compose config --quiet
+(sem saída)
+CONFIRMADO: web e db não declaram porta publicada
+CONFIRMADO: Adminer associado ao perfil debug
+CONFIRMADO: web aguarda banco saudável
+CONFIRMADO: Política de reinício em todos os serviços
+CONFIRMADO: POSTGRES_DB/DB_NAME: variável externa, sem valor literal
+CONFIRMADO: POSTGRES_USER/DB_USER: variável externa, sem valor literal
+CONFIRMADO: POSTGRES_PASSWORD/DB_PASSWORD: variável externa, sem valor literal
+$ docker compose config --services
+db
+web
+nginx
+CONFIRMADO: Perfil padrão seleciona somente nginx, web e db
+$ docker compose ps
+NAME               IMAGE                COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+g1-nuvem-db-1      postgres:16-alpine   "docker-entrypoint.s…"   db        16 minutes ago   Up 16 minutes (healthy)   5432/tcp
+g1-nuvem-nginx-1   nginx:1.30-alpine    "/docker-entrypoint.…"   nginx     16 minutes ago   Up 14 minutes             0.0.0.0:8080->80/tcp, [::]:8080->80/tcp
+g1-nuvem-web-1     g1-nuvem-web         "gunicorn --bind 0.0…"   web       16 minutes ago   Up 16 minutes (healthy)   5000/tcp
+$ docker compose ps --services
+db
+nginx
+web
+CONFIRMADO: Estado atual sem Adminer e com os três serviços padrão
+CONFIRMADO: web em execução e saudável
+CONFIRMADO: web sem porta publicada na inspeção atual
+CONFIRMADO: db em execução e saudável
+CONFIRMADO: db sem porta publicada na inspeção atual
+CONFIRMADO: nginx em execução
+CONFIRMADO: Nginx publica 8080:80
+$ docker compose exec -T web whoami
+app
+$ docker compose exec -T web id -u
+999
+CONFIRMADO: Aplicação executa como app, sem root
+$ docker compose exec -T nginx nginx -t
+(sem saída)
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+GET /health -> HTTP 200
+CONFIRMADO: /health retorna ok e conectado
+{"banco": "conectado", "container": "5911efc8efac", "status": "ok"}
+GET /estatisticas -> HTTP 200
+CONFIRMADO: Estado atual preservado: 6 itens e 2 fotos
+{"fotos_no_volume": 2, "itens_no_banco": 6}
+GET /itens -> HTTP 200
+GET /itens?local=biblio -> HTTP 200
+CONFIRMADO: Listagem e filtro de local válidos
+GET /fotos/32ca639243894b06b6a718d246401cef.png -> HTTP 200
+CONFIRMADO: Foto do item 4 idêntica à imagem de teste
+SHA-256: 0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf
+GET /fotos/92ededde7bb3412799c5f85173cbd1cc.png -> HTTP 200
+CONFIRMADO: Foto do item 5 idêntica à imagem de teste
+SHA-256: 160a3a7b504da82fc1eb67c103741c0df78a56e7b6d033086e3b876fc2a2b562
+
+Limite: não foram repetidos POST, down/up, down -v, escala ou restauração nesta revisão. Esses testes estão nas evidências 18 a 23; os nove arquivos operacionais permanecem idênticos ao manifesto 23.
+Git local: as alterações continuam sem commit e push. Não foi realizada verificação de publicação nem de acesso remoto do professor.
+RESULTADO: conferência local aprovada; publicação no GitHub e envio do link ao professor permanecem pendentes.

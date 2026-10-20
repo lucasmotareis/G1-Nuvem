@@ -1,0 +1,87 @@
+Legenda: inspeções complementares após a remoção em 19/10/2026; rede real do projeto, imagem web e tamanho, ausência de porta publicada no banco e usuário da aplicação.
+
+$ docker network inspect g1-nuvem_rede_interna
+[
+    {
+        "Name": "g1-nuvem_rede_interna",
+        "Id": "0e4ac58ef79d7a6cb0777a831e677cbe907f2266063a12a97b03fa54de7d008a",
+        "Created": "2026-10-19T20:46:10.032974185-03:00",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Options": {},
+        "Labels": {
+            "com.docker.compose.config-hash": "89390464e5749f28952752594a1b3802d5dc1944b207269a0f92fdc6a75f6ac3",
+            "com.docker.compose.network": "rede_interna",
+            "com.docker.compose.project": "g1-nuvem",
+            "com.docker.compose.version": "5.6.0"
+        },
+        "Containers": {
+            "1753a7633ece91dda869b68a9a661d2957d298ee808488791840c059def84ac1": {
+                "Name": "g1-nuvem-web-1",
+                "EndpointID": "28af9d8769783770c21a2c4a668fc6cdfd4d11b72a9a4336eaadfabfb6e83543",
+                "MacAddress": "ba:d9:11:cf:6a:6c",
+                "IPv4Address": "172.18.0.3/16",
+                "IPv6Address": ""
+            },
+            "b129bf97daf8f99eaa01e2b42e28b546e1cbecd64c866215f56a2c23feb136bf": {
+                "Name": "g1-nuvem-db-1",
+                "EndpointID": "98e7bb133c5b4adc184f8192f22405a0fe1ef415880e16829a5d9efa4e901d95",
+                "MacAddress": "32:d2:df:6b:1a:53",
+                "IPv4Address": "172.18.0.2/16",
+                "IPv6Address": ""
+            }
+        },
+        "Status": {
+            "IPAM": {
+                "Subnets": {
+                    "172.18.0.0/16": {
+                        "IPsInUse": 5,
+                        "DynamicIPsAvailable": 65531
+                    }
+                }
+            }
+        }
+    }
+]
+Código de saída: 0.
+
+$ docker image ls g1-nuvem-web
+IMAGE                 ID             DISK USAGE   CONTENT SIZE   EXTRA
+g1-nuvem-web:latest   b3633b8f4b3e        204MB         50.5MB   U
+Código de saída: 0.
+
+$ docker inspect --format '{{.Name}} | portas_publicadas={{json .HostConfig.PortBindings}} | usuario={{.Config.User}}' g1-nuvem-web-1 g1-nuvem-db-1
+/g1-nuvem-web-1 | portas_publicadas={"5000/tcp":[{"HostIp":"","HostPort":"8080"}]} | usuario=app:app
+/g1-nuvem-db-1 | portas_publicadas={} | usuario=
+Código de saída: 0.
+
+$ docker compose exec -T web whoami
+app
+Código de saída: 0.
+
+$ docker compose logs web --tail 20
+web-1  | [2026-10-19 23:46:16 +0000] [1] [INFO] Starting gunicorn 23.0.0
+web-1  | [2026-10-19 23:46:16 +0000] [1] [INFO] Listening at: http://0.0.0.0:5000 (1)
+web-1  | [2026-10-19 23:46:16 +0000] [1] [INFO] Using worker: sync
+web-1  | [2026-10-19 23:46:16 +0000] [7] [INFO] Booting worker with pid: 7
+Código de saída: 0.
+

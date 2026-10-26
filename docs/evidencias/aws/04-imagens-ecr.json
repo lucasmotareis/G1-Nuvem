@@ -1,0 +1,1488 @@
+{
+  "legenda": "26/10/2026: builds e envios reais ao ECR, com web aws-v1 e frontend corrigido aws-v2, digests remotos, execução sem root da API, validação do frontend, varreduras e custos estimados. Backend mantém três alertas HIGH sem correção disponível na distribuição consultada.",
+  "region": "us-east-1",
+  "account": "429100831877",
+  "records": {
+    "preflight": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:08:40.448195+00:00",
+        "identity": {
+          "UserId": "429100831877",
+          "Account": "429100831877",
+          "Arn": "arn:aws:iam::429100831877:root"
+        },
+        "repositories": {
+          "repositories": []
+        },
+        "registry": {
+          "registryId": "429100831877",
+          "scanningConfiguration": {
+            "scanType": "BASIC",
+            "rules": []
+          }
+        }
+      },
+      "api_calls": [
+        {
+          "service": "sts",
+          "operation": "GetCallerIdentity",
+          "status": "success"
+        },
+        {
+          "service": "ecr",
+          "operation": "DescribeRepositories",
+          "status": "success",
+          "n_items": {
+            "repositories": 0
+          }
+        },
+        {
+          "service": "ecr",
+          "operation": "GetRegistryScanningConfiguration",
+          "status": "success"
+        }
+      ]
+    },
+    "repositories_created": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:10:55.805374+00:00",
+        "web": {
+          "repository": {
+            "repositoryArn": "arn:aws:ecr:us-east-1:429100831877:repository/achados-web",
+            "registryId": "429100831877",
+            "repositoryName": "achados-web",
+            "repositoryUri": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-web",
+            "createdAt": "2026-10-26T20:10:56.337000+00:00",
+            "imageTagMutability": "IMMUTABLE",
+            "imageScanningConfiguration": {
+              "scanOnPush": false
+            },
+            "encryptionConfiguration": {
+              "encryptionType": "AES256"
+            }
+          }
+        },
+        "frontend": {
+          "repository": {
+            "repositoryArn": "arn:aws:ecr:us-east-1:429100831877:repository/achados-frontend",
+            "registryId": "429100831877",
+            "repositoryName": "achados-frontend",
+            "repositoryUri": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-frontend",
+            "createdAt": "2026-10-26T20:10:56.663000+00:00",
+            "imageTagMutability": "IMMUTABLE",
+            "imageScanningConfiguration": {
+              "scanOnPush": false
+            },
+            "encryptionConfiguration": {
+              "encryptionType": "AES256"
+            }
+          }
+        },
+        "basic_scanning": {
+          "registryScanningConfiguration": {
+            "scanType": "BASIC",
+            "rules": [
+              {
+                "scanFrequency": "SCAN_ON_PUSH",
+                "repositoryFilters": [
+                  {
+                    "filter": "achados-web",
+                    "filterType": "WILDCARD"
+                  },
+                  {
+                    "filter": "achados-frontend",
+                    "filterType": "WILDCARD"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      },
+      "api_calls": [
+        {
+          "service": "sts",
+          "operation": "GetCallerIdentity",
+          "status": "success"
+        },
+        {
+          "service": "ecr",
+          "operation": "CreateRepository",
+          "status": "success"
+        },
+        {
+          "service": "ecr",
+          "operation": "CreateRepository",
+          "status": "success"
+        },
+        {
+          "service": "ecr",
+          "operation": "PutRegistryScanningConfiguration",
+          "status": "success"
+        }
+      ]
+    },
+    "web_build": {
+      "chunk_id": "4ffb99",
+      "wall_time_seconds": 6.9360669999999995,
+      "exit_code": 0,
+      "original_token_count": 578,
+      "output": "#0 building with \"desktop-linux\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 656B 0.0s done\n#1 DONE 0.1s\n\n#2 [internal] load metadata for docker.io/library/python:3.12-slim\n#2 ...\n\n#3 [auth] library/python:pull token for registry-1.docker.io\n#3 DONE 0.0s\n\n#2 [internal] load metadata for docker.io/library/python:3.12-slim\n#2 DONE 2.7s\n\n#4 [internal] load .dockerignore\n#4 transferring context: 103B done\n#4 DONE 0.1s\n\n#5 [internal] load build context\n#5 DONE 0.0s\n\n#6 [1/6] FROM docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704\n#6 resolve docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704 0.1s done\n#6 DONE 0.1s\n\n#5 [internal] load build context\n#5 transferring context: 63B done\n#5 DONE 0.0s\n\n#7 [3/6] COPY requirements.txt .\n#7 CACHED\n\n#8 [4/6] RUN pip install --no-cache-dir -r requirements.txt\n#8 CACHED\n\n#9 [5/6] COPY app.py .\n#9 CACHED\n\n#10 [2/6] WORKDIR /app\n#10 CACHED\n\n#11 [6/6] RUN groupadd --system app     && useradd --system --gid app --no-create-home --shell /usr/sbin/nologin app     && mkdir -p /app/uploads     && chown app:app /app/uploads\n#11 CACHED\n\n#12 exporting to image\n#12 exporting layers done\n#12 exporting manifest sha256:fa3e79ed9005074a11a1fa742e6bba8f0113e339e548f285d18cb53bef3cbab5 0.1s done\n#12 exporting config sha256:1231e1a66c08e623fc91081c6bf68068febce9cbab23773b5bb8e0799bf450e8\n#12 exporting config sha256:1231e1a66c08e623fc91081c6bf68068febce9cbab23773b5bb8e0799bf450e8 0.1s done\n#12 exporting attestation manifest sha256:ae9af0749527e13a4b5b6dd2927e3579fefb1e3ed5e8276fe281de0dad3fba96\n#12 exporting attestation manifest sha256:ae9af0749527e13a4b5b6dd2927e3579fefb1e3ed5e8276fe281de0dad3fba96 0.1s done\n#12 exporting manifest list sha256:974595484c975b0427a78d42fba7bee02ded70ce191d6a4cd5c98b85d8164cbd 0.0s done\n#12 naming to 429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-web:aws-v1\n#12 naming to 429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-web:aws-v1 done\n#12 unpacking to 429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-web:aws-v1 0.0s done\n#12 DONE 0.4s\n\nView build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/5vxjdynm32xvnshkn0lcuyixt\n"
+    },
+    "initial_frontend_build": {
+      "chunk_id": "18f2c9",
+      "wall_time_seconds": 8.2866017,
+      "exit_code": 0,
+      "original_token_count": 569,
+      "output": "#0 building with \"desktop-linux\" instance using docker driver\n\n#1 [internal] load build definition from Dockerfile\n#1 transferring dockerfile: 620B 0.1s done\n#1 DONE 0.1s\n\n#2 [internal] load metadata for docker.io/library/nginx:1.30-alpine\n#2 ...\n\n#3 [auth] library/nginx:pull token for registry-1.docker.io\n#3 DONE 0.0s\n\n#2 [internal] load metadata for docker.io/library/nginx:1.30-alpine\n#2 DONE 2.6s\n\n#4 [internal] load .dockerignore\n#4 transferring context: 174B done\n#4 DONE 0.0s\n\n#5 [internal] load build context\n#5 transferring context: 232B done\n#5 DONE 0.1s\n\n#6 [1/8] FROM docker.io/library/nginx:1.30-alpine@sha256:47928bf67eb62a1863cb08d9ecb52d3e704304ba614eaee17884204677702951\n#6 resolve docker.io/library/nginx:1.30-alpine@sha256:47928bf67eb62a1863cb08d9ecb52d3e704304ba614eaee17884204677702951 0.1s done\n#6 DONE 0.1s\n\n#7 [3/8] COPY index.html styles.css app.js /usr/share/nginx/html/\n#7 CACHED\n\n#8 [4/8] COPY routing.conf /etc/nginx/snippets/achados-routing.conf\n#8 CACHED\n\n#9 [5/8] COPY internal-health.conf /etc/nginx/conf.d/internal-health.conf\n#9 CACHED\n\n#10 [6/8] COPY 40-access-password.sh /docker-entrypoint.d/40-access-password.sh\n#10 CACHED\n\n#11 [7/8] RUN chmod 755 /docker-entrypoint.d/40-access-password.sh\n#11 CACHED\n\n#12 [2/8] RUN apk add --no-cache apache2-utils\n#12 CACHED\n\n#13 [8/8] COPY nginx.conf /etc/nginx/conf.d/default.conf\n#13 CACHED\n\n#14 exporting to image\n#14 exporting layers 0.0s done\n#14 exporting manifest sha256:5645505723ce612ec12a4f371f8ae769fc9354f9ba259f7f86000bd958784ab8 0.1s done\n#14 exporting config sha256:7236476d4b01f4de04dd3a3e02aba3632738def128fd4ade66822533940b4525 0.0s done\n#14 exporting attestation manifest sha256:fea07a1774af4c6165d90c9ab30afa435700101f6e6813cda2cd71fbe79ca43d 0.1s done\n#14 exporting manifest list sha256:12e7097d5d86b10253b16797d2da95dbaed115b2956250f394ff5726517f187b\n#14 exporting manifest list sha256:12e7097d5d86b10253b16797d2da95dbaed115b2956250f394ff5726517f187b 0.1s done\n#14 naming to 429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-frontend:aws-v1 0.0s done\n#14 unpacking to 429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-frontend:aws-v1 0.0s done\n#14 DONE 0.4s\n\nView build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/i2c2yl0coek1q19mfcnpwx3s7\n"
+    },
+    "local_initial_validation": {
+      "chunk_id": "c9fbae",
+      "wall_time_seconds": 3.2004147,
+      "exit_code": 0,
+      "original_token_count": 345,
+      "output": "nginx: the configuration file /etc/nginx/nginx.conf syntax is ok\nnginx: configuration file /etc/nginx/nginx.conf test is successful\n{\r\n  \"images\": [\r\n    {\r\n      \"uri\": \"429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-web:aws-v1\",\r\n      \"image_id\": \"sha256:974595484c975b0427a78d42fba7bee02ded70ce191d6a4cd5c98b85d8164cbd\",\r\n      \"os\": \"linux\",\r\n      \"architecture\": \"amd64\",\r\n      \"user\": \"app:app\",\r\n      \"size_bytes\": 50368775,\r\n      \"cmd\": [\r\n        \"gunicorn\",\r\n        \"--bind\",\r\n        \"0.0.0.0:5000\",\r\n        \"app:app\"\r\n      ],\r\n      \"entrypoint\": null,\r\n      \"embedded_credential_environment\": false\r\n    },\r\n    {\r\n      \"uri\": \"429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-frontend:aws-v1\",\r\n      \"image_id\": \"sha256:12e7097d5d86b10253b16797d2da95dbaed115b2956250f394ff5726517f187b\",\r\n      \"os\": \"linux\",\r\n      \"architecture\": \"amd64\",\r\n      \"user\": null,\r\n      \"size_bytes\": 26368018,\r\n      \"cmd\": [\r\n        \"nginx\",\r\n        \"-g\",\r\n        \"daemon off;\"\r\n      ],\r\n      \"entrypoint\": [\r\n        \"/docker-entrypoint.sh\"\r\n      ],\r\n      \"embedded_credential_environment\": false\r\n    }\r\n  ],\r\n  \"web_identity\": \"uid=999(app) gid=999(app) groups=999(app)\",\r\n  \"web_uploads\": {\r\n    \"uid\": 999,\r\n    \"uploads_writable\": true,\r\n    \"local_env_absent\": true\r\n  },\r\n  \"nginx_config_valid\": true,\r\n  \"frontend_auth_file_absent\": true\r\n}\r\n"
+    },
+    "initial_push": {
+      "exit_code": 0,
+      "output_excerpt": "Login Succeeded\naws-v1: digest: sha256:12e7097d5d86b10253b16797d2da95dbaed115b2956250f394ff5726517f187b size: 856\nECR_PUSH_COMPLETED\nECR_TEMP_AUTH_REMOVED=True",
+      "excerpt_note": "Trechos de resultado extraídos da saída real; saída de progresso truncada pelo terminal, sequências ANSI e entrada mascarada omitidas. Os digests completos são confirmados pela API ECR."
+    },
+    "remote_initial_verification": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:15:22.410838+00:00",
+        "repositories": {
+          "repositories": [
+            {
+              "repositoryArn": "arn:aws:ecr:us-east-1:429100831877:repository/achados-web",
+              "registryId": "429100831877",
+              "repositoryName": "achados-web",
+              "repositoryUri": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-web",
+              "createdAt": "2026-10-26T20:10:56.337000+00:00",
+              "imageTagMutability": "IMMUTABLE",
+              "imageScanningConfiguration": {
+                "scanOnPush": false
+              },
+              "encryptionConfiguration": {
+                "encryptionType": "AES256"
+              }
+            },
+            {
+              "repositoryArn": "arn:aws:ecr:us-east-1:429100831877:repository/achados-frontend",
+              "registryId": "429100831877",
+              "repositoryName": "achados-frontend",
+              "repositoryUri": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-frontend",
+              "createdAt": "2026-10-26T20:10:56.663000+00:00",
+              "imageTagMutability": "IMMUTABLE",
+              "imageScanningConfiguration": {
+                "scanOnPush": false
+              },
+              "encryptionConfiguration": {
+                "encryptionType": "AES256"
+              }
+            }
+          ]
+        },
+        "registry_scanning": {
+          "registryId": "429100831877",
+          "scanningConfiguration": {
+            "scanType": "BASIC",
+            "rules": [
+              {
+                "scanFrequency": "SCAN_ON_PUSH",
+                "repositoryFilters": [
+                  {
+                    "filter": "achados-web",
+                    "filterType": "WILDCARD"
+                  },
+                  {
+                    "filter": "achados-frontend",
+                    "filterType": "WILDCARD"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "repository_scanning": {
+          "scanningConfigurations": [
+            {
+              "repositoryArn": "arn:aws:ecr:us-east-1:429100831877:repository/achados-web",
+              "repositoryName": "achados-web",
+              "scanOnPush": false,
+              "scanFrequency": "SCAN_ON_PUSH",
+              "appliedScanFilters": [
+                {
+                  "filter": "achados-web",
+                  "filterType": "WILDCARD"
+                }
+              ]
+            },
+            {
+              "repositoryArn": "arn:aws:ecr:us-east-1:429100831877:repository/achados-frontend",
+              "repositoryName": "achados-frontend",
+              "scanOnPush": false,
+              "scanFrequency": "SCAN_ON_PUSH",
+              "appliedScanFilters": [
+                {
+                  "filter": "achados-frontend",
+                  "filterType": "WILDCARD"
+                }
+              ]
+            }
+          ],
+          "failures": []
+        },
+        "web_images": {
+          "imageDetails": [
+            {
+              "registryId": "429100831877",
+              "repositoryName": "achados-web",
+              "imageDigest": "sha256:fa3e79ed9005074a11a1fa742e6bba8f0113e339e548f285d18cb53bef3cbab5",
+              "imageSizeInBytes": 50365919,
+              "imagePushedAt": "2026-10-26T20:14:06.220000+00:00",
+              "imageManifestMediaType": "application/vnd.oci.image.manifest.v1+json",
+              "artifactMediaType": "application/vnd.oci.image.config.v1+json",
+              "imageStatus": "ACTIVE"
+            },
+            {
+              "registryId": "429100831877",
+              "repositoryName": "achados-web",
+              "imageDigest": "sha256:ae9af0749527e13a4b5b6dd2927e3579fefb1e3ed5e8276fe281de0dad3fba96",
+              "imageSizeInBytes": 1560,
+              "imagePushedAt": "2026-10-26T20:14:06.214000+00:00",
+              "imageManifestMediaType": "application/vnd.oci.image.manifest.v1+json",
+              "artifactMediaType": "application/vnd.docker.attestation.manifest.v1+json",
+              "subjectManifestDigest": "sha256:fa3e79ed9005074a11a1fa742e6bba8f0113e339e548f285d18cb53bef3cbab5",
+              "imageStatus": "ACTIVE"
+            },
+            {
+              "registryId": "429100831877",
+              "repositoryName": "achados-web",
+              "imageDigest": "sha256:974595484c975b0427a78d42fba7bee02ded70ce191d6a4cd5c98b85d8164cbd",
+              "imageTags": [
+                "aws-v1"
+              ],
+              "imageSizeInBytes": 50365919,
+              "imagePushedAt": "2026-10-26T20:14:06.685000+00:00",
+              "imageManifestMediaType": "application/vnd.oci.image.index.v1+json",
+              "imageStatus": "ACTIVE"
+            }
+          ]
+        },
+        "frontend_images": {
+          "imageDetails": [
+            {
+              "registryId": "429100831877",
+              "repositoryName": "achados-frontend",
+              "imageDigest": "sha256:5645505723ce612ec12a4f371f8ae769fc9354f9ba259f7f86000bd958784ab8",
+              "imageSizeInBytes": 26364033,
+              "imagePushedAt": "2026-10-26T20:14:19.545000+00:00",
+              "imageManifestMediaType": "application/vnd.oci.image.manifest.v1+json",
+              "artifactMediaType": "application/vnd.oci.image.config.v1+json",
+              "imageStatus": "ACTIVE"
+            },
+            {
+              "registryId": "429100831877",
+              "repositoryName": "achados-frontend",
+              "imageDigest": "sha256:fea07a1774af4c6165d90c9ab30afa435700101f6e6813cda2cd71fbe79ca43d",
+              "imageSizeInBytes": 1586,
+              "imagePushedAt": "2026-10-26T20:14:19.547000+00:00",
+              "imageManifestMediaType": "application/vnd.oci.image.manifest.v1+json",
+              "artifactMediaType": "application/vnd.docker.attestation.manifest.v1+json",
+              "subjectManifestDigest": "sha256:5645505723ce612ec12a4f371f8ae769fc9354f9ba259f7f86000bd958784ab8",
+              "imageStatus": "ACTIVE"
+            },
+            {
+              "registryId": "429100831877",
+              "repositoryName": "achados-frontend",
+              "imageDigest": "sha256:12e7097d5d86b10253b16797d2da95dbaed115b2956250f394ff5726517f187b",
+              "imageTags": [
+                "aws-v1"
+              ],
+              "imageSizeInBytes": 26364033,
+              "imagePushedAt": "2026-10-26T20:14:20.032000+00:00",
+              "imageManifestMediaType": "application/vnd.oci.image.index.v1+json",
+              "imageStatus": "ACTIVE"
+            }
+          ]
+        },
+        "web_manifest": {
+          "images": [
+            {
+              "registryId": "429100831877",
+              "repositoryName": "achados-web",
+              "imageId": {
+                "imageDigest": "sha256:974595484c975b0427a78d42fba7bee02ded70ce191d6a4cd5c98b85d8164cbd",
+                "imageTag": "aws-v1"
+              },
+              "imageManifest": "{\n  \"schemaVersion\": 2,\n  \"mediaType\": \"application/vnd.oci.image.index.v1+json\",\n  \"manifests\": [\n    {\n      \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n      \"digest\": \"sha256:fa3e79ed9005074a11a1fa742e6bba8f0113e339e548f285d18cb53bef3cbab5\",\n      \"size\": 2000,\n      \"platform\": {\n        \"architecture\": \"amd64\",\n        \"os\": \"linux\"\n      }\n    },\n    {\n      \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n      \"digest\": \"sha256:ae9af0749527e13a4b5b6dd2927e3579fefb1e3ed5e8276fe281de0dad3fba96\",\n      \"size\": 837,\n      \"annotations\": {\n        \"vnd.docker.reference.digest\": \"sha256:fa3e79ed9005074a11a1fa742e6bba8f0113e339e548f285d18cb53bef3cbab5\",\n        \"vnd.docker.reference.type\": \"attestation-manifest\"\n      },\n      \"platform\": {\n        \"architecture\": \"unknown\",\n        \"os\": \"unknown\"\n      }\n    }\n  ]\n}",
+              "imageManifestMediaType": "application/vnd.oci.image.index.v1+json"
+            }
+          ],
+          "failures": []
+        },
+        "frontend_manifest": {
+          "images": [
+            {
+              "registryId": "429100831877",
+              "repositoryName": "achados-frontend",
+              "imageId": {
+                "imageDigest": "sha256:12e7097d5d86b10253b16797d2da95dbaed115b2956250f394ff5726517f187b",
+                "imageTag": "aws-v1"
+              },
+              "imageManifest": "{\n  \"schemaVersion\": 2,\n  \"mediaType\": \"application/vnd.oci.image.index.v1+json\",\n  \"manifests\": [\n    {\n      \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n      \"digest\": \"sha256:5645505723ce612ec12a4f371f8ae769fc9354f9ba259f7f86000bd958784ab8\",\n      \"size\": 3129,\n      \"platform\": {\n        \"architecture\": \"amd64\",\n        \"os\": \"linux\"\n      }\n    },\n    {\n      \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n      \"digest\": \"sha256:fea07a1774af4c6165d90c9ab30afa435700101f6e6813cda2cd71fbe79ca43d\",\n      \"size\": 837,\n      \"annotations\": {\n        \"vnd.docker.reference.digest\": \"sha256:5645505723ce612ec12a4f371f8ae769fc9354f9ba259f7f86000bd958784ab8\",\n        \"vnd.docker.reference.type\": \"attestation-manifest\"\n      },\n      \"platform\": {\n        \"architecture\": \"unknown\",\n        \"os\": \"unknown\"\n      }\n    }\n  ]\n}",
+              "imageManifestMediaType": "application/vnd.oci.image.index.v1+json"
+            }
+          ],
+          "failures": []
+        }
+      },
+      "api_calls": [
+        {
+          "service": "ecr",
+          "operation": "DescribeRepositories",
+          "status": "success",
+          "n_items": {
+            "repositories": 2
+          }
+        },
+        {
+          "service": "ecr",
+          "operation": "GetRegistryScanningConfiguration",
+          "status": "success"
+        },
+        {
+          "service": "ecr",
+          "operation": "BatchGetRepositoryScanningConfiguration",
+          "status": "success",
+          "n_items": {
+            "scanningConfigurations": 2,
+            "failures": 0
+          }
+        },
+        {
+          "service": "ecr",
+          "operation": "DescribeImages",
+          "status": "success",
+          "n_items": {
+            "imageDetails": 3
+          }
+        },
+        {
+          "service": "ecr",
+          "operation": "DescribeImages",
+          "status": "success",
+          "n_items": {
+            "imageDetails": 3
+          }
+        },
+        {
+          "service": "ecr",
+          "operation": "BatchGetImage",
+          "status": "success",
+          "n_items": {
+            "images": 1,
+            "failures": 0
+          }
+        },
+        {
+          "service": "ecr",
+          "operation": "BatchGetImage",
+          "status": "success",
+          "n_items": {
+            "images": 1,
+            "failures": 0
+          }
+        }
+      ]
+    },
+    "initial_scan": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:17:07.466744+00:00",
+        "web": {
+          "imageScanFindings": {
+            "findings": [
+              {
+                "name": "CVE-2026-6791",
+                "description": "When expanding paths that begin with a tilde (~) followed by a username, the internal parse_tilde function extracts the username to determine the user's home directory. The implementation allocates memory for this username directly on the stack using the strndupa macro. Because the size of this allocation was determined by the length of the user-supplied input without any bounds checks, passing an excessively long username e.g. thousands of characters, forces the thread to exhaust its stack space. Thus if an application passes untrusted, attacker-controlled input to the wordexp function, an attacker can trigger a stack clash.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-6791",
+                "severity": "MEDIUM",
+                "attributes": [
+                  {
+                    "key": "CVSS4_SCORE",
+                    "value": "6.6"
+                  },
+                  {
+                    "key": "CVSS4_VECTOR",
+                    "value": "CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:L/VI:L/VA:H/SC:N/SI:L/SA:H/E:U/CR:X/IR:X/AR:X/MAV:X/MAC:X/MAT:X/MPR:X/MUI:X/MVC:X/MVI:X/MVA:X/MSC:X/MSI:X/MSA:X/S:X/AU:X/R:X/V:X/RE:X/U:X"
+                  },
+                  {
+                    "key": "package_version",
+                    "value": "2.41-12+deb13u4"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "glibc"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-19542",
+                "description": "Calling tdelete on a sufficiently deep tree in the GNU C Library version 2.1 to 2.44 may write one pointer past the end of an alloca-allocated array on the stack, which may crash the application. The tdelete implementation keeps an explicit stack of parent nodes for rebalancing, which is grown as needed while descending the tree. Two rebalancing branches push an additional entry without checking the capacity, and write past the array when the stack is exactly full. Triggering this requires a node at a depth of exactly 40 (or 40 plus a multiple of 20), which implies a tree with at least a million nodes, so an attacker must drive a large number of insertions and deletions through an application that uses tsearch and tdelete. The written value is a pointer into a tree node and is not directly attacker controlled. No affected application in common distributions has been identified.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-19542",
+                "severity": "MEDIUM",
+                "attributes": [
+                  {
+                    "key": "CVSS3_SCORE",
+                    "value": "5.6"
+                  },
+                  {
+                    "key": "CVSS3_VECTOR",
+                    "value": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L"
+                  },
+                  {
+                    "key": "package_version",
+                    "value": "2.41-12+deb13u4"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "glibc"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-86805",
+                "description": "A time-of-check to time-of-use (TOCTOU) race condition in the dynamic loader (ld.so) of the GNU C Library (glibc) versions 2.14 through 2.44 allows a local attacker to escalate privileges. When expanding $ORIGIN in DT_RPATH for setuid/setgid (AT_SECURE) programs, glibc validates the lexically normalized search path against the trusted directories but then opens the raw, un-normalized path. On systems where the Linux fs.protected_hardlinks sysctl is disabled, a local attacker who hard-links such a program into an attacker-controlled directory and wins a race to replace an intermediate path component with a symbolic link can direct the loader outside the trusted directory, causing it to load an attacker-controlled shared object and execute arbitrary code with the elevated privileges of the program. Exploitation requires an installed setuid or setgid binary whose DT_RPATH uses $ORIGIN followed by \"..\" traversal that normalizes into a trusted directory, and the ability to hard-link that binary and win the race by swapping a path component for a symbolic link. Major Linux-based OS distributions ship with fs.protected_hardlinks enabled by default and mitigate the vulnerability.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-86805",
+                "severity": "MEDIUM",
+                "attributes": [
+                  {
+                    "key": "CVSS3_SCORE",
+                    "value": "6.3"
+                  },
+                  {
+                    "key": "CVSS3_VECTOR",
+                    "value": "CVSS:3.1/AV:L/AC:H/PR:L/UI:R/S:U/C:H/I:H/A:L"
+                  },
+                  {
+                    "key": "package_version",
+                    "value": "2.41-12+deb13u4"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "glibc"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-95818",
+                "description": "A stack-based buffer overflow in the dynamic loader (ld.so) of the GNU C Library (glibc) versions 2.14 through 2.44 allows a local attacker to crash or corrupt the memory of setuid/setgid (AT_SECURE) programs. When such a program's DT_RPATH or DT_RUNPATH begins with $ORIGIN and is followed by NUL or '/' the loader both reads past the end of the path buffer and writes past the end of a stack-allocated internal buffer. The corrupted loader stack can lead to a loader crash (denial of service) and limited disclosure of process memory.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-95818",
+                "severity": "LOW",
+                "attributes": [
+                  {
+                    "key": "CVSS3_SCORE",
+                    "value": "3.6"
+                  },
+                  {
+                    "key": "CVSS3_VECTOR",
+                    "value": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:L/I:L/A:N"
+                  },
+                  {
+                    "key": "package_version",
+                    "value": "2.41-12+deb13u4"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "glibc"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-97399",
+                "description": "The strncasecmp function in the GNU C Library 2.24 and later optimized for the Power8 architecture may read one byte beyond the input size limit, which may crash a program when that byte is not readable. This condition may happen when the input strings to the strncasecmp function are attacker controlled in an application and they match all the way up to the edge of their page and the neighbouring page is either not mapped or is not readable.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-97399",
+                "severity": "LOW",
+                "attributes": [
+                  {
+                    "key": "CVSS3_SCORE",
+                    "value": "3.7"
+                  },
+                  {
+                    "key": "CVSS3_VECTOR",
+                    "value": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L"
+                  },
+                  {
+                    "key": "package_version",
+                    "value": "2.41-12+deb13u4"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "glibc"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-5435",
+                "description": "The deprecated functions ns_printrrf, ns_printrr and fp_nquery in the GNU C Library version 2.2 and newer fail to enforce the caller-supplied buffer length, and can result in an out-of-bounds write when printing TSIG records.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-5435",
+                "severity": "HIGH",
+                "attributes": [
+                  {
+                    "key": "CVSS3_SCORE",
+                    "value": "7.3"
+                  },
+                  {
+                    "key": "CVSS3_VECTOR",
+                    "value": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:L/A:L"
+                  },
+                  {
+                    "key": "package_version",
+                    "value": "2.41-12+deb13u4"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "glibc"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-80489",
+                "description": "Converting crafted EUC_JISX0213 input to UCS-4 or the internal wide character encoding, for example with iconv, in the GNU C Library version 2.3 to 2.44 may result in the converter making no progress, causing the calling application to hang. Some EUC_JISX0213 sequences decode to two code points. If the output buffer has room for only the first one, the converter stores the second in the conversion state and returns E2BIG, but it never clears that pending character after emitting it on the next call. The converter then keeps emitting the pending character without consuming further input, so an application that retries the conversion loops forever. The input must be attacker controlled and the application must convert it with an output buffer small enough to split the two code points. Only the EUC_JISX0213 character set is affected, which is not commonly used. The related defect in SHIFT_JISX0213 converter is tracked separately as CVE-2026-77117.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-80489",
+                "severity": "MEDIUM",
+                "attributes": [
+                  {
+                    "key": "CVSS3_SCORE",
+                    "value": "5.9"
+                  },
+                  {
+                    "key": "CVSS3_VECTOR",
+                    "value": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+                  },
+                  {
+                    "key": "package_version",
+                    "value": "2.41-12+deb13u4"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "glibc"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-6238",
+                "description": "The deprecated functions ns_printrrf, ns_printrr and fp_nquery in the GNU C Library version 2.0.1 to version 2.43 fail to validate the RDATA content against the RDATA length in a DNS response when processing A6, CERT, LOC, TKEY or TSIG records, which may allow an attacker to craft a DNS response, causing a target application to crash or read uninitialized memory. These functions are for application debugging only and hence not in the path of code executed by the DNS resolver. Further, they have been deprecated since version 2.34 and should not be used by any new applications. Applications should consider porting away from these interfaces since they may be removed in future versions.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-6238",
+                "severity": "MEDIUM",
+                "attributes": [
+                  {
+                    "key": "CVSS3_SCORE",
+                    "value": "6.5"
+                  },
+                  {
+                    "key": "CVSS3_VECTOR",
+                    "value": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:L/I:N/A:L"
+                  },
+                  {
+                    "key": "package_version",
+                    "value": "2.41-12+deb13u4"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "glibc"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-19499",
+                "description": "Calling strfmon and strfmon_l in the GNU C Library version 2.38 to 2.44 can write past the end of the caller-supplied output buffer when a conversion uses right-justified width padding. Exploitation requires an application code path that calls strfmon or strfmon_l with right-justified width padding into a destination buffer that is large enough for the padding to succeed but too small for the internal memmove call. The field width or format may be attacker-influenced or a fixed susceptible pattern in the caller. At the time of publication, no network-facing application impact is known.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-19499",
+                "severity": "HIGH",
+                "attributes": [
+                  {
+                    "key": "CVSS3_SCORE",
+                    "value": "7.7"
+                  },
+                  {
+                    "key": "CVSS3_VECTOR",
+                    "value": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:L/A:H"
+                  },
+                  {
+                    "key": "package_version",
+                    "value": "2.41-12+deb13u4"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "glibc"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-77117",
+                "description": "Converting crafted SHIFT_JISX0213 input to UCS-4 or the internal wide character encoding, for example with iconv, in the GNU C Library version 2.3 to 2.44 may result in the converter making no progress, causing the calling application to hang. Some SHIFT_JISX0213 sequences decode to two code points. If the output buffer has room for only the first one, the converter stores the second in the conversion state and returns E2BIG, but it never clears that pending character after emitting it on the next call. The converter then keeps emitting the pending character without consuming further input, so an application that retries the conversion loops forever. The input must be attacker controlled and the application must convert it with an output buffer small enough to split the two code points. Only the SHIFT_JISX0213 character set is affected, which is not commonly used. The related defect in the EUC_JISX0213 converter is tracked separately as CVE-2026-80489.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-77117",
+                "severity": "MEDIUM",
+                "attributes": [
+                  {
+                    "key": "CVSS3_SCORE",
+                    "value": "5.9"
+                  },
+                  {
+                    "key": "CVSS3_VECTOR",
+                    "value": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+                  },
+                  {
+                    "key": "package_version",
+                    "value": "2.41-12+deb13u4"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "glibc"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-6368",
+                "description": "Calling wordexp with WRDE_APPEND in the GNU C Library version 2.0 to version 2.43 can cause the interface to return invalid memory in the we_wordv member, which on subsequent calls to wordfree may abort the process.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-6368",
+                "severity": "LOW",
+                "attributes": [
+                  {
+                    "key": "CVSS4_SCORE",
+                    "value": "2.1"
+                  },
+                  {
+                    "key": "CVSS4_VECTOR",
+                    "value": "CVSS:4.0/AV:L/AC:H/AT:P/PR:N/UI:N/VC:L/VI:L/VA:L/SC:L/SI:L/SA:L/E:X/CR:X/IR:X/AR:X/MAV:X/MAC:X/MAT:X/MPR:X/MUI:X/MVC:X/MVI:X/MVA:X/MSC:X/MSI:X/MSA:X/S:P/AU:Y/R:X/V:X/RE:X/U:Green"
+                  },
+                  {
+                    "key": "package_version",
+                    "value": "2.41-12+deb13u4"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "glibc"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-89092",
+                "description": "The nscd service in the GNU C Library 2.3.4 onwards may crash due to a stack overflow when a malicious DNS server returns too large a response for a DNS query, resulting in degraded DNS resolution for the system. Exploitation of this bug needs a system that has nscd enabled and using an untrusted DNS server for name resolution, with the compromised DNS server being capable of processing records large enough to result in a stack overflow in an nscd thread stack.  During experimentation, bind 9 was unable to handle large records, but that could change in future or with a different name server.  In typical installations, nscd is executed in an isolated context as its own user without a shell, due to which any compromise of that service is isolated. There is a remote possibility of nscd cache corruption if an attacker manages to get the stack pointer into a desired point in the heap, potentially resulting in other caches in nscd being overwritten with corrupt data through the stack overflow, until the buggy code path eventually results in a crash. Finally, a crash in nscd may result in performance degradation when resolving names, but it does not result in a denial of service.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-89092",
+                "severity": "MEDIUM",
+                "attributes": [
+                  {
+                    "key": "CVSS3_SCORE",
+                    "value": "4.2"
+                  },
+                  {
+                    "key": "CVSS3_VECTOR",
+                    "value": "CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:L"
+                  },
+                  {
+                    "key": "package_version",
+                    "value": "2.41-12+deb13u4"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "glibc"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-8674",
+                "description": "Initializing the DNS stub resolver from an /etc/resolv.conf file, or a LOCALDOMAIN environment variable, whose search list contains a domain of roughly 200 characters or more in the GNU C Library version 2.26 to 2.44 results in an assertion failure which aborts the process. The resolver truncates the search list when copying it into the fixed-size _res.defdname buffer, then asserts that the copy is consistent with the full configuration. The consistency check compared against the wrong size and did not handle a first entry that does not fit, so a correctly truncated list failed the assertion. Any process that resolves names through the library is affected, including long-running processes that reload /etc/resolv.conf on the next query after it changes. Search domains are commonly written to /etc/resolv.conf from data received over DHCP or from a VPN server, so an attacker on the local network may be able to trigger this without privileges on the target system, subject to validation by the network configuration software.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-8674",
+                "severity": "MEDIUM",
+                "attributes": [
+                  {
+                    "key": "CVSS3_SCORE",
+                    "value": "5.3"
+                  },
+                  {
+                    "key": "CVSS3_VECTOR",
+                    "value": "CVSS:3.1/AV:A/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+                  },
+                  {
+                    "key": "package_version",
+                    "value": "2.41-12+deb13u4"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "glibc"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-85091",
+                "description": "zlib versions 1.3.1.2 through 1.3.2 contain a heap buffer overflow vulnerability in the gz_vacate() function when processing non-blocking gzwrite() operations with stale external buffer pointers. Attackers can trigger the overflow by calling gzprintf() or gzvprintf() after a write stall, causing an unchecked memmove() to write beyond the internal input buffer boundary.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-85091",
+                "severity": "HIGH",
+                "attributes": [
+                  {
+                    "key": "CVSS4_SCORE",
+                    "value": "8.3"
+                  },
+                  {
+                    "key": "CVSS4_VECTOR",
+                    "value": "CVSS:4.0/AV:N/AC:H/AT:N/PR:N/UI:N/VC:N/VI:H/VA:H/SC:N/SI:N/SA:N/E:X/CR:X/IR:X/AR:X/MAV:X/MAC:X/MAT:X/MPR:X/MUI:X/MVC:X/MVI:X/MVA:X/MSC:X/MSI:X/MSA:X/S:X/AU:X/R:X/V:X/RE:X/U:X"
+                  },
+                  {
+                    "key": "package_version",
+                    "value": "1.3.dfsg+really1.3.1-1"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "zlib"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-18374",
+                "description": "Passing an effectively empty string to the `,ccs=` syntax extension of the mode argument in the `fopen` function in the GNU C Library version 2.45 or earlier may result in a heap buffer overflow when the mode string input to the function is attacker controlled. This usage pattern is not seen in applications in common GNU/Linux distributions and applications that process user-supplied values for `ccs` should not pass them through without validation.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-18374",
+                "severity": "MEDIUM",
+                "attributes": [
+                  {
+                    "key": "CVSS3_SCORE",
+                    "value": "4.9"
+                  },
+                  {
+                    "key": "CVSS3_VECTOR",
+                    "value": "CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L"
+                  },
+                  {
+                    "key": "package_version",
+                    "value": "2.41-12+deb13u4"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "glibc"
+                  }
+                ]
+              }
+            ],
+            "imageScanCompletedAt": "2026-10-26T20:16:01+00:00",
+            "vulnerabilitySourceUpdatedAt": "2026-10-26T20:16:01+00:00",
+            "findingSeverityCounts": {
+              "HIGH": 3,
+              "MEDIUM": 9,
+              "LOW": 3
+            }
+          },
+          "registryId": "429100831877",
+          "repositoryName": "achados-web",
+          "imageId": {
+            "imageDigest": "sha256:fa3e79ed9005074a11a1fa742e6bba8f0113e339e548f285d18cb53bef3cbab5"
+          },
+          "imageScanStatus": {
+            "status": "COMPLETE",
+            "description": "The scan was completed successfully."
+          }
+        },
+        "frontend": {
+          "imageScanFindings": {
+            "findings": [
+              {
+                "name": "CVE-2026-86410",
+                "description": "A flaw in the curl command line tool's logic makes it only set SSH host verification options when interacting directly using SFTP or SCP, and not as a result of following a redirect.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-86410",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-107929",
+                "description": "When `CURLOPT_INTERFACE` (or the command line tool's `--interface` option) is set with one of the documented prefixes (`if!`, `host!`, `ifhost!`), that binding is not part of the connection reuse key, so a later transfer asking for a different source can silently reuse an existing connection and go out from the earlier transfer's source address",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-107929",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-86412",
+                "description": "A remote HTTP server can set a cookie that curl accepts and writes to a Netscape cookie jar but cannot reload. On the next invocation using the same path for `--cookie` and `--cookie-jar`, curl fails before connecting, then the cleanup procedure replaces the jar with an empty file, deleting cookies for unrelated domains.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-86412",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-86409",
+                "description": "Setting `CURLOPT_AWS_SIGV4` to NULL but does not disable SigV4 authentication, contrary to expectations and documentation. A subsequent transfer on the same handle still sends an `Authorization: AWS4-HMAC-SHA256` header to whatever URL isset next, leaking state information.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-86409",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-92390",
+                "description": "When invoked with `--remote-header-name` (`-J`), curl fails to preserve its documented anti-clobbering protection if an intermediate 103 Early Hints response precedes the final HTTP response, or if an `ETag` header is processed before `Content-Disposition` under `--etag-save`. This flaw allows an HTTP(S) server to overwrite an existing local file specified in the `Content-Disposition` header despite the presence of the `-J` non-overwrite constraint.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-92390",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-94266",
+                "description": "libcurl could accidentally return a URL for `curl_easy_getinfo()`'s `CURLINFO_EFFECTIVE_URL` option containing credentials, even though neither the URL provided to libcurl nor the redirected URL did.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-94266",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-92388",
+                "description": "When an FTP wildcard `LIST` operation fails, libcurl omits the restoration path meant for successful listings, leaving the write callback set to the internal listing parser and the write callback data pointing directly to the easy handle. Subsequent reuse of this handle triggers an immediate crash, and cloning it via `curl_easy_duphandle()` copies this corrupted state into the duplicate. If the original handle is subsequently freed, executing a transfer on the cloned handle causes a heap use-after-free read against the dangling handle reference; alternatively, reusing the original or cloned handle while changing only `CURLOPT_WRITEDATA` (and omitting `CURLOPT_WRITEFUNCTION`) results in type confusion, forcing the internal parser to interpret incoming server response bytes into memory at the application-supplied write data pointer.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-92388",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-92392",
+                "description": "During an upload, curl mishandles HTTP/2 `RST_STREAM` received from the server (with reason `HTTP_1_1_REQUIRED` or `REFUSED_STREAM`) leading to a use after free of a `struct Curl_easy` object.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-92392",
+                "severity": "HIGH",
+                "attributes": [
+                  {
+                    "key": "CVSS3_SCORE",
+                    "value": "8.1"
+                  },
+                  {
+                    "key": "CVSS3_VECTOR",
+                    "value": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:H"
+                  },
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-92386",
+                "description": "When writing a long cookie name and value to a Netscape cookie jar, a remote HTTP server can make `curl` write a record that exceeds its line-length parsing limit. Consequently, any subsequent `curl` invocation reading from that same cookie jar using `--cookie` silently aborts parsing prematurely upon encountering the too long line, ignoring all subsequent valid cookies in the file.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-92386",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-86414",
+                "description": "An HTTP proxy can trick libcurl into sending the origin's credentials (Basic password, or a Negotiate/Kerberos ticket) to the proxy itself, by answering the `CONNECT` tunnel request with 401 `WWW-Authenticate:` instead of the expected 407 `Proxy-Authenticate:`.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-86414",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-87863",
+                "description": "An authenticated HTTPS origin can supply an HSTS `max-age` value that the parser accepts, but time serialization later fails to process. On 64-bit systems, extreme max-age values compute an absolute expiry within standard time integer limits that exceeds calendar time structure bounds. During cache saves, the original HSTS file is truncated before writing a temporary replacement; when serialization fails, the temporary file is deleted, leaving an empty or partial cache. Because the save error is silently ignored during cleanup, curl exits successfully despite the data loss.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-87863",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-87861",
+                "description": "When using ambient user credentials, an HTTP request directed to one origin may be dispatched over a connection previously authenticated via Negotiate for a different origin, leaving the request's intended credentials unused.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-87861",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-86413",
+                "description": "When using an *ambient user* in a first transfer doing Negotiate authentication and asked to follow redirects, curl could pass on its credential details to an unrelated second origin when asked to redirect there.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-86413",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-87865",
+                "description": "When libcurl uses libssh2 with a hashed `known_hosts` file, an unrelated initial entry can cause host key validation to report a key *mismatch* as a *missing* key to the `CURLOPT_SSH_KEYFUNCTION` callback.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-87865",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-92387",
+                "description": "By permanently omitting the final control-response line, a malicious FTP, IMAP, POP3, or SMTP server can exploit libcurl and completely bypass its configured transfer timeout mechanism, indefinitely blocking all concurrent transfers bound to the same multi-handle.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-92387",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-92389",
+                "description": "libcurl's TFTP state machine fails to validate state transitions against the requested transfer direction, accepting opening server responses for both reads and writes interchangeably. A malicious TFTP server can respond to a download request in a way that forces the client into transmit mode, prompting libcurl to consume and transmit data from the handle's persistent `CURLOPT_READDATA` pointer - including data remaining from unrelated prior operations, such as an HTTP POST request executed on a reused handle.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-92389",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-92391",
+                "description": "A deeply nested multipart MIME structure constructed via the public API causes a stack overflow in libcurl during normal cleanup operations. An excessive recursion depth within `curl_mime_free` leads to unbounded stack frame allocation during structure traversal, ultimately crashing the host process.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-92391",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-87862",
+                "description": "Importing a `includeSubDomains` parent HSTS entry before a longer-lived child entry, silently drops the child. Consequently, when the parent expires, the child's valid HSTS policy is lost, causing curl to issue unencrypted HTTP requests rather than upgrading to HTTPS.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-87862",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-86411",
+                "description": "An `ftp://` transfer configured with `CURLUSESSL_NONE` can reuse a pooled FTP control connection that a previous easy handle upgraded with `STARTTLS` and authenticated using a client certificate. The second handle performs neither a new TLS handshake nor a new FTP login, so the server continues to authorize it under the first handle's certificate identity.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-86411",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-94265",
+                "description": "When processing an HTTP redirect to a URL containing userinfo (a `username:password` component), curl might erroneously retain and re-transmit the original host's HTTP Negotiate authentication state. Consequently, a malicious server can trigger a redirect containing arbitrary userinfo to force curl to send a freshly minted Kerberos ticket—generated using the ambient identity of the client process to an untrusted third-party host, effectively bypassing the domain-scoping restrictions normally enforced by the absence of `--location-trusted`.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-94265",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-87864",
+                "description": "Enabling `CURLOPT_CRLF` causes curl to advertise the raw input byte count in the `IMAP APPEND {N}` literal while transmitting line-ending expanded data. The server reads only $N$ bytes for the payload, causing the remaining overflow bytes to be interpreted and executed as pipelined IMAP commands within the authenticated session.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-87864",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-111497",
+                "description": "A buffer overflow vulnerability in the Brotli decoder (c/dec/decode.c) in Google Brotli versions 1.0.3 through 1.2.0 on all platforms allows a remote unauthenticated attacker to corrupt adjacent decoder state memory, disclose sensitive memory contents, cause a denial of service, or potentially execute arbitrary code using a crafted Brotli-compressed stream. Users need to update any Brotli libraries or binaries between 1.0.3 through 1.2.0 to the latest available version: 1.0.10 or 1.1.1 or 1.2.1.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-111497",
+                "severity": "CRITICAL",
+                "attributes": [
+                  {
+                    "key": "CVSS4_SCORE",
+                    "value": "9.2"
+                  },
+                  {
+                    "key": "CVSS4_VECTOR",
+                    "value": "CVSS:4.0/AV:N/AC:L/AT:P/PR:N/UI:N/VC:H/VI:H/VA:H/SC:N/SI:N/SA:N/E:X/CR:X/IR:X/AR:X/MAV:X/MAC:X/MAT:X/MPR:X/MUI:X/MVC:X/MVI:X/MVA:X/MSC:X/MSI:X/MSA:X/S:X/AU:X/R:X/V:X/RE:X/U:X"
+                  },
+                  {
+                    "key": "package_version",
+                    "value": "1.2.0-r1"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "brotli"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-86415",
+                "description": "libcurl's connection cache match function never considers the automatic client certificate option, so a cached, already authenticated Schannel connection can be handed to a transfer that got redirected to a different origin, even though the code explicitly switched off the auto client cert option for that transfer to prevent exactly this.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-86415",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-107928",
+                "description": "When curl is built with GnuTLS, a malicious WebSocket server can make curl send memory past its send buffer. This is due to an out of bounds read following when `gnutls_record_send()` returns a number of bytes sent **greater than the number of bytes it was given to send**. GnuTLS does that after a blocked send.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-107928",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              },
+              {
+                "name": "CVE-2026-87866",
+                "description": "When built with wolfSSL, curl can successfully validate a pinned public key hash against a key the TLS peer does not possess. During the TLS handshake, wolfSSL validates the connection, but curl's subsequent re-parsing of the same certificate - tricked by a manipulated validity length field - extracts and matches a different embedded key, incorrectly authorizing the pinned public key.",
+                "uri": "https://nvd.nist.gov/vuln/detail/CVE-2026-87866",
+                "severity": "UNDEFINED",
+                "attributes": [
+                  {
+                    "key": "package_version",
+                    "value": "8.22.0-r0"
+                  },
+                  {
+                    "key": "package_name",
+                    "value": "curl"
+                  }
+                ]
+              }
+            ],
+            "imageScanCompletedAt": "2026-10-26T20:16:05+00:00",
+            "vulnerabilitySourceUpdatedAt": "2026-10-26T20:16:05+00:00",
+            "findingSeverityCounts": {
+              "HIGH": 1,
+              "UNDEFINED": 23,
+              "CRITICAL": 1
+            }
+          },
+          "registryId": "429100831877",
+          "repositoryName": "achados-frontend",
+          "imageId": {
+            "imageDigest": "sha256:5645505723ce612ec12a4f371f8ae769fc9354f9ba259f7f86000bd958784ab8"
+          },
+          "imageScanStatus": {
+            "status": "COMPLETE",
+            "description": "The scan was completed successfully."
+          }
+        }
+      },
+      "api_calls": [
+        {
+          "service": "ecr",
+          "operation": "DescribeImageScanFindings",
+          "status": "success"
+        },
+        {
+          "service": "ecr",
+          "operation": "DescribeImageScanFindings",
+          "status": "success"
+        }
+      ]
+    },
+    "alpine_available_updates": {
+      "chunk_id": "b9329f",
+      "wall_time_seconds": 3.6042477,
+      "exit_code": 0,
+      "original_token_count": 53,
+      "output": "Installed:                                Available:\nbrotli-libs-1.2.0-r1                    < 1.2.1-r0 \ncurl-8.22.0-r0                          < 8.23.0-r0 \nlibcurl-8.22.0-r0                       < 8.23.0-r0 \n"
+    },
+    "debian_available_updates": {
+      "chunk_id": "1cc1fb",
+      "wall_time_seconds": 6.9120212,
+      "exit_code": 0,
+      "original_token_count": 94,
+      "output": "Reading package lists...\nBuilding dependency tree...\nReading state information...\nCalculating upgrade...\nThe following packages will be upgraded:\n  tzdata\n1 upgraded, 0 newly installed, 0 to remove and 0 not upgraded.\nInst tzdata [2026c-0+deb13u1] (2026e-0+deb13u1 Debian:13-updates/stable-updates [all])\nConf tzdata (2026e-0+deb13u1 Debian:13-updates/stable-updates [all])\n"
+    },
+    "frontend_v2_local_validation": {
+      "chunk_id": "ff4d36",
+      "wall_time_seconds": 4.1789236,
+      "exit_code": 0,
+      "original_token_count": 232,
+      "output": "nginx: the configuration file /etc/nginx/nginx.conf syntax is ok\nnginx: configuration file /etc/nginx/nginx.conf test is successful\n{\r\n  \"runtime_output\": [\r\n    \"authentication_check_passed=true\",\r\n    \"brotli-libs: Generic lossless compressor (libraries)\",\r\n    \"brotli-libs: https://github.com/google/brotli\",\r\n    \"brotli-libs: 957 KiB\",\r\n    \"curl: URL retrieval utility and library\",\r\n    \"curl: https://curl.se/\",\r\n    \"curl: 278 KiB\",\r\n    \"libcurl: The multiprotocol file transfer library\",\r\n    \"libcurl: https://curl.se/\",\r\n    \"libcurl: 733 KiB\"\r\n  ],\r\n  \"missing_secret_exit_code\": 1,\r\n  \"fails_closed_without_secret\": true,\r\n  \"uri\": \"429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-frontend:aws-v2\",\r\n  \"image_id\": \"sha256:1da2228ea0f9e466d31b05e6f599e7f7065e79e167ef1bf5fc551ca2a6c3d1a0\",\r\n  \"os\": \"linux\",\r\n  \"architecture\": \"amd64\",\r\n  \"size_bytes\": 27364645,\r\n  \"embedded_secret_environment\": false\r\n}\r\n"
+    },
+    "frontend_v2_packages": {
+      "chunk_id": "676011",
+      "wall_time_seconds": 1.4626185,
+      "exit_code": 0,
+      "original_token_count": 39,
+      "output": "brotli-libs-1.2.1-r0 x86_64 {brotli} (MIT) [installed]\ncurl-8.23.0-r0 x86_64 {curl} (curl) [installed]\nlibcurl-8.23.0-r0 x86_64 {curl} (curl) [installed]\n"
+    },
+    "frontend_v2_push": {
+      "exit_code": 0,
+      "output_excerpt": "Login Succeeded\naws-v2: digest: sha256:1da2228ea0f9e466d31b05e6f599e7f7065e79e167ef1bf5fc551ca2a6c3d1a0 size: 856\nECR_FRONTEND_V2_PUSH_COMPLETED\nECR_TEMP_AUTH_REMOVED=True",
+      "excerpt_note": "Trechos de resultado da saída real, sem progresso, sequências ANSI ou entrada mascarada."
+    },
+    "frontend_v2_remote_verification": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:21:42.293591+00:00",
+        "frontend_images": {
+          "imageDetails": [
+            {
+              "registryId": "429100831877",
+              "repositoryName": "achados-frontend",
+              "imageDigest": "sha256:6b62b51ad4be06ded4a5616c3007fccdd4c6372060d06adb1ad72fd70a31d6cd",
+              "imageSizeInBytes": 27360659,
+              "imagePushedAt": "2026-10-26T20:20:42.396000+00:00",
+              "imageManifestMediaType": "application/vnd.oci.image.manifest.v1+json",
+              "artifactMediaType": "application/vnd.oci.image.config.v1+json",
+              "imageStatus": "ACTIVE"
+            },
+            {
+              "registryId": "429100831877",
+              "repositoryName": "achados-frontend",
+              "imageDigest": "sha256:5645505723ce612ec12a4f371f8ae769fc9354f9ba259f7f86000bd958784ab8",
+              "imageSizeInBytes": 26364033,
+              "imagePushedAt": "2026-10-26T20:14:19.545000+00:00",
+              "imageManifestMediaType": "application/vnd.oci.image.manifest.v1+json",
+              "artifactMediaType": "application/vnd.oci.image.config.v1+json",
+              "imageStatus": "ACTIVE"
+            },
+            {
+              "registryId": "429100831877",
+              "repositoryName": "achados-frontend",
+              "imageDigest": "sha256:56afef82446cbbd40a6a723e1f8a1bdd49916f2c3294f9d691d1c0e4e508951d",
+              "imageSizeInBytes": 1586,
+              "imagePushedAt": "2026-10-26T20:20:42.392000+00:00",
+              "imageManifestMediaType": "application/vnd.oci.image.manifest.v1+json",
+              "artifactMediaType": "application/vnd.docker.attestation.manifest.v1+json",
+              "subjectManifestDigest": "sha256:6b62b51ad4be06ded4a5616c3007fccdd4c6372060d06adb1ad72fd70a31d6cd",
+              "imageStatus": "ACTIVE"
+            },
+            {
+              "registryId": "429100831877",
+              "repositoryName": "achados-frontend",
+              "imageDigest": "sha256:fea07a1774af4c6165d90c9ab30afa435700101f6e6813cda2cd71fbe79ca43d",
+              "imageSizeInBytes": 1586,
+              "imagePushedAt": "2026-10-26T20:14:19.547000+00:00",
+              "imageManifestMediaType": "application/vnd.oci.image.manifest.v1+json",
+              "artifactMediaType": "application/vnd.docker.attestation.manifest.v1+json",
+              "subjectManifestDigest": "sha256:5645505723ce612ec12a4f371f8ae769fc9354f9ba259f7f86000bd958784ab8",
+              "imageStatus": "ACTIVE"
+            },
+            {
+              "registryId": "429100831877",
+              "repositoryName": "achados-frontend",
+              "imageDigest": "sha256:1da2228ea0f9e466d31b05e6f599e7f7065e79e167ef1bf5fc551ca2a6c3d1a0",
+              "imageTags": [
+                "aws-v2"
+              ],
+              "imageSizeInBytes": 27360659,
+              "imagePushedAt": "2026-10-26T20:20:42.924000+00:00",
+              "imageManifestMediaType": "application/vnd.oci.image.index.v1+json",
+              "imageStatus": "ACTIVE"
+            },
+            {
+              "registryId": "429100831877",
+              "repositoryName": "achados-frontend",
+              "imageDigest": "sha256:12e7097d5d86b10253b16797d2da95dbaed115b2956250f394ff5726517f187b",
+              "imageTags": [
+                "aws-v1"
+              ],
+              "imageSizeInBytes": 26364033,
+              "imagePushedAt": "2026-10-26T20:14:20.032000+00:00",
+              "imageManifestMediaType": "application/vnd.oci.image.index.v1+json",
+              "lastRecordedPullTime": "2026-10-26T20:15:22.276000+00:00",
+              "imageStatus": "ACTIVE"
+            }
+          ]
+        },
+        "frontend_manifest": {
+          "images": [
+            {
+              "registryId": "429100831877",
+              "repositoryName": "achados-frontend",
+              "imageId": {
+                "imageDigest": "sha256:1da2228ea0f9e466d31b05e6f599e7f7065e79e167ef1bf5fc551ca2a6c3d1a0",
+                "imageTag": "aws-v2"
+              },
+              "imageManifest": "{\n  \"schemaVersion\": 2,\n  \"mediaType\": \"application/vnd.oci.image.index.v1+json\",\n  \"manifests\": [\n    {\n      \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n      \"digest\": \"sha256:6b62b51ad4be06ded4a5616c3007fccdd4c6372060d06adb1ad72fd70a31d6cd\",\n      \"size\": 3130,\n      \"platform\": {\n        \"architecture\": \"amd64\",\n        \"os\": \"linux\"\n      }\n    },\n    {\n      \"mediaType\": \"application/vnd.oci.image.manifest.v1+json\",\n      \"digest\": \"sha256:56afef82446cbbd40a6a723e1f8a1bdd49916f2c3294f9d691d1c0e4e508951d\",\n      \"size\": 837,\n      \"annotations\": {\n        \"vnd.docker.reference.digest\": \"sha256:6b62b51ad4be06ded4a5616c3007fccdd4c6372060d06adb1ad72fd70a31d6cd\",\n        \"vnd.docker.reference.type\": \"attestation-manifest\"\n      },\n      \"platform\": {\n        \"architecture\": \"unknown\",\n        \"os\": \"unknown\"\n      }\n    }\n  ]\n}",
+              "imageManifestMediaType": "application/vnd.oci.image.index.v1+json"
+            }
+          ],
+          "failures": []
+        }
+      },
+      "api_calls": [
+        {
+          "service": "ecr",
+          "operation": "DescribeImages",
+          "status": "success",
+          "n_items": {
+            "imageDetails": 6
+          }
+        },
+        {
+          "service": "ecr",
+          "operation": "BatchGetImage",
+          "status": "success",
+          "n_items": {
+            "images": 1,
+            "failures": 0
+          }
+        }
+      ]
+    },
+    "frontend_v2_scan": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:23:35.393901+00:00",
+        "frontend_v2": {
+          "imageScanFindings": {
+            "findings": [],
+            "imageScanCompletedAt": "2026-10-26T20:21:06+00:00",
+            "vulnerabilitySourceUpdatedAt": "2026-10-26T20:21:06+00:00",
+            "findingSeverityCounts": {}
+          },
+          "registryId": "429100831877",
+          "repositoryName": "achados-frontend",
+          "imageId": {
+            "imageDigest": "sha256:6b62b51ad4be06ded4a5616c3007fccdd4c6372060d06adb1ad72fd70a31d6cd"
+          },
+          "imageScanStatus": {
+            "status": "COMPLETE",
+            "description": "The scan was completed successfully."
+          }
+        }
+      },
+      "api_calls": [
+        {
+          "service": "ecr",
+          "operation": "DescribeImageScanFindings",
+          "status": "success"
+        }
+      ]
+    },
+    "cost_calculation": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "pricing_source": "https://aws.amazon.com/ecr/pricing/",
+        "pricing_source_type": "Official pricing page (Price List queries returned no products)",
+        "usd_per_gb_month": "0.10",
+        "retained_main_images": [
+          {
+            "repository": "achados-web",
+            "digest": "sha256:fa3e79ed9005074a11a1fa742e6bba8f0113e339e548f285d18cb53bef3cbab5",
+            "bytes": 50365919
+          },
+          {
+            "repository": "achados-frontend",
+            "digest": "sha256:6b62b51ad4be06ded4a5616c3007fccdd4c6372060d06adb1ad72fd70a31d6cd",
+            "bytes": 27360659
+          },
+          {
+            "repository": "achados-frontend",
+            "digest": "sha256:5645505723ce612ec12a4f371f8ae769fc9354f9ba259f7f86000bd958784ab8",
+            "bytes": 26364033
+          }
+        ],
+        "total_main_image_bytes": 104090611,
+        "total_main_image_mib": "99.27",
+        "monthly_storage_estimate_usd": "0.009694",
+        "six_hour_storage_estimate_usd": "0.000080",
+        "limits": "Approximation from sum of retained main image sizes; excludes small index/attestation metadata, shared-layer adjustments, taxes, credits and internet/cross-region transfer."
+      }
+    }
+  },
+  "configuration_checks": {
+    "both_repositories_present": true,
+    "both_immutable": true,
+    "both_aes256": true,
+    "basic_registry_scanning": true,
+    "both_scanned_on_push": true,
+    "web_published_digest_matches_local": true,
+    "frontend_published_digest_matches_local": true,
+    "both_linux_amd64": true,
+    "web_non_root": true,
+    "web_uploads_writable": true,
+    "web_local_env_absent": true,
+    "image_credential_env_absent": true,
+    "frontend_authentication_test": true,
+    "frontend_fails_closed": true,
+    "frontend_corrected_versions": true,
+    "frontend_scan_complete": true,
+    "frontend_scan_no_findings": true,
+    "backend_scan_complete": true,
+    "backend_high_findings_recorded": true,
+    "both_pushes_completed": true,
+    "temporary_auth_configs_removed": true
+  },
+  "selected_images": {
+    "web": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-web:aws-v1",
+    "frontend": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-frontend:aws-v2"
+  },
+  "limits": {
+    "application_deployed": false,
+    "rds_connection_tested": false,
+    "s3files_mount_tested": false,
+    "backend_high_vulnerabilities_resolved": false,
+    "frontend_v1_retained_for_traceability": true,
+    "security_notes": "A varredura básica do frontend v2 terminou sem achados. Isso não garante ausência de falhas. Os três achados HIGH de glibc/zlib do backend permanecem documentados; não há atualização dessas bibliotecas nos repositórios estáveis consultados."
+  }
+}

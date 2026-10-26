@@ -38,7 +38,7 @@ de Docker, rede, API e volumes.
 | [index.html](../frontend/index.html) | Estrutura, formulários com rótulos, lista e diálogo de foto. |
 | [styles.css](../frontend/styles.css) | Layout responsivo, estados de foco e preferência de movimento reduzido. |
 | [app.js](../frontend/app.js) | Consultas HTTP, filtro, multipart `FormData`, prévia de foto e mensagens. |
-| [Dockerfile](../frontend/Dockerfile) | Imagem baseada em `nginx:1.30-alpine`, com os arquivos estáticos e configurações. |
+| [Dockerfile](../frontend/Dockerfile) | Imagem baseada em `nginx:1.30-alpine`, com atualização dos pacotes Alpine, `apache2-utils`, arquivos estáticos e configurações. |
 | [.dockerignore](../frontend/.dockerignore) | Permite apenas os arquivos necessários no contexto de build. |
 | [routing.conf](../frontend/routing.conf) | Serve `/`, `/index.html`, `/styles.css` e `/app.js`; encaminha os demais caminhos à API. |
 | [nginx/default.conf](../nginx/default.conf) | Upstream `web:5000` e DNS Docker para o Compose; montado somente para leitura. |
@@ -48,6 +48,12 @@ O navegador usa caminhos relativos ao próprio site (`/itens`, `/health`,
 `/estatisticas` e `/fotos/...`), sem URL fixa de localhost e sem precisar de CORS.
 A senha do banco não é enviada ao frontend. Textos recebidos são inseridos com
 `textContent`, evitando interpretar descrições/locais como HTML.
+
+Na [etapa 6 da AWS](AWS-ETAPA-06.md), a varredura detectou uma falha crítica
+no Brotli da imagem base. O build passou a aplicar `apk upgrade --no-cache`;
+o frontend publicado como `aws-v2` usa Brotli/curl corrigidos e passou pelos
+testes de autenticação e pela nova varredura básica. Para buscar correções em
+builds futuros, use `--pull --no-cache`, evitando reutilizar a camada de upgrade.
 
 O filtro é executado pela API por `GET /itens?local=...`, não apenas sobre os
 cartões visíveis. O cadastro envia `POST /itens` com `descricao`, `local` e

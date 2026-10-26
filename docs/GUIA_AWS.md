@@ -7,7 +7,8 @@ a etapa 3 configurou a rede, e a etapa 4 criou o RDS e os dois segredos em
 [rede](AWS-ETAPA-03.md) e [banco e segredos](AWS-ETAPA-04.md).
 A etapa 5 criou o bucket e o S3 Files, com os dois mount targets **Available**,
 conforme o [registro do armazenamento](AWS-ETAPA-05.md). A aplicação ainda não
-foi implantada no ECS.
+foi implantada no ECS. A etapa 6 publicou as imagens no ECR e corrigiu os
+pacotes do frontend, conforme o [registro das imagens](AWS-ETAPA-06.md).
 
 ## 1. O caminho recomendado para começar
 
@@ -300,6 +301,12 @@ exige uma versão separada da aplicação.
 
 ## 6. ECR: enviar a imagem da aplicação
 
+**Etapa executada:** as imagens para continuar são `achados-web:aws-v1` e
+**`achados-frontend:aws-v2`**. O frontend `aws-v1` foi substituído após um alerta
+crítico; a varredura de `aws-v2` terminou sem achados. Os três alertas HIGH do
+backend estão documentados, junto com os digests e testes, em
+[AWS-ETAPA-06.md](AWS-ETAPA-06.md). Para continuar, use as imagens já publicadas.
+
 Em **ECR → Private repositories → Create repository**, crie **dois** repositórios:
 `achados-web` e `achados-frontend`.
 Use tags imutáveis para identificar as versões e deixe a criptografia padrão.
@@ -308,9 +315,10 @@ No PowerShell, na raiz do projeto:
 
 ```powershell
 $EcrRegistry = "${AwsAccount}.dkr.ecr.${AwsRegion}.amazonaws.com"
-$ImageTag = 'aws-v1'
-$ImageUri = "${EcrRegistry}/achados-web:${ImageTag}"
-$FrontendImageUri = "${EcrRegistry}/achados-frontend:${ImageTag}"
+$WebImageTag = 'aws-v1'
+$FrontendImageTag = 'aws-v2'
+$ImageUri = "${EcrRegistry}/achados-web:${WebImageTag}"
+$FrontendImageUri = "${EcrRegistry}/achados-frontend:${FrontendImageTag}"
 
 docker build --platform linux/amd64 -t $ImageUri ./app
 docker build --platform linux/amd64 -t $FrontendImageUri ./frontend
@@ -324,7 +332,10 @@ Execute uma linha por vez e prossiga somente se ela terminar sem erro.
 O comando `id` deve identificar o usuário `app`, sem UID zero.
 A plataforma `linux/amd64` corresponde a `X86_64` no modelo da tarefa.
 Cada build tem seu contexto: `app/` e `frontend/`. Nenhuma credencial deve ser copiada.
-Guarde as duas URIs completas com as tags. Para novas versões, use `aws-v2`, `aws-v3` etc.
+Guarde as duas URIs completas com as tags. Para novas versões, avance a tag de
+cada repositório: a próxima do backend será `aws-v2`, e a do frontend `aws-v3`.
+Para atualizar os pacotes de sistema do frontend, use `--pull --no-cache` no
+build; um build com a camada de upgrade em cache não consulta novas correções.
 O ECR armazena a imagem; quem a executa é o Fargate.
 Fonte: [publicação no ECR](https://docs.aws.amazon.com/AmazonECR/latest/userguide/docker-push-ecr-image.html).
 
@@ -697,7 +708,7 @@ CloudFormation ou Terraform, depois de confirmar as escolhas e os custos.
 
 ## 14. O que precisa ser comprovado ao executar
 
-- [ ] Duas imagens enviadas ao ECR e contêiner `web` executando sem root.
+- [x] Duas imagens enviadas ao ECR e contêiner `web` executando sem root: [evidência da etapa 6](evidencias/aws/04-imagens-ecr.json).
 - [x] RDS **Available**, sem acesso público e regra 5432 somente do grupo web: [evidência da etapa 4](evidencias/aws/02-banco-segredos.json).
 - [ ] Conexão SQL a partir da task confirmada na etapa 9.
 - [x] Bucket privado/versionado, S3 Files, access point e dois mount targets disponíveis: [evidência da etapa 5](evidencias/aws/03-fotos-s3files.json).

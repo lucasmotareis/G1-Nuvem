@@ -137,6 +137,7 @@ isolamento de rede, criptografia, versionamento, POSIX e políticas esperadas.
 A montagem, gravação, leitura de foto e sincronização fim a fim serão testadas
 quando o ECS estiver executando. A etapa 5 está concluída; a próxima etapa
 do roteiro é a **6: imagens no ECR**.
+Essa continuação foi executada e está no [registro da etapa 6](AWS-ETAPA-06.md).
 
 Fontes: [pré-requisitos e IAM](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-files-prereq-policies.html),
 [recursos e mount targets](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-files-resources.html),

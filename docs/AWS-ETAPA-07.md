@@ -123,6 +123,9 @@ A próxima etapa é a **8: criar o grupo de logs e cluster ECS, preencher e
 registrar a task definition**. O site será publicado e testado nas etapas
 seguintes. Ao encerrar o laboratório, remover estas roles depois de parar e
 excluir as tasks/services que as utilizam.
+A criação do grupo, cluster e definição foi executada e está no
+[registro da etapa 8](AWS-ETAPA-08.md). A escrita de logs continua aguardando a
+primeira execução, agora prevista para a inicialização do banco na etapa 9.
 
 Fontes: [task role e trust policy](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html),
 [execution role](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html),

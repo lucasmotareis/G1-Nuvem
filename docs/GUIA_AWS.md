@@ -7,10 +7,12 @@ a etapa 3 configurou a rede, e a etapa 4 criou o RDS e os dois segredos em
 [rede](AWS-ETAPA-03.md) e [banco e segredos](AWS-ETAPA-04.md).
 A etapa 5 criou o bucket e o S3 Files, com os dois mount targets **Available**,
 conforme o [registro do armazenamento](AWS-ETAPA-05.md). A aplicação ainda não
-foi implantada no ECS. A etapa 6 publicou as imagens no ECR e corrigiu os
+executa no ECS. A etapa 6 publicou as imagens no ECR e corrigiu os
 pacotes do frontend, conforme o [registro das imagens](AWS-ETAPA-06.md).
 A etapa 7 criou as [duas roles IAM do ECS](AWS-ETAPA-07.md), com políticas
 restritas e validadas. O teste real de gravação dos logs continua pendente.
+A etapa 8 criou o cluster e o grupo de logs e registrou **`achados-web:1`**,
+sem iniciar tasks, conforme o [registro da definição](AWS-ETAPA-08.md).
 
 ## 1. O caminho recomendado para começar
 
@@ -400,6 +402,13 @@ para as duas roles; nenhuma permissão do novo usuário foi alterada nesta etapa
 
 ## 8. ECS: registrar a receita de execução
 
+**Etapa executada:** cluster `g1-achados` ativo, grupo `/ecs/achados-web` com
+retenção de sete dias e definição **`achados-web:1`** registrada. O
+[JSON preenchido](../infra/aws/task-definition.us-east-1.json) contém somente
+configurações e referências de segredos, sem valores de senha. A configuração
+e as evidências estão em [AWS-ETAPA-08.md](AWS-ETAPA-08.md). Não é necessário
+registrar outra revisão para continuar. Os passos abaixo permitem reproduzir.
+
 1. Em **CloudWatch → Log groups**, crie `/ecs/achados-web` e defina retenção
    curta para o laboratório, por exemplo sete dias.
 2. Em **ECS → Clusters → Create cluster**, crie `g1-achados`, usando Fargate.
@@ -415,8 +424,10 @@ para as duas roles; nenhuma permissão do novo usuário foi alterada nesta etapa
 5. Se escolheu outra região, ajuste os dois campos `awslogs-region`. Mantenha
    os comandos padrão das imagens: Gunicorn em `web` e Nginx em `frontend`.
    Não preencha `entryPoint`/`command` na definição usada pelo service.
-6. Registre a definição. Use Fargate Linux, plataforma atual (`LATEST`, com
-   suporte a S3 Files; chaves JSON de segredos exigem pelo menos 1.4.0).
+6. Registre a definição com Fargate Linux. A versão da plataforma (`LATEST`,
+   com suporte a S3 Files) será selecionada ao executar a task/service;
+   não é um campo do JSON de registro. Chaves JSON de segredos no Fargate Linux
+   exigem pelo menos a plataforma 1.4.0.
 
 O modelo usa 0,25 vCPU e 0,5 GiB compartilhados pelos dois contêineres, ponto de
 partida para teste pequeno. Aumente se observar falta de memória.
@@ -648,6 +659,7 @@ evolução própria. Use imagens de teste sem dados pessoais neste laboratório.
 | --- | --- |
 | `CannotPullContainerError` | URI/tag, arquitetura, execution role, IP público e rota de saída. |
 | `ResourceInitializationError` no segredo | ARN completo, chaves JSON, região e `GetSecretValue` na execution role. |
+| `Unable to assume the service linked role` ao criar o cluster | Conferir `AWSServiceRoleForECS`; na primeira criação ela pode ter sido criada automaticamente e ainda não estar disponível para uso. Consultar a role e repetir após sua propagação; não substituir por uma role administrativa. |
 | Falha de montagem/timeout NFS | Mount target na zona da task, grupo de fotos, TCP 2049 e task role. |
 | `Permission denied` ao cadastrar foto | Access point correto, usuário POSIX, diretório `/uploads` e `ClientWrite`. |
 | `/health` retorna 503 | Endpoint, DB name, segredo, RDS disponível, regra 5432 e TLS. |
@@ -694,6 +706,7 @@ CloudFormation ou Terraform, depois de confirmar as escolhas e os custos.
 
 - [x] Duas imagens enviadas ao ECR e contêiner `web` executando sem root: [evidência da etapa 6](evidencias/aws/04-imagens-ecr.json).
 - [x] Duas roles ECS criadas com trust/políticas conferidas e validadas: [evidência da etapa 7](evidencias/aws/05-roles-ecs.json).
+- [x] Cluster ativo, grupo de logs com retenção e task definition registrada: [evidência da etapa 8](evidencias/aws/06-cluster-task-definition.json).
 - [ ] Gravação real de logs no grupo do projeto confirmada no ECS; simulação inconclusiva na etapa 7.
 - [x] RDS **Available**, sem acesso público e regra 5432 somente do grupo web: [evidência da etapa 4](evidencias/aws/02-banco-segredos.json).
 - [ ] Conexão SQL a partir da task confirmada na etapa 9.

@@ -76,6 +76,8 @@ Na [etapa 6](AWS-ETAPA-06.md), as duas imagens foram publicadas no ECR, com
 correção de segurança no frontend e os alertas remanescentes documentados.
 Na [etapa 7](AWS-ETAPA-07.md), foram criadas as roles com referências aos segredos
 e ao armazenamento; a validação em execução continua pendente.
+Na [etapa 8](AWS-ETAPA-08.md), cluster, grupo de logs e definição da task foram
+criados; os contêineres ainda não foram iniciados na AWS.
 
 | Peça do ambiente local | Microsoft Azure | AWS | Google Cloud |
 | --- | --- | --- | --- |
@@ -115,4 +117,4 @@ a [documentação da AWS](https://docs.aws.amazon.com/AmazonECS/latest/developer
 As etapas de rede, banco/segredos e criação do armazenamento foram executadas
 na conta AWS, assim como o envio das imagens ao ECR na etapa 6.
 A montagem e a sincronização de fotos ainda precisam ser testadas;
-o modelo de task definition ainda não foi registrado nem executado no ECS.
+a definição foi registrada na etapa 8, mas ainda não foi executada no ECS.

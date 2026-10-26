@@ -49,7 +49,7 @@ try {
   assert(!js.includes(password));
   await page.screenshot({ path: path.join(out, '35-acesso-autenticado.png'), fullPage: true });
   checks.push('Navegador autenticado carrega a interface; senha ausente do HTML/JavaScript');
-  const report = { legenda: 'Testes reais de autenticacao HTTP Basic no Nginx; credenciais omitidas.', executadoEmUtc: new Date().toISOString(), checks, stats };
+  const report = { legenda: 'Testes reais de autenticacao HTTP Basic no Nginx; credenciais omitidas.', executadoEmUtc: new Date().toISOString(), baseURL, checks, stats };
   await writeFile(path.join(out, '35-autenticacao-testes.json'), JSON.stringify(report, null, 2) + '\n');
   for (const check of checks) console.log(`APROVADO: ${check}`);
 } finally {

@@ -86,7 +86,7 @@
     },
     {
       "name": "frontend",
-      "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-frontend:aws-v2",
+      "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-frontend:aws-v3",
       "essential": true,
       "dependsOn": [
         {

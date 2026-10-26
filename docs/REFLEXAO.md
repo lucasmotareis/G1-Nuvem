@@ -52,7 +52,7 @@ O art. 46 exige medidas de proteção; restringir a porta do banco é apenas uma
 Proponho (1) autenticação e autorização para limitar quem pode cadastrar itens e consultar fotos;
 e (2) HTTPS para proteger as requisições e o transporte das imagens.
 Na etapa de 19/10, eram medidas futuras e as rotas não tinham controle de acesso.
-Em 26/10, esta branch acrescentou [senha compartilhada no Nginx](ACESSO.md); contas individuais e HTTPS na AWS continuam pendentes de implantação.
+Em 26/10, esta branch acrescentou [senha compartilhada no Nginx](ACESSO.md) e [HTTPS na AWS](AWS-APRESENTACAO.md); contas individuais permanecem uma evolução futura.
 
 ## Q7 — Réplicas
 
@@ -71,13 +71,16 @@ conferidos nas fontes oficiais vinculadas em cada célula. Em 26/10/2026, a
 [etapa 3 da AWS](AWS-ETAPA-03.md) preparou a rede e os grupos de segurança reais;
 a [etapa 4](AWS-ETAPA-04.md) criou os segredos e o RDS, confirmado como disponível.
 A [etapa 5](AWS-ETAPA-05.md) criou o bucket e o sistema S3 Files para as fotos;
-a montagem no ECS e os testes de integração da aplicação permanecem pendentes.
+a montagem e os testes de integração foram posteriormente executados no
+[ambiente da apresentação](AWS-APRESENTACAO.md), com upload e recuperação de fotos.
 Na [etapa 6](AWS-ETAPA-06.md), as duas imagens foram publicadas no ECR, com
 correção de segurança no frontend e os alertas remanescentes documentados.
 Na [etapa 7](AWS-ETAPA-07.md), foram criadas as roles com referências aos segredos
-e ao armazenamento; a validação em execução continua pendente.
+e ao armazenamento; a [etapa 9](AWS-ETAPA-09.md) confirmou injeção dos segredos,
+conexão SQL com TLS e gravação real dos logs.
 Na [etapa 8](AWS-ETAPA-08.md), cluster, grupo de logs e definição da task foram
-criados; os contêineres ainda não foram iniciados na AWS.
+criados. Em seguida, `achados-web:2` passou a executar como service Fargate,
+com frontend `aws-v3`, CloudFront e ALB interno; os resultados estão no registro final.
 
 | Peça do ambiente local | Microsoft Azure | AWS | Google Cloud |
 | --- | --- | --- | --- |
@@ -116,5 +119,6 @@ fornece uma montagem de arquivos para preservar o código do protótipo, conform
 a [documentação da AWS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/s3files-volumes.html).
 As etapas de rede, banco/segredos e criação do armazenamento foram executadas
 na conta AWS, assim como o envio das imagens ao ECR na etapa 6.
-A montagem e a sincronização de fotos ainda precisam ser testadas;
-a definição foi registrada na etapa 8, mas ainda não foi executada no ECS.
+A execução posterior no ECS confirmou a montagem e o envio das fotos ao bucket
+privado, preservando os arquivos originais. Os testes de API, navegador e
+autenticação estão vinculados no [registro da apresentação](AWS-APRESENTACAO.md).

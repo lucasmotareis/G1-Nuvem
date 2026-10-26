@@ -6,6 +6,10 @@ a infraestrutura usa Docker Compose.
 O objetivo é permitir que outra equipe execute o protótipo e compreenda as
 configurações antes de planejar sua migração para a nuvem.
 
+O [ambiente AWS para a apresentação](docs/AWS-APRESENTACAO.md) reúne o endereço
+HTTPS, o roteiro de demonstração, o diagrama dos serviços e as evidências da
+implantação. A execução local continua usando Docker Compose.
+
 ## Estrutura e documentação
 
 ```text
@@ -51,13 +55,15 @@ estrutura apresentada como `achados-perdidos` no enunciado. Os arquivos
 | [A3 — Relatório técnico](docs/RELATORIO.md) | Dockerfile, Compose, caminho do POST e ciclo de vida dos volumes. |
 | [A4 — Evidências](docs/evidencias/README.md) | Índice com legendas, saídas reais e imagens dos ensaios. |
 | [A5 — Reflexão](docs/REFLEXAO.md) | Sete respostas e tabela de equivalência Azure, AWS e Google Cloud. |
-| [Guia AWS](docs/GUIA_AWS.md) | Roteiro com ECS/Fargate, RDS, S3 Files, VPC, Secrets Manager e ECR; recursos preparados e task definition registrada; execução e integração da aplicação pendentes. |
+| [Guia AWS](docs/GUIA_AWS.md) | Roteiro com ECS/Fargate, RDS, S3 Files, VPC, Secrets Manager, ECR e entrada HTTPS CloudFront/ALB interno. |
+| [Apresentação na AWS](docs/AWS-APRESENTACAO.md) | Endereço, demonstração, configuração implantada, testes e encerramento do laboratório. |
 | [Preparação de rede AWS](docs/AWS-ETAPA-03.md) | VPC, sub-redes e grupos de segurança reais criados/conferidos para continuar o roteiro. |
 | [Banco e segredos AWS](docs/AWS-ETAPA-04.md) | Configuração real do RDS privado, dois segredos, custos consultados e acompanhamento no console. |
 | [Fotos na AWS](docs/AWS-ETAPA-05.md) | Bucket privado, S3 Files, access point, rede, permissões e custos por uso do laboratório. |
 | [Imagens no ECR](docs/AWS-ETAPA-06.md) | URIs/digests publicados, frontend corrigido, verificações locais e pendências da varredura do backend. |
 | [Roles do ECS](docs/AWS-ETAPA-07.md) | Execution role, task role, políticas restritas, simulações e distinção do usuário IAM administrador. |
 | [Definição da tarefa ECS](docs/AWS-ETAPA-08.md) | Cluster ativo, grupo de logs, JSON preenchido e `achados-web:1` registrada; sem tasks iniciadas. |
+| [Inicialização do banco AWS](docs/AWS-ETAPA-09.md) | Tarefa avulsa aplicou o SQL original, confirmou três registros, TLS e gravação real dos logs. |
 | [Frontend](docs/FRONTEND.md) | Interface, integração com a API, roteiro para demonstração e testes de navegador. |
 | [Acesso por senha](docs/ACESSO.md) | Entrada compartilhada no Nginx, segredo local/AWS, curl autenticado e HTTPS. |
 | [Bônus](docs/BONUS.md) | Proxy reverso, backup com restauração e Adminer no perfil `debug`. |

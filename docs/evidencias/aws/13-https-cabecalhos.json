@@ -1,0 +1,15 @@
+{
+  "legenda": "Resposta publica sem senha e cabecalhos de protecao recebidos por HTTPS.",
+  "executadoEmUtc": "2026-10-26T21:47:14.5613479Z",
+  "status": 401,
+  "authenticate": "Basic realm=\"Achados e Perdidos\"",
+  "hsts": "max-age=31536000",
+  "csp": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self'; object-src 'none'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'",
+  "frame": "DENY",
+  "nosniff": "nosniff",
+  "cacheControl": "no-store",
+  "httpRedirect": {
+    "status": 301,
+    "location": "https://di54x57cfrcxq.cloudfront.net/"
+  }
+}

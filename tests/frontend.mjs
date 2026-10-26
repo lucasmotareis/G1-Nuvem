@@ -148,7 +148,7 @@ try {
   assert.deepEqual(pageErrors, []);
   record('Layout móvel em 390px sem rolagem horizontal e sem erros JavaScript');
 
-  const report = { legenda: 'Testes reais do frontend no Chromium contra o Compose isolado; cenários simulados estão identificados individualmente.', executadoEm: new Date().toISOString(), baseURL, checks, before, after, created, noPhoto, pageErrors };
+  const report = { legenda: 'Testes do frontend no Chromium contra a baseURL registrada; cenários simulados estão identificados individualmente.', executadoEm: new Date().toISOString(), baseURL, checks, before, after, created, noPhoto, pageErrors };
   await writeFile(path.join(evidence, '30-frontend-testes.json'), JSON.stringify(report, null, 2) + '\n');
   console.log(JSON.stringify({ before, after, created, noPhoto }));
 } finally {

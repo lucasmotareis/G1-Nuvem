@@ -1,16 +1,18 @@
 # Achados & Perdidos na AWS — roteiro de laboratório
 
 Roteiro preparado em 26/10/2026 a partir da [reflexão, seção 5.1](REFLEXAO.md#51--do-ambiente-local-para-a-nuvem),
-do código atual e das fontes oficiais vinculadas abaixo. **Execução parcial:**
+do código atual e das fontes oficiais vinculadas abaixo. O
+[registro final da apresentação](AWS-APRESENTACAO.md) reúne o endereço, a configuração
+atual e os testes executados; as etapas abaixo preservam o percurso de implantação.
 a etapa 3 configurou a rede, e a etapa 4 criou o RDS e os dois segredos em
 26/10/2026, com o banco confirmado como **Available**. Os resultados estão registrados em
 [rede](AWS-ETAPA-03.md) e [banco e segredos](AWS-ETAPA-04.md).
 A etapa 5 criou o bucket e o S3 Files, com os dois mount targets **Available**,
-conforme o [registro do armazenamento](AWS-ETAPA-05.md). A aplicação ainda não
-executa no ECS. A etapa 6 publicou as imagens no ECR e corrigiu os
+conforme o [registro do armazenamento](AWS-ETAPA-05.md). A etapa 6 publicou as imagens no ECR e corrigiu os
 pacotes do frontend, conforme o [registro das imagens](AWS-ETAPA-06.md).
 A etapa 7 criou as [duas roles IAM do ECS](AWS-ETAPA-07.md), com políticas
-restritas e validadas. O teste real de gravação dos logs continua pendente.
+restritas e validadas. A [etapa 9](AWS-ETAPA-09.md) confirmou logs, conexão SQL
+com TLS e os três exemplos no RDS, por uma tarefa avulsa concluída com sucesso.
 A etapa 8 criou o cluster e o grupo de logs e registrou **`achados-web:1`**,
 sem iniciar tasks, conforme o [registro da definição](AWS-ETAPA-08.md).
 
@@ -19,9 +21,10 @@ sem iniciar tasks, conforme o [registro da definição](AWS-ETAPA-08.md).
 Para aprender cada serviço sem administrar uma máquina virtual, use o console
 AWS para criar os recursos e o PowerShell local para enviar a imagem e executar
 as tarefas. Use uma tarefa Fargate com dois contêineres e dados fictícios.
-O acesso compartilhado exige a senha no Nginx e **HTTPS no ALB antes de enviar
-essa senha pela internet**. Será necessário um domínio que você possa validar
-no ACM; o DNS padrão do ALB não substitui essa validação.
+O acesso compartilhado exige a senha no Nginx e **HTTPS antes de enviar
+essa senha pela internet**. Para esta apresentação, usamos o domínio padrão
+CloudFront com certificado fornecido pela AWS e um ALB interno por VPC origin.
+Também há uma alternativa com domínio próprio e certificado ACM na seção 11.
 
 | Peça local | Serviço usado | O que você administra |
 | --- | --- | --- |
@@ -38,12 +41,12 @@ substituindo as que falham. Um **cluster** organiza esses recursos no ECS.
 
 ```mermaid
 flowchart LR
-    PC["Visitante com a senha compartilhada"] -->|"HTTPS :443"| ALB
+    PC["Visitante com a senha compartilhada"] -->|"HTTPS :443"| CF["CloudFront · domínio AWS e certificado<br/>cache desativado · autenticação encaminhada"]
     ECR["ECR privado · duas imagens"] -. "download na inicialização" .-> WEB
     ECR -. "download na inicialização" .-> FRONT
     SM["Secrets Manager"] -. "injeção de credenciais" .-> WEB
     subgraph VPC["VPC · duas zonas de disponibilidade"]
-        ALB["ALB público · certificado ACM<br/>HTTP redireciona para HTTPS"]
+        CF -->|"VPC origin · conexão privada"| ALB["ALB interno · duas sub-redes privadas<br/>entrada somente do CloudFront"]
         ALB -->|"HTTP :80 · senha validada pelo Nginx"| FRONT
         ALB -. "prontidão :8082/healthz" .-> FRONT
         subgraph TASK["Uma task ECS/Fargate · IP público"]
@@ -71,7 +74,7 @@ Veja [S3 Files](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-files.h
 e a [integração com ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/s3files-volumes.html).
 
 O frontend estático é empacotado em uma segunda imagem Nginx. A página inicial
-e a API usam a mesma origem: `https://seu-dominio/`. O Nginx faz proxy
+e a API usam a mesma origem HTTPS do CloudFront. O Nginx faz proxy
 das rotas da API para `127.0.0.1:5000`, pois os contêineres da mesma task
 compartilham a rede. Não há DNS Docker `db`, publicação `8080:80`, contêiner
 PostgreSQL ou Adminer na AWS. As portas da task não recebem entrada direta da
@@ -306,8 +309,9 @@ exige uma versão separada da aplicação.
 ## 6. ECR: enviar a imagem da aplicação
 
 **Etapa executada:** as imagens para continuar são `achados-web:aws-v1` e
-**`achados-frontend:aws-v2`**. O frontend `aws-v1` foi substituído após um alerta
-crítico; a varredura de `aws-v2` terminou sem achados. Os três alertas HIGH do
+**`achados-frontend:aws-v3`**. O frontend `aws-v1` foi substituído após um alerta
+crítico; as varreduras de `aws-v2` e `aws-v3` terminaram sem achados. A v3
+acrescenta o reconhecimento do HTTPS terminado no CloudFront. Os três alertas HIGH do
 backend estão documentados, junto com os digests e testes, em
 [AWS-ETAPA-06.md](AWS-ETAPA-06.md). Para continuar, use as imagens já publicadas.
 
@@ -320,7 +324,7 @@ No PowerShell, na raiz do projeto:
 ```powershell
 $EcrRegistry = "${AwsAccount}.dkr.ecr.${AwsRegion}.amazonaws.com"
 $WebImageTag = 'aws-v1'
-$FrontendImageTag = 'aws-v2'
+$FrontendImageTag = 'aws-v3'
 $ImageUri = "${EcrRegistry}/achados-web:${WebImageTag}"
 $FrontendImageUri = "${EcrRegistry}/achados-frontend:${FrontendImageTag}"
 
@@ -337,7 +341,8 @@ O comando `id` deve identificar o usuário `app`, sem UID zero.
 A plataforma `linux/amd64` corresponde a `X86_64` no modelo da tarefa.
 Cada build tem seu contexto: `app/` e `frontend/`. Nenhuma credencial deve ser copiada.
 Guarde as duas URIs completas com as tags. Para novas versões, avance a tag de
-cada repositório: a próxima do backend será `aws-v2`, e a do frontend `aws-v3`.
+cada repositório: a próxima do backend será `aws-v2`, e a do frontend `aws-v4`.
+As tags publicadas são imutáveis: não tente reenviar um build diferente com elas.
 Para atualizar os pacotes de sistema do frontend, use `--pull --no-cache` no
 build; um build com a camada de upgrade em cache não consulta novas correções.
 O ECR armazena a imagem; quem a executa é o Fargate.
@@ -509,7 +514,8 @@ with psycopg.connect(DB_URL) as c:
         raise RuntimeError("Tabela itens ja existe; inicializacao interrompida para evitar duplicar os exemplos.")
     c.execute(sql, prepare=False)
     total = c.execute("SELECT COUNT(*) FROM itens").fetchone()[0]
-print("Inicializacao concluida; itens:", total)
+    ssl = c.execute("SELECT ssl FROM pg_stat_ssl WHERE pid=pg_backend_pid()").fetchone()[0]
+print("Inicializacao concluida; itens:", total, "TLS:", ssl)
 '@
 $InitOverrides = @{containerOverrides = @(@{
     name = 'web'
@@ -539,6 +545,13 @@ Este roteiro começa com um banco novo e não transfere dados locais.
 
 ## 10. Subir a aplicação e testar
 
+**Atualização para a apresentação, 26/10/2026:** foi escolhido um endereço HTTPS
+fornecido pela AWS, sem compra de domínio. A implantação usa CloudFront com
+VPC origin, ALB **interno** e a revisão `achados-web:2` com frontend `aws-v3`.
+Consulte [a configuração e os testes finais](AWS-APRESENTACAO.md).
+O caminho com domínio próprio na seção 11 continua sendo uma alternativa;
+não execute os dois caminhos para esta mesma implantação.
+
 Em **ECS → Clusters → g1-achados → Services → Create**:
 
 1. Escolha a task definition `achados-web` e a revisão anotada.
@@ -556,7 +569,7 @@ O IP público da task não é o endereço a compartilhar. Depois de validar o
 certificado e apontar o DNS, no PowerShell:
 
 ```powershell
-$ApiBase = 'https://SUBSTITUA_SEU_DOMINIO'
+$ApiBase = 'https://di54x57cfrcxq.cloudfront.net'
 curl.exe --user visitante -i "$ApiBase/health"
 curl.exe --user visitante -i "$ApiBase/itens"
 curl.exe --user visitante -i "$ApiBase/itens?local=biblio"
@@ -602,6 +615,30 @@ para manter a quantidade desejada. Para atualizar, guarde a revisão anterior
 para poder reverter e faça os testes das rotas novamente.
 
 ### Endereço estável, HTTPS e réplicas
+
+#### Caminho usado: domínio CloudFront e origem privada
+
+O endereço `cloudfront.net` dispensa domínio próprio e certificado ACM do aluno.
+CloudFront exige HTTPS do visitante, encaminha `Authorization`, query strings e
+formulários à origem e usa `Managed-CachingDisabled` em todas as rotas. Isso
+impede que respostas autenticadas ou listas de itens sejam compartilhadas por cache.
+
+O ALB é interno, em duas sub-redes privadas exclusivas, com tabela que contém
+somente a rota local da VPC. Sua porta 80 aceita apenas CloudFront; as portas
+80 e 8082 das tasks aceitam o grupo do ALB. A conexão CloudFront → ALB usa a
+integração privada VPC origin; os trechos HTTP permanecem na rede privada AWS.
+O trecho navegador → CloudFront e a conexão ao PostgreSQL usam TLS.
+
+O frontend v3 reconhece `CloudFront-Forwarded-Proto: https`, gerado pelo
+CloudFront, além do modo anterior `X-Forwarded-Proto: https` do ALB com TLS.
+Esses cabeçalhos dependem das restrições de rede; não devem ser confiados em
+um frontend diretamente exposto à internet. O Compose mantém sua configuração
+local separada. A aplicação Flask e suas dependências foram preservadas.
+
+Referências: [VPC origins](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-vpc-origins.html)
+e [políticas de cache](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/using-managed-cache-policies.html).
+
+#### Alternativa: domínio próprio e HTTPS diretamente no ALB
 
 Para compartilhar o site protegido por senha, configure um **Application Load
 Balancer com HTTPS**. Esse passo é necessário antes dos testes externos da
@@ -684,6 +721,17 @@ Para encerrar definitivamente, depois de preservar os dados necessários:
 
 1. Reduza o service a zero, espere as tasks pararem e exclua o service.
 2. Exclua o ALB/listeners/target group, se foram criados.
+
+   Na implantação com CloudFront, primeiro desative a distribuição e aguarde
+   `Deployed`; exclua a distribuição, a entrega/fonte/destino dos logs e a
+   VPC origin. Remova a política de response headers exclusiva quando estiver
+   sem associações. Só então exclua o ALB interno e target group. O bucket de
+   logs `g1-achados-logs-429100831877-20261026` também faz parte do laboratório;
+   ele tem expiração de objetos em sete dias, o que não exclui o bucket.
+   Depois de remover as interfaces dependentes, exclua o novo grupo
+   `g1-cloudfront-alb-sg` (remova antes as referências a ele no grupo web),
+   as duas sub-redes privadas e sua tabela de rotas.
+   Preserve a VPC padrão e os recursos anteriores de outros projetos.
 3. Faça o backup necessário do RDS; desative sua proteção contra exclusão e
    exclua a instância. Decida explicitamente
    quais snapshots/backups guardar, pois eles podem continuar cobrando.
@@ -707,21 +755,25 @@ CloudFormation ou Terraform, depois de confirmar as escolhas e os custos.
 - [x] Duas imagens enviadas ao ECR e contêiner `web` executando sem root: [evidência da etapa 6](evidencias/aws/04-imagens-ecr.json).
 - [x] Duas roles ECS criadas com trust/políticas conferidas e validadas: [evidência da etapa 7](evidencias/aws/05-roles-ecs.json).
 - [x] Cluster ativo, grupo de logs com retenção e task definition registrada: [evidência da etapa 8](evidencias/aws/06-cluster-task-definition.json).
-- [ ] Gravação real de logs no grupo do projeto confirmada no ECS; simulação inconclusiva na etapa 7.
+- [x] Gravação real de logs no grupo do projeto confirmada na [etapa 9](evidencias/aws/07-inicializacao-rds.json); a simulação da etapa 7 foi inconclusiva.
 - [x] RDS **Available**, sem acesso público e regra 5432 somente do grupo web: [evidência da etapa 4](evidencias/aws/02-banco-segredos.json).
-- [ ] Conexão SQL a partir da task confirmada na etapa 9.
+- [x] Conexão SQL com TLS a partir da task confirmada na etapa 9.
 - [x] Bucket privado/versionado, S3 Files, access point e dois mount targets disponíveis: [evidência da etapa 5](evidencias/aws/03-fotos-s3files.json).
-- [ ] Montagem do access point e escrita/leitura de fotos confirmadas pela aplicação.
-- [ ] Segredos injetados por referência, sem senha no JSON, logs ou Git.
-- [ ] Inicialização avulsa terminou com exit code 0 e criou os três exemplos.
-- [ ] Todas as rotas testadas, incluindo cadastro e recuperação da foto.
-- [ ] Interface em `/` com busca, cadastro e foto funcionando por HTTPS no ALB.
-- [ ] Sem senha, interface/API/fotos retornam 401; senha válida permite acesso.
-- [ ] Porta 8082 restrita ao ALB, servindo apenas `/healthz`.
-- [ ] Objeto identificado no bucket e sincronização sem erros.
-- [ ] Mesmos registros e foto após substituição da task.
+- [x] Montagem do access point e escrita/leitura de fotos confirmadas pela aplicação.
+- [x] Segredos injetados por referência; verificações não encontraram senha nos arquivos de entrega.
+- [x] Inicialização avulsa terminou com exit code 0 e criou os três exemplos.
+- [x] Todas as rotas testadas, incluindo cadastro e recuperação da foto.
+- [x] Interface em `/` com busca, cadastro e foto funcionando por HTTPS no CloudFront e ALB interno.
+- [x] Sem senha, interface/API/fotos retornam 401; senha válida permite acesso.
+- [x] Porta 8082 restrita aos grupos de ALB do laboratório, servindo apenas `/healthz`.
+- [x] Duas fotos identificadas no bucket, com ETags iguais ao MD5 do PNG de teste; métricas de falhas sem amostras, o que não equivale a valor zero.
+- [x] Mesmos seis registros e duas fotos após substituição da task, com [IDs e hashes conferidos](evidencias/aws/14-persistencia-comparacao.json).
 - [ ] Recursos removidos ou custos de retenção conscientemente mantidos.
 
 Registre resultados reais em uma pasta de evidências AWS separada dos ensaios
 locais. Nunca registre a tela de visualização do segredo. Os itens não marcados
 permanecem pendentes de execução e verificação.
+
+A aplicação foi validada no [registro da apresentação](AWS-APRESENTACAO.md).
+O encerramento permanece pendente por decisão de manter o ambiente disponível
+para o professor; não se afirma que os custos cessaram.

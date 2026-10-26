@@ -64,10 +64,11 @@ se tiver alterado `ACCESS_USER`. Um HTTP 401 com senha incorreta é esperado.
 
 ## Disponibilizar na AWS
 
-O [roteiro AWS](GUIA_AWS.md) passa a usar ALB com certificado ACM e domínio
-validado para HTTPS. O usuário acessa `https://seu-dominio/` de qualquer rede
-permitida no ALB e informa a senha. Não é necessário cadastrar o IP individual
-de cada visitante quando a regra do ALB permite acesso público.
+O [ambiente da apresentação](AWS-APRESENTACAO.md) usa o domínio padrão HTTPS
+do CloudFront, com certificado fornecido pela AWS. O ALB permanece interno,
+acessível pelo CloudFront por VPC origin. O usuário pode acessar de outra rede
+e informar a senha; não precisa cadastrar seu IP. O [roteiro AWS](GUIA_AWS.md)
+também mantém a alternativa com domínio próprio e certificado ACM no ALB.
 
 Crie um **segredo separado do banco**, por exemplo `g1/achados/acesso`, com a
 chave `password`. O valor real é informado somente no console do Secrets Manager.
@@ -75,12 +76,13 @@ No modelo ECS, o contêiner `frontend` recebe a chave em `ACCESS_PASSWORD` por
 referência ao ARN; o usuário `visitante` é configuração sem segredo. A execution
 role recebe `GetSecretValue` nos dois segredos específicos.
 
-O security group da task aceita a porta 80 **somente do grupo do ALB**. O ALB
-termina o TLS e encaminha HTTP internamente com `X-Forwarded-Proto: https`.
-A configuração Nginx da AWS rejeita requisições sem esse cabeçalho com HTTP 426.
-O cabeçalho sozinho não é uma proteção: a regra de rede é indispensável para
-que somente o ALB possa fornecê-lo. O listener público 80 do ALB apenas
-redireciona para HTTPS; não encaminhe tráfego público HTTP ao aplicativo.
+O security group da task aceita a porta 80 **somente dos grupos de ALB definidos
+para o laboratório**. Na implantação atual, CloudFront termina o TLS e gera
+`CloudFront-Forwarded-Proto: https`; o ALB interno encaminha HTTP pela VPC.
+O frontend v3 aceita esse indicador ou `X-Forwarded-Proto: https`, usado na
+alternativa com TLS no próprio ALB. Sem indicação HTTPS, retorna 426.
+Os cabeçalhos dependem das restrições de rede. Somente CloudFront recebe
+requisições públicas; seu HTTP redireciona para HTTPS.
 
 Os healthchecks não precisam conhecer a senha: existe um listener separado em
 `8082`, somente com `/healthz`. Ele não serve a interface, fotos ou outros

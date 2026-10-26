@@ -55,6 +55,9 @@ o frontend publicado como `aws-v2` usa Brotli/curl corrigidos e passou pelos
 testes de autenticação e pela nova varredura básica. Para buscar correções em
 builds futuros, use `--pull --no-cache`, evitando reutilizar a camada de upgrade.
 
+Na implantação final, `aws-v3` mantém essas correções e acrescenta o suporte ao
+HTTPS terminado no CloudFront. Sua varredura básica também terminou sem achados.
+
 O filtro é executado pela API por `GET /itens?local=...`, não apenas sobre os
 cartões visíveis. O cadastro envia `POST /itens` com `descricao`, `local` e
 `foto` opcional. Nenhum `Content-Type` multipart é definido manualmente: o
@@ -142,8 +145,8 @@ docker compose --env-file .env.example -p g1-frontend-validacao -f docker-compos
 O [guia AWS](GUIA_AWS.md) foi atualizado para duas imagens ECR e dois contêineres
 na mesma task Fargate. O acesso entra na porta 80 do frontend Nginx, que consulta
 o Flask em localhost:5000. `web` recebe o segredo do banco e a montagem S3 Files;
-`frontend` recebe outro segredo para a senha de entrada. O ALB com HTTPS
+`frontend` recebe outro segredo para a senha de entrada. O ALB interno
 encaminha para `frontend:80` e verifica `/healthz` na porta interna 8082.
-A configuração AWS foi testada
-localmente com dois contêineres compartilhando a rede; isso não comprova
-implantação em ECS, RDS ou S3 Files, que continua pendente.
+CloudFront fornece a entrada HTTPS por uma VPC origin privada. O
+[registro da apresentação](AWS-APRESENTACAO.md) reúne os resultados reais
+da implantação e distingue os testes locais anteriores dos ensaios na AWS.

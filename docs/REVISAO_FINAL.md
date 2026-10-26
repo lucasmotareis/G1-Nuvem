@@ -5,7 +5,9 @@ frontend. A branch `codex/frontend-achados-perdidos` acrescenta uma interface
 separada, preservando os arquivos fornecidos; seus testes estão nas
 [evidências 29 a 33](evidencias/README.md#estado-da-branch-com-frontend).
 O Mermaid e os roteiros local/AWS foram atualizados. O frontend ainda não foi
-publicado no repositório remoto nem implantado na AWS.
+publicado no repositório remoto. A implantação AWS foi posteriormente executada;
+o [registro da apresentação](AWS-APRESENTACAO.md) contém a configuração e as
+evidências atuais, sem substituir esta conferência histórica da entrega local.
 A proteção por senha foi acrescentada em seguida, também sem alterar a aplicação
 fornecida. Os testes 34 a 38 e [ACESSO.md](ACESSO.md) documentam essa etapa.
 

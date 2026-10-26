@@ -1,0 +1,2508 @@
+{
+  "legenda": "Etapas 10 e 11: service Fargate com frontend v3, CloudFront HTTPS, ALB interno e substituicao real da task. Leituras finais apos os testes.",
+  "capturadoEmUtc": "2026-10-26T21:49:44.690Z",
+  "checks": {
+    "serviceComUmaTask": true,
+    "deploymentConcluido": true,
+    "novaTaskSaudavel": true,
+    "taskAnteriorParada": true,
+    "cloudfrontPublicado": true,
+    "cacheDesativado": true,
+    "redirecionaHttps": true,
+    "origemVpc": true,
+    "targetUnicoSaudavel": true,
+    "healthcheck8082": true,
+    "semSegredosLiterais": true
+  },
+  "resourcesCreated": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "subnets": [
+        {
+          "AvailabilityZoneId": "use1-az2",
+          "MapCustomerOwnedIpOnLaunch": false,
+          "OwnerId": "429100831877",
+          "AssignIpv6AddressOnCreation": false,
+          "Ipv6CidrBlockAssociationSet": [],
+          "Tags": [
+            {
+              "Key": "Project",
+              "Value": "achados-perdidos"
+            },
+            {
+              "Key": "Environment",
+              "Value": "laboratorio"
+            },
+            {
+              "Key": "Name",
+              "Value": "g1-privada-a"
+            }
+          ],
+          "SubnetArn": "arn:aws:ec2:us-east-1:429100831877:subnet/subnet-0621bf39acd446843",
+          "EnableDns64": false,
+          "Ipv6Native": false,
+          "PrivateDnsNameOptionsOnLaunch": {
+            "HostnameType": "ip-name",
+            "EnableResourceNameDnsARecord": false,
+            "EnableResourceNameDnsAAAARecord": false
+          },
+          "SubnetId": "subnet-0621bf39acd446843",
+          "State": "available",
+          "VpcId": "vpc-0de41f84c70ccf93b",
+          "CidrBlock": "172.31.96.0/24",
+          "AvailableIpAddressCount": 251,
+          "AvailabilityZone": "us-east-1a",
+          "DefaultForAz": false,
+          "MapPublicIpOnLaunch": false
+        },
+        {
+          "AvailabilityZoneId": "use1-az4",
+          "MapCustomerOwnedIpOnLaunch": false,
+          "OwnerId": "429100831877",
+          "AssignIpv6AddressOnCreation": false,
+          "Ipv6CidrBlockAssociationSet": [],
+          "Tags": [
+            {
+              "Key": "Project",
+              "Value": "achados-perdidos"
+            },
+            {
+              "Key": "Environment",
+              "Value": "laboratorio"
+            },
+            {
+              "Key": "Name",
+              "Value": "g1-privada-b"
+            }
+          ],
+          "SubnetArn": "arn:aws:ec2:us-east-1:429100831877:subnet/subnet-0c7f02d7085901ebd",
+          "EnableDns64": false,
+          "Ipv6Native": false,
+          "PrivateDnsNameOptionsOnLaunch": {
+            "HostnameType": "ip-name",
+            "EnableResourceNameDnsARecord": false,
+            "EnableResourceNameDnsAAAARecord": false
+          },
+          "SubnetId": "subnet-0c7f02d7085901ebd",
+          "State": "available",
+          "VpcId": "vpc-0de41f84c70ccf93b",
+          "CidrBlock": "172.31.97.0/24",
+          "AvailableIpAddressCount": 251,
+          "AvailabilityZone": "us-east-1b",
+          "DefaultForAz": false,
+          "MapPublicIpOnLaunch": false
+        }
+      ],
+      "routeTable": {
+        "RouteTable": {
+          "Associations": [],
+          "PropagatingVgws": [],
+          "RouteTableId": "rtb-077b6411714253e64",
+          "Routes": [
+            {
+              "DestinationCidrBlock": "172.31.0.0/16",
+              "GatewayId": "local",
+              "Origin": "CreateRouteTable",
+              "State": "active"
+            }
+          ],
+          "Tags": [
+            {
+              "Key": "Project",
+              "Value": "achados-perdidos"
+            },
+            {
+              "Key": "Environment",
+              "Value": "laboratorio"
+            },
+            {
+              "Key": "Name",
+              "Value": "g1-privada-local"
+            }
+          ],
+          "VpcId": "vpc-0de41f84c70ccf93b",
+          "OwnerId": "429100831877"
+        },
+        "ClientToken": "ea3c02be-4ef7-400a-806b-bebc4e104195"
+      },
+      "associations": [
+        {
+          "AssociationId": "rtbassoc-03ababd302851eabc",
+          "AssociationState": {
+            "State": "associated"
+          }
+        },
+        {
+          "AssociationId": "rtbassoc-013dcd9d08df0a680",
+          "AssociationState": {
+            "State": "associated"
+          }
+        }
+      ],
+      "securityGroup": {
+        "GroupId": "sg-0fbbc2ee7c0dcfb17",
+        "Tags": [
+          {
+            "Key": "Project",
+            "Value": "achados-perdidos"
+          },
+          {
+            "Key": "Environment",
+            "Value": "laboratorio"
+          },
+          {
+            "Key": "Name",
+            "Value": "g1-cloudfront-alb-sg"
+          }
+        ],
+        "SecurityGroupArn": "arn:aws:ec2:us-east-1:429100831877:security-group/sg-0fbbc2ee7c0dcfb17"
+      },
+      "alb": {
+        "LoadBalancers": [
+          {
+            "LoadBalancerArn": "arn:aws:elasticloadbalancing:us-east-1:429100831877:loadbalancer/app/g1-achados-interno/3ad7a391a13e0db1",
+            "DNSName": "internal-g1-achados-interno-898232288.us-east-1.elb.amazonaws.com",
+            "CanonicalHostedZoneId": "Z35SXDOTRQ7X7K",
+            "CreatedTime": "2026-10-26T21:28:11.741000+00:00",
+            "LoadBalancerName": "g1-achados-interno",
+            "Scheme": "internal",
+            "VpcId": "vpc-0de41f84c70ccf93b",
+            "State": {
+              "Code": "provisioning"
+            },
+            "Type": "application",
+            "AvailabilityZones": [
+              {
+                "ZoneName": "us-east-1b",
+                "SubnetId": "subnet-0c7f02d7085901ebd",
+                "LoadBalancerAddresses": []
+              },
+              {
+                "ZoneName": "us-east-1a",
+                "SubnetId": "subnet-0621bf39acd446843",
+                "LoadBalancerAddresses": []
+              }
+            ],
+            "SecurityGroups": [
+              "sg-0fbbc2ee7c0dcfb17"
+            ],
+            "IpAddressType": "ipv4"
+          }
+        ]
+      },
+      "targetGroup": {
+        "TargetGroups": [
+          {
+            "TargetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:429100831877:targetgroup/g1-achados-frontend/0b3d34bb8b3c78df",
+            "TargetGroupName": "g1-achados-frontend",
+            "Protocol": "HTTP",
+            "Port": 80,
+            "VpcId": "vpc-0de41f84c70ccf93b",
+            "HealthCheckProtocol": "HTTP",
+            "HealthCheckPort": "8082",
+            "HealthCheckEnabled": true,
+            "HealthCheckIntervalSeconds": 30,
+            "HealthCheckTimeoutSeconds": 5,
+            "HealthyThresholdCount": 2,
+            "UnhealthyThresholdCount": 3,
+            "HealthCheckPath": "/healthz",
+            "Matcher": {
+              "HttpCode": "200"
+            },
+            "TargetType": "ip",
+            "ProtocolVersion": "HTTP1",
+            "IpAddressType": "ipv4"
+          }
+        ]
+      },
+      "listener": {
+        "Listeners": [
+          {
+            "ListenerArn": "arn:aws:elasticloadbalancing:us-east-1:429100831877:listener/app/g1-achados-interno/3ad7a391a13e0db1/df809447cd5c269e",
+            "LoadBalancerArn": "arn:aws:elasticloadbalancing:us-east-1:429100831877:loadbalancer/app/g1-achados-interno/3ad7a391a13e0db1",
+            "Port": 80,
+            "Protocol": "HTTP",
+            "DefaultActions": [
+              {
+                "Type": "forward",
+                "TargetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:429100831877:targetgroup/g1-achados-frontend/0b3d34bb8b3c78df",
+                "ForwardConfig": {
+                  "TargetGroups": [
+                    {
+                      "TargetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:429100831877:targetgroup/g1-achados-frontend/0b3d34bb8b3c78df",
+                      "Weight": 1
+                    }
+                  ],
+                  "TargetGroupStickinessConfig": {
+                    "Enabled": false
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "api_calls": [
+      {
+        "service": "ec2",
+        "operation": "CreateSubnet",
+        "status": "success"
+      },
+      {
+        "service": "ec2",
+        "operation": "CreateSubnet",
+        "status": "success"
+      },
+      {
+        "service": "ec2",
+        "operation": "CreateRouteTable",
+        "status": "success"
+      },
+      {
+        "service": "ec2",
+        "operation": "AssociateRouteTable",
+        "status": "success"
+      },
+      {
+        "service": "ec2",
+        "operation": "AssociateRouteTable",
+        "status": "success"
+      },
+      {
+        "service": "ec2",
+        "operation": "CreateSecurityGroup",
+        "status": "success",
+        "n_items": {
+          "Tags": 3
+        }
+      },
+      {
+        "service": "ec2",
+        "operation": "AuthorizeSecurityGroupIngress",
+        "status": "success",
+        "n_items": {
+          "SecurityGroupRules": 1
+        }
+      },
+      {
+        "service": "ec2",
+        "operation": "AuthorizeSecurityGroupIngress",
+        "status": "success",
+        "n_items": {
+          "SecurityGroupRules": 2
+        }
+      },
+      {
+        "service": "elbv2",
+        "operation": "CreateLoadBalancer",
+        "status": "success",
+        "n_items": {
+          "LoadBalancers": 1
+        }
+      },
+      {
+        "service": "elbv2",
+        "operation": "CreateTargetGroup",
+        "status": "success",
+        "n_items": {
+          "TargetGroups": 1
+        }
+      },
+      {
+        "service": "elbv2",
+        "operation": "ModifyTargetGroupAttributes",
+        "status": "success",
+        "n_items": {
+          "Attributes": 14
+        }
+      },
+      {
+        "service": "elbv2",
+        "operation": "CreateListener",
+        "status": "success",
+        "n_items": {
+          "Listeners": 1
+        }
+      }
+    ]
+  },
+  "taskRegistration": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "taskDefinition": {
+        "taskDefinitionArn": "arn:aws:ecs:us-east-1:429100831877:task-definition/achados-web:2",
+        "containerDefinitions": [
+          {
+            "name": "web",
+            "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-web:aws-v1",
+            "cpu": 0,
+            "portMappings": [
+              {
+                "containerPort": 5000,
+                "hostPort": 5000,
+                "protocol": "tcp",
+                "appProtocol": "http"
+              }
+            ],
+            "essential": true,
+            "environment": [
+              {
+                "name": "PGSSLMODE",
+                "value": "require"
+              },
+              {
+                "name": "DB_NAME",
+                "value": "achados"
+              },
+              {
+                "name": "DB_HOST",
+                "value": "g1-achados-db.cwzoegmiwx9c.us-east-1.rds.amazonaws.com"
+              },
+              {
+                "name": "DB_PORT",
+                "value": "5432"
+              },
+              {
+                "name": "UPLOAD_DIR",
+                "value": "/app/uploads"
+              }
+            ],
+            "mountPoints": [
+              {
+                "sourceVolume": "fotos",
+                "containerPath": "/app/uploads",
+                "readOnly": false
+              }
+            ],
+            "volumesFrom": [],
+            "secrets": [
+              {
+                "name": "DB_USER",
+                "valueFrom": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y:username::"
+              },
+              {
+                "name": "DB_PASSWORD",
+                "valueFrom": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y:password::"
+              }
+            ],
+            "logConfiguration": {
+              "logDriver": "awslogs",
+              "options": {
+                "awslogs-group": "/ecs/achados-web",
+                "awslogs-region": "us-east-1",
+                "awslogs-stream-prefix": "web"
+              }
+            },
+            "healthCheck": {
+              "command": [
+                "CMD",
+                "python",
+                "-c",
+                "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=2)"
+              ],
+              "interval": 30,
+              "timeout": 5,
+              "retries": 3,
+              "startPeriod": 60
+            },
+            "systemControls": []
+          },
+          {
+            "name": "frontend",
+            "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-frontend:aws-v3",
+            "cpu": 0,
+            "portMappings": [
+              {
+                "containerPort": 80,
+                "hostPort": 80,
+                "protocol": "tcp",
+                "appProtocol": "http"
+              },
+              {
+                "containerPort": 8082,
+                "hostPort": 8082,
+                "protocol": "tcp",
+                "appProtocol": "http"
+              }
+            ],
+            "essential": true,
+            "environment": [
+              {
+                "name": "ACCESS_USER",
+                "value": "visitante"
+              }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [
+              {
+                "name": "ACCESS_PASSWORD",
+                "valueFrom": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/acesso-TR13WW:password::"
+              }
+            ],
+            "dependsOn": [
+              {
+                "containerName": "web",
+                "condition": "HEALTHY"
+              }
+            ],
+            "logConfiguration": {
+              "logDriver": "awslogs",
+              "options": {
+                "awslogs-group": "/ecs/achados-web",
+                "awslogs-region": "us-east-1",
+                "awslogs-stream-prefix": "frontend"
+              }
+            },
+            "healthCheck": {
+              "command": [
+                "CMD",
+                "wget",
+                "-q",
+                "-O",
+                "/dev/null",
+                "http://127.0.0.1:8082/healthz"
+              ],
+              "interval": 30,
+              "timeout": 5,
+              "retries": 3,
+              "startPeriod": 60
+            },
+            "systemControls": []
+          }
+        ],
+        "family": "achados-web",
+        "taskRoleArn": "arn:aws:iam::429100831877:role/g1-ecs-task-role",
+        "executionRoleArn": "arn:aws:iam::429100831877:role/g1-ecs-execution-role",
+        "networkMode": "awsvpc",
+        "revision": 2,
+        "volumes": [
+          {
+            "name": "fotos",
+            "s3filesVolumeConfiguration": {
+              "fileSystemArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+              "rootDirectory": "/",
+              "transitEncryptionPort": 2049,
+              "accessPointArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137"
+            }
+          }
+        ],
+        "status": "ACTIVE",
+        "requiresAttributes": [
+          {
+            "name": "ecs.capability.execution-role-awslogs"
+          },
+          {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+          },
+          {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+          },
+          {
+            "name": "ecs.capability.container-health-check"
+          },
+          {
+            "name": "ecs.capability.execution-role-ecr-pull"
+          },
+          {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+          },
+          {
+            "name": "ecs.capability.task-eni"
+          },
+          {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+          },
+          {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+          },
+          {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+          },
+          {
+            "name": "ecs.capability.secrets.asm.environment-variables"
+          },
+          {
+            "name": "ecs.capability.container-ordering"
+          }
+        ],
+        "placementConstraints": [],
+        "compatibilities": [
+          "EC2",
+          "MANAGED_INSTANCES",
+          "FARGATE"
+        ],
+        "runtimePlatform": {
+          "cpuArchitecture": "X86_64",
+          "operatingSystemFamily": "LINUX"
+        },
+        "requiresCompatibilities": [
+          "FARGATE"
+        ],
+        "cpu": "256",
+        "memory": "512",
+        "registeredAt": "2026-10-26T21:29:57.190000+00:00",
+        "registeredBy": "arn:aws:iam::429100831877:root"
+      },
+      "tags": [
+        {
+          "key": "Project",
+          "value": "achados-perdidos"
+        },
+        {
+          "key": "Environment",
+          "value": "laboratorio"
+        }
+      ]
+    },
+    "api_calls": [
+      {
+        "service": "ecs",
+        "operation": "RegisterTaskDefinition",
+        "status": "success",
+        "n_items": {
+          "tags": 2
+        }
+      }
+    ]
+  },
+  "ecrV3": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "imageDetails": [
+        {
+          "registryId": "429100831877",
+          "repositoryName": "achados-frontend",
+          "imageDigest": "sha256:87e6fde02bacefbfa504fa854f55e0743f95941c3e6a4990c1a98e21cecac3b4",
+          "imageTags": [
+            "aws-v3"
+          ],
+          "imageSizeInBytes": 27360824,
+          "imagePushedAt": "2026-10-26T21:29:08.664000+00:00",
+          "imageManifestMediaType": "application/vnd.oci.image.index.v1+json",
+          "imageStatus": "ACTIVE"
+        }
+      ]
+    },
+    "api_calls": [
+      {
+        "service": "ecr",
+        "operation": "DescribeImages",
+        "status": "success",
+        "n_items": {
+          "imageDetails": 1
+        }
+      }
+    ]
+  },
+  "ecrScan": {
+    "imageScanFindings": {
+      "findings": [],
+      "imageScanCompletedAt": "2026-10-26T21:30:10+00:00",
+      "vulnerabilitySourceUpdatedAt": "2026-10-26T21:30:10+00:00",
+      "findingSeverityCounts": {}
+    },
+    "registryId": "429100831877",
+    "repositoryName": "achados-frontend",
+    "imageId": {
+      "imageDigest": "sha256:6da2c62d6ad020ee07a1d914e1bf7753126ab1b51115785831ad59f5273c9932"
+    },
+    "imageScanStatus": {
+      "status": "COMPLETE",
+      "description": "The scan was completed successfully."
+    }
+  },
+  "origin": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "ETag": "ETVPDKIKX0DER",
+      "VpcOrigin": {
+        "Id": "vo_0ZwUL6nFfRzDiTxcZa6ToO",
+        "Arn": "arn:aws:cloudfront::429100831877:vpcorigin/vo_0ZwUL6nFfRzDiTxcZa6ToO",
+        "AccountId": "429100831877",
+        "Status": "Deployed",
+        "CreatedTime": "2026-10-26T21:31:01.741000+00:00",
+        "LastModifiedTime": "2026-10-26T21:39:18.310000+00:00",
+        "VpcOriginEndpointConfig": {
+          "Name": "g1-achados-vpc-origin",
+          "Arn": "arn:aws:elasticloadbalancing:us-east-1:429100831877:loadbalancer/app/g1-achados-interno/3ad7a391a13e0db1",
+          "HTTPPort": 80,
+          "HTTPSPort": 443,
+          "OriginProtocolPolicy": "http-only",
+          "OriginSslProtocols": {
+            "Quantity": 1,
+            "Items": [
+              "TLSv1.2"
+            ]
+          }
+        }
+      }
+    },
+    "api_calls": [
+      {
+        "service": "cloudfront",
+        "operation": "GetVpcOrigin",
+        "status": "success"
+      }
+    ]
+  },
+  "logging": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "source": {
+        "deliverySource": {
+          "name": "g1-achados-cloudfront",
+          "arn": "arn:aws:logs:us-east-1:429100831877:delivery-source:g1-achados-cloudfront",
+          "resourceArns": [
+            "arn:aws:cloudfront::429100831877:distribution/E3TRUXI3LTMDAF"
+          ],
+          "service": "cloudfront",
+          "logType": "ACCESS_LOGS"
+        }
+      },
+      "delivery": {
+        "delivery": {
+          "id": "PW9AXUHUAD17Fefn",
+          "arn": "arn:aws:logs:us-east-1:429100831877:delivery:PW9AXUHUAD17Fefn",
+          "deliverySourceName": "g1-achados-cloudfront",
+          "deliveryDestinationArn": "arn:aws:logs:us-east-1:429100831877:delivery-destination:g1-achados-cloudfront-s3",
+          "deliveryDestinationType": "S3",
+          "recordFields": [
+            "date",
+            "time",
+            "cs-method",
+            "cs-uri-stem",
+            "sc-status",
+            "x-edge-result-type",
+            "time-taken",
+            "ssl-protocol"
+          ],
+          "s3DeliveryConfiguration": {
+            "suffixPath": "AWSLogs/{account-id}/CloudFront/",
+            "enableHiveCompatiblePath": false
+          }
+        }
+      }
+    },
+    "api_calls": [
+      {
+        "service": "logs",
+        "operation": "PutDeliverySource",
+        "status": "success"
+      },
+      {
+        "service": "logs",
+        "operation": "CreateDelivery",
+        "status": "success"
+      }
+    ]
+  },
+  "logDeliveryReadback": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "GetDistribution": {
+        "ETag": "E23ZP02F085DFQ",
+        "Distribution": {
+          "Id": "E3TRUXI3LTMDAF",
+          "ARN": "arn:aws:cloudfront::429100831877:distribution/E3TRUXI3LTMDAF",
+          "Status": "InProgress",
+          "LastModifiedTime": "2026-10-26T21:40:36.022000+00:00",
+          "InProgressInvalidationBatches": 0,
+          "DomainName": "di54x57cfrcxq.cloudfront.net",
+          "ActiveTrustedSigners": {
+            "Enabled": false,
+            "Quantity": 0
+          },
+          "ActiveTrustedKeyGroups": {
+            "Enabled": false,
+            "Quantity": 0
+          },
+          "DistributionConfig": {
+            "CallerReference": "g1-achados-20261026-2131",
+            "Aliases": {
+              "Quantity": 0
+            },
+            "DefaultRootObject": "",
+            "Origins": {
+              "Quantity": 1,
+              "Items": [
+                {
+                  "Id": "g1-private-alb",
+                  "DomainName": "internal-g1-achados-interno-898232288.us-east-1.elb.amazonaws.com",
+                  "OriginPath": "",
+                  "CustomHeaders": {
+                    "Quantity": 0
+                  },
+                  "VpcOriginConfig": {
+                    "VpcOriginId": "vo_0ZwUL6nFfRzDiTxcZa6ToO",
+                    "OriginReadTimeout": 30,
+                    "OriginKeepaliveTimeout": 5
+                  },
+                  "ConnectionAttempts": 3,
+                  "ConnectionTimeout": 10,
+                  "OriginShield": {
+                    "Enabled": false
+                  },
+                  "OriginAccessControlId": ""
+                }
+              ]
+            },
+            "OriginGroups": {
+              "Quantity": 0
+            },
+            "DefaultCacheBehavior": {
+              "TargetOriginId": "g1-private-alb",
+              "TrustedSigners": {
+                "Enabled": false,
+                "Quantity": 0
+              },
+              "TrustedKeyGroups": {
+                "Enabled": false,
+                "Quantity": 0
+              },
+              "ViewerProtocolPolicy": "redirect-to-https",
+              "AllowedMethods": {
+                "Quantity": 7,
+                "Items": [
+                  "HEAD",
+                  "DELETE",
+                  "POST",
+                  "GET",
+                  "OPTIONS",
+                  "PUT",
+                  "PATCH"
+                ],
+                "CachedMethods": {
+                  "Quantity": 2,
+                  "Items": [
+                    "HEAD",
+                    "GET"
+                  ]
+                }
+              },
+              "SmoothStreaming": false,
+              "Compress": true,
+              "LambdaFunctionAssociations": {
+                "Quantity": 0
+              },
+              "FunctionAssociations": {
+                "Quantity": 0
+              },
+              "FieldLevelEncryptionId": "",
+              "CachePolicyId": "4135ea2d-6df8-44a3-9df3-4b5a84be39ad",
+              "OriginRequestPolicyId": "33f36d7e-f396-46d9-90e0-52428a34d9dc",
+              "ResponseHeadersPolicyId": "3b029522-5304-47b2-bd92-32a73931b650",
+              "GrpcConfig": {
+                "Enabled": false
+              }
+            },
+            "CacheBehaviors": {
+              "Quantity": 0
+            },
+            "CustomErrorResponses": {
+              "Quantity": 6,
+              "Items": [
+                {
+                  "ErrorCode": 403,
+                  "ResponsePagePath": "",
+                  "ResponseCode": "",
+                  "ErrorCachingMinTTL": 0
+                },
+                {
+                  "ErrorCode": 404,
+                  "ResponsePagePath": "",
+                  "ResponseCode": "",
+                  "ErrorCachingMinTTL": 0
+                },
+                {
+                  "ErrorCode": 500,
+                  "ResponsePagePath": "",
+                  "ResponseCode": "",
+                  "ErrorCachingMinTTL": 0
+                },
+                {
+                  "ErrorCode": 502,
+                  "ResponsePagePath": "",
+                  "ResponseCode": "",
+                  "ErrorCachingMinTTL": 0
+                },
+                {
+                  "ErrorCode": 503,
+                  "ResponsePagePath": "",
+                  "ResponseCode": "",
+                  "ErrorCachingMinTTL": 0
+                },
+                {
+                  "ErrorCode": 504,
+                  "ResponsePagePath": "",
+                  "ResponseCode": "",
+                  "ErrorCachingMinTTL": 0
+                }
+              ]
+            },
+            "Comment": "G1 Achados e Perdidos - laboratorio temporario",
+            "Logging": {
+              "Enabled": false,
+              "IncludeCookies": false,
+              "Bucket": "",
+              "Prefix": ""
+            },
+            "PriceClass": "PriceClass_100",
+            "Enabled": true,
+            "ViewerCertificate": {
+              "CloudFrontDefaultCertificate": true,
+              "SSLSupportMethod": "vip",
+              "MinimumProtocolVersion": "TLSv1",
+              "CertificateSource": "cloudfront"
+            },
+            "Restrictions": {
+              "GeoRestriction": {
+                "RestrictionType": "none",
+                "Quantity": 0
+              }
+            },
+            "WebACLId": "",
+            "HttpVersion": "http2",
+            "IsIPV6Enabled": true,
+            "ContinuousDeploymentPolicyId": "",
+            "Staging": false
+          }
+        }
+      },
+      "GetBucketPolicy": {
+        "Policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"DenyInsecureTransport\",\"Effect\":\"Deny\",\"Principal\":\"*\",\"Action\":\"s3:*\",\"Resource\":[\"arn:aws:s3:::g1-achados-logs-429100831877-20261026\",\"arn:aws:s3:::g1-achados-logs-429100831877-20261026/*\"],\"Condition\":{\"Bool\":{\"aws:SecureTransport\":\"false\",\"aws:PrincipalIsAWSService\":\"false\"}}},{\"Sid\":\"AWSLogDeliveryWrite1\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"delivery.logs.amazonaws.com\"},\"Action\":\"s3:PutObject\",\"Resource\":\"arn:aws:s3:::g1-achados-logs-429100831877-20261026/AWSLogs/429100831877/CloudFront/*\",\"Condition\":{\"StringEquals\":{\"aws:SourceAccount\":\"429100831877\",\"s3:x-amz-acl\":\"bucket-owner-full-control\"},\"ArnLike\":{\"aws:SourceArn\":\"arn:aws:logs:us-east-1:429100831877:delivery-source:g1-achados-cloudfront\"}}}]}"
+      },
+      "GetDelivery": {
+        "delivery": {
+          "id": "PW9AXUHUAD17Fefn",
+          "arn": "arn:aws:logs:us-east-1:429100831877:delivery:PW9AXUHUAD17Fefn",
+          "deliverySourceName": "g1-achados-cloudfront",
+          "deliveryDestinationArn": "arn:aws:logs:us-east-1:429100831877:delivery-destination:g1-achados-cloudfront-s3",
+          "deliveryDestinationType": "S3",
+          "recordFields": [
+            "date",
+            "time",
+            "cs-method",
+            "cs-uri-stem",
+            "sc-status",
+            "x-edge-result-type",
+            "time-taken",
+            "ssl-protocol"
+          ],
+          "s3DeliveryConfiguration": {
+            "suffixPath": "AWSLogs/{account-id}/CloudFront/",
+            "enableHiveCompatiblePath": false
+          }
+        }
+      },
+      "GetDeliverySource": {
+        "deliverySource": {
+          "name": "g1-achados-cloudfront",
+          "arn": "arn:aws:logs:us-east-1:429100831877:delivery-source:g1-achados-cloudfront",
+          "resourceArns": [
+            "arn:aws:cloudfront::429100831877:distribution/E3TRUXI3LTMDAF"
+          ],
+          "service": "cloudfront",
+          "logType": "ACCESS_LOGS"
+        }
+      },
+      "GetDeliveryDestination": {
+        "deliveryDestination": {
+          "name": "g1-achados-cloudfront-s3",
+          "arn": "arn:aws:logs:us-east-1:429100831877:delivery-destination:g1-achados-cloudfront-s3",
+          "deliveryDestinationType": "S3",
+          "outputFormat": "json",
+          "deliveryDestinationConfiguration": {
+            "destinationResourceArn": "arn:aws:s3:::g1-achados-logs-429100831877-20261026"
+          }
+        }
+      }
+    },
+    "api_calls": [
+      {
+        "service": "cloudfront",
+        "operation": "GetDistribution",
+        "status": "success"
+      },
+      {
+        "service": "s3",
+        "operation": "GetBucketPolicy",
+        "status": "success"
+      },
+      {
+        "service": "logs",
+        "operation": "GetDelivery",
+        "status": "success"
+      },
+      {
+        "service": "logs",
+        "operation": "GetDeliverySource",
+        "status": "success"
+      },
+      {
+        "service": "logs",
+        "operation": "GetDeliveryDestination",
+        "status": "success"
+      }
+    ]
+  },
+  "infraReadback": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "DescribeRouteTables": {
+        "RouteTables": [
+          {
+            "Associations": [
+              {
+                "Main": false,
+                "RouteTableAssociationId": "rtbassoc-013dcd9d08df0a680",
+                "RouteTableId": "rtb-077b6411714253e64",
+                "SubnetId": "subnet-0c7f02d7085901ebd",
+                "AssociationState": {
+                  "State": "associated"
+                }
+              },
+              {
+                "Main": false,
+                "RouteTableAssociationId": "rtbassoc-03ababd302851eabc",
+                "RouteTableId": "rtb-077b6411714253e64",
+                "SubnetId": "subnet-0621bf39acd446843",
+                "AssociationState": {
+                  "State": "associated"
+                }
+              }
+            ],
+            "PropagatingVgws": [],
+            "RouteTableId": "rtb-077b6411714253e64",
+            "Routes": [
+              {
+                "DestinationCidrBlock": "172.31.0.0/16",
+                "GatewayId": "local",
+                "Origin": "CreateRouteTable",
+                "State": "active"
+              }
+            ],
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "g1-privada-local"
+              },
+              {
+                "Key": "Environment",
+                "Value": "laboratorio"
+              },
+              {
+                "Key": "Project",
+                "Value": "achados-perdidos"
+              }
+            ],
+            "VpcId": "vpc-0de41f84c70ccf93b",
+            "OwnerId": "429100831877"
+          }
+        ]
+      },
+      "DescribeSecurityGroups": {
+        "SecurityGroups": [
+          {
+            "GroupId": "sg-077c23028b341c028",
+            "IpPermissionsEgress": [
+              {
+                "IpProtocol": "-1",
+                "UserIdGroupPairs": [],
+                "IpRanges": [
+                  {
+                    "CidrIp": "0.0.0.0/0"
+                  }
+                ],
+                "Ipv6Ranges": [],
+                "PrefixListIds": []
+              }
+            ],
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "g1-db-sg"
+              },
+              {
+                "Key": "Project",
+                "Value": "achados-perdidos"
+              },
+              {
+                "Key": "Environment",
+                "Value": "laboratorio"
+              }
+            ],
+            "VpcId": "vpc-0de41f84c70ccf93b",
+            "SecurityGroupArn": "arn:aws:ec2:us-east-1:429100831877:security-group/sg-077c23028b341c028",
+            "OwnerId": "429100831877",
+            "GroupName": "g1-db-sg",
+            "Description": "Achados e Perdidos - PostgreSQL only from application",
+            "IpPermissions": [
+              {
+                "IpProtocol": "tcp",
+                "FromPort": 5432,
+                "ToPort": 5432,
+                "UserIdGroupPairs": [
+                  {
+                    "Description": "PostgreSQL only from application",
+                    "UserId": "429100831877",
+                    "GroupId": "sg-0032fd6de918bc221"
+                  }
+                ],
+                "IpRanges": [],
+                "Ipv6Ranges": [],
+                "PrefixListIds": []
+              }
+            ]
+          },
+          {
+            "GroupId": "sg-019dba9bb8b41b0e9",
+            "IpPermissionsEgress": [
+              {
+                "IpProtocol": "-1",
+                "UserIdGroupPairs": [],
+                "IpRanges": [
+                  {
+                    "CidrIp": "0.0.0.0/0"
+                  }
+                ],
+                "Ipv6Ranges": [],
+                "PrefixListIds": []
+              }
+            ],
+            "Tags": [
+              {
+                "Key": "Name",
+                "Value": "g1-fotos-sg"
+              },
+              {
+                "Key": "Project",
+                "Value": "achados-perdidos"
+              },
+              {
+                "Key": "Environment",
+                "Value": "laboratorio"
+              }
+            ],
+            "VpcId": "vpc-0de41f84c70ccf93b",
+            "SecurityGroupArn": "arn:aws:ec2:us-east-1:429100831877:security-group/sg-019dba9bb8b41b0e9",
+            "OwnerId": "429100831877",
+            "GroupName": "g1-fotos-sg",
+            "Description": "Achados e Perdidos - file storage only from application",
+            "IpPermissions": [
+              {
+                "IpProtocol": "tcp",
+                "FromPort": 2049,
+                "ToPort": 2049,
+                "UserIdGroupPairs": [
+                  {
+                    "Description": "NFS file access only from application",
+                    "UserId": "429100831877",
+                    "GroupId": "sg-0032fd6de918bc221"
+                  }
+                ],
+                "IpRanges": [],
+                "Ipv6Ranges": [],
+                "PrefixListIds": []
+              }
+            ]
+          },
+          {
+            "GroupId": "sg-0fbbc2ee7c0dcfb17",
+            "IpPermissionsEgress": [
+              {
+                "IpProtocol": "-1",
+                "UserIdGroupPairs": [],
+                "IpRanges": [
+                  {
+                    "CidrIp": "0.0.0.0/0"
+                  }
+                ],
+                "Ipv6Ranges": [],
+                "PrefixListIds": []
+              }
+            ],
+            "Tags": [
+              {
+                "Key": "Environment",
+                "Value": "laboratorio"
+              },
+              {
+                "Key": "Project",
+                "Value": "achados-perdidos"
+              },
+              {
+                "Key": "Name",
+                "Value": "g1-cloudfront-alb-sg"
+              }
+            ],
+            "VpcId": "vpc-0de41f84c70ccf93b",
+            "SecurityGroupArn": "arn:aws:ec2:us-east-1:429100831877:security-group/sg-0fbbc2ee7c0dcfb17",
+            "OwnerId": "429100831877",
+            "GroupName": "g1-cloudfront-alb-sg",
+            "Description": "Private lab ALB only from CloudFront VPC origin",
+            "IpPermissions": [
+              {
+                "IpProtocol": "tcp",
+                "FromPort": 80,
+                "ToPort": 80,
+                "UserIdGroupPairs": [
+                  {
+                    "Description": "Only this account CloudFront VPC origins",
+                    "UserId": "429100831877",
+                    "GroupId": "sg-067c42836aca8bb86"
+                  }
+                ],
+                "IpRanges": [],
+                "Ipv6Ranges": [],
+                "PrefixListIds": []
+              }
+            ]
+          },
+          {
+            "GroupId": "sg-0032fd6de918bc221",
+            "IpPermissionsEgress": [
+              {
+                "IpProtocol": "-1",
+                "UserIdGroupPairs": [],
+                "IpRanges": [
+                  {
+                    "CidrIp": "0.0.0.0/0"
+                  }
+                ],
+                "Ipv6Ranges": [],
+                "PrefixListIds": []
+              }
+            ],
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "achados-perdidos"
+              },
+              {
+                "Key": "Name",
+                "Value": "g1-web-sg"
+              },
+              {
+                "Key": "Environment",
+                "Value": "laboratorio"
+              }
+            ],
+            "VpcId": "vpc-0de41f84c70ccf93b",
+            "SecurityGroupArn": "arn:aws:ec2:us-east-1:429100831877:security-group/sg-0032fd6de918bc221",
+            "OwnerId": "429100831877",
+            "GroupName": "g1-web-sg",
+            "Description": "Achados e Perdidos - application only from ALB",
+            "IpPermissions": [
+              {
+                "IpProtocol": "tcp",
+                "FromPort": 80,
+                "ToPort": 80,
+                "UserIdGroupPairs": [
+                  {
+                    "Description": "Application traffic only from ALB",
+                    "UserId": "429100831877",
+                    "GroupId": "sg-0c1b056d9a92c1389"
+                  },
+                  {
+                    "Description": "Private lab ALB to frontend",
+                    "UserId": "429100831877",
+                    "GroupId": "sg-0fbbc2ee7c0dcfb17"
+                  }
+                ],
+                "IpRanges": [],
+                "Ipv6Ranges": [],
+                "PrefixListIds": []
+              },
+              {
+                "IpProtocol": "tcp",
+                "FromPort": 8082,
+                "ToPort": 8082,
+                "UserIdGroupPairs": [
+                  {
+                    "Description": "Healthcheck only from ALB",
+                    "UserId": "429100831877",
+                    "GroupId": "sg-0c1b056d9a92c1389"
+                  },
+                  {
+                    "Description": "Private lab ALB healthcheck",
+                    "UserId": "429100831877",
+                    "GroupId": "sg-0fbbc2ee7c0dcfb17"
+                  }
+                ],
+                "IpRanges": [],
+                "Ipv6Ranges": [],
+                "PrefixListIds": []
+              }
+            ]
+          }
+        ]
+      },
+      "DescribeListeners": {
+        "Listeners": [
+          {
+            "ListenerArn": "arn:aws:elasticloadbalancing:us-east-1:429100831877:listener/app/g1-achados-interno/3ad7a391a13e0db1/df809447cd5c269e",
+            "LoadBalancerArn": "arn:aws:elasticloadbalancing:us-east-1:429100831877:loadbalancer/app/g1-achados-interno/3ad7a391a13e0db1",
+            "Port": 80,
+            "Protocol": "HTTP",
+            "DefaultActions": [
+              {
+                "Type": "forward",
+                "TargetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:429100831877:targetgroup/g1-achados-frontend/0b3d34bb8b3c78df",
+                "ForwardConfig": {
+                  "TargetGroups": [
+                    {
+                      "TargetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:429100831877:targetgroup/g1-achados-frontend/0b3d34bb8b3c78df",
+                      "Weight": 1
+                    }
+                  ],
+                  "TargetGroupStickinessConfig": {
+                    "Enabled": false
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "DescribeDBInstances": {
+        "DBInstances": [
+          {
+            "DBInstanceIdentifier": "g1-achados-db",
+            "DBInstanceClass": "db.t4g.micro",
+            "Engine": "postgres",
+            "DBInstanceStatus": "available",
+            "MasterUsername": "achados_admin",
+            "DBName": "achados",
+            "Endpoint": {
+              "Address": "g1-achados-db.cwzoegmiwx9c.us-east-1.rds.amazonaws.com",
+              "Port": 5432,
+              "HostedZoneId": "Z2R2ITUGPM61AM"
+            },
+            "AllocatedStorage": 20,
+            "InstanceCreateTime": "2026-10-26T19:42:36.274000+00:00",
+            "PreferredBackupWindow": "05:40-06:10",
+            "BackupRetentionPeriod": 7,
+            "DBSecurityGroups": [],
+            "VpcSecurityGroups": [
+              {
+                "VpcSecurityGroupId": "sg-077c23028b341c028",
+                "Status": "active"
+              }
+            ],
+            "DBParameterGroups": [
+              {
+                "DBParameterGroupName": "default.postgres16",
+                "ParameterApplyStatus": "in-sync"
+              }
+            ],
+            "AvailabilityZone": "us-east-1a",
+            "DBSubnetGroup": {
+              "DBSubnetGroupName": "g1-achados-db-subnets",
+              "DBSubnetGroupDescription": "Duas zonas da VPC do laboratorio Achados e Perdidos",
+              "VpcId": "vpc-0de41f84c70ccf93b",
+              "SubnetGroupStatus": "Complete",
+              "Subnets": [
+                {
+                  "SubnetIdentifier": "subnet-0eab04bf2964fdeb7",
+                  "SubnetAvailabilityZone": {
+                    "Name": "us-east-1a"
+                  },
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetIdentifier": "subnet-05d4324f091ba6877",
+                  "SubnetAvailabilityZone": {
+                    "Name": "us-east-1b"
+                  },
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                }
+              ]
+            },
+            "PreferredMaintenanceWindow": "fri:09:21-fri:09:51",
+            "UpgradeRolloutOrder": "second",
+            "PendingModifiedValues": {},
+            "LatestRestorableTime": "2026-10-26T21:31:56+00:00",
+            "MultiAZ": false,
+            "EngineVersion": "16.15",
+            "AutoMinorVersionUpgrade": true,
+            "ReadReplicaDBInstanceIdentifiers": [],
+            "LicenseModel": "postgresql-license",
+            "Iops": 3000,
+            "StorageThroughput": 125,
+            "OptionGroupMemberships": [
+              {
+                "OptionGroupName": "default:postgres-16",
+                "Status": "in-sync"
+              }
+            ],
+            "PubliclyAccessible": false,
+            "StorageType": "gp3",
+            "DbInstancePort": 0,
+            "StorageEncrypted": true,
+            "KmsKeyId": "arn:aws:kms:us-east-1:429100831877:key/96e0be21-11a5-4f75-9e40-9af73b4dc629",
+            "DbiResourceId": "db-Y7HIPSTHMMWACZVFDFXAQFGM6E",
+            "CACertificateIdentifier": "rds-ca-rsa2048-g1",
+            "DomainMemberships": [],
+            "CopyTagsToSnapshot": true,
+            "MonitoringInterval": 0,
+            "DBInstanceArn": "arn:aws:rds:us-east-1:429100831877:db:g1-achados-db",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "DatabaseInsightsMode": "standard",
+            "PerformanceInsightsEnabled": true,
+            "PerformanceInsightsKMSKeyId": "arn:aws:kms:us-east-1:429100831877:key/96e0be21-11a5-4f75-9e40-9af73b4dc629",
+            "PerformanceInsightsRetentionPeriod": 7,
+            "DeletionProtection": true,
+            "AssociatedRoles": [],
+            "TagList": [
+              {
+                "Key": "Project",
+                "Value": "achados-perdidos"
+              },
+              {
+                "Key": "Environment",
+                "Value": "laboratorio"
+              },
+              {
+                "Key": "generation_model",
+                "Value": "unspecified"
+              },
+              {
+                "Key": "created_by",
+                "Value": "rds-oss-skill"
+              },
+              {
+                "Key": "Name",
+                "Value": "g1-achados-db"
+              }
+            ],
+            "CustomerOwnedIpEnabled": false,
+            "NetworkType": "IPV4",
+            "ActivityStreamStatus": "stopped",
+            "BackupTarget": "region",
+            "CertificateDetails": {
+              "CAIdentifier": "rds-ca-rsa2048-g1",
+              "ValidTill": "2027-10-26T19:41:17+00:00"
+            },
+            "DedicatedLogVolume": false,
+            "IsStorageConfigUpgradeAvailable": false,
+            "EngineLifecycleSupport": "open-source-rds-extended-support-disabled"
+          }
+        ]
+      }
+    },
+    "api_calls": [
+      {
+        "service": "ec2",
+        "operation": "DescribeRouteTables",
+        "status": "success",
+        "n_items": {
+          "RouteTables": 1
+        }
+      },
+      {
+        "service": "ec2",
+        "operation": "DescribeSecurityGroups",
+        "status": "success",
+        "n_items": {
+          "SecurityGroups": 4
+        }
+      },
+      {
+        "service": "elbv2",
+        "operation": "DescribeListeners",
+        "status": "success",
+        "n_items": {
+          "Listeners": 1
+        }
+      },
+      {
+        "service": "rds",
+        "operation": "DescribeDBInstances",
+        "status": "success",
+        "n_items": {
+          "DBInstances": 1
+        }
+      }
+    ]
+  },
+  "replacementRequest": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "previousRunningTasks": {
+        "taskArns": [
+          "arn:aws:ecs:us-east-1:429100831877:task/g1-achados/c590c14e13ef4d6587a339781ea4067d"
+        ]
+      },
+      "update": {
+        "service": {
+          "serviceArn": "arn:aws:ecs:us-east-1:429100831877:service/g1-achados/achados-web",
+          "serviceName": "achados-web",
+          "clusterArn": "arn:aws:ecs:us-east-1:429100831877:cluster/g1-achados",
+          "loadBalancers": [
+            {
+              "targetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:429100831877:targetgroup/g1-achados-frontend/0b3d34bb8b3c78df",
+              "containerName": "frontend",
+              "containerPort": 80
+            }
+          ],
+          "serviceRegistries": [],
+          "status": "ACTIVE",
+          "desiredCount": 1,
+          "runningCount": 1,
+          "pendingCount": 0,
+          "launchType": "FARGATE",
+          "platformVersion": "LATEST",
+          "platformFamily": "Linux",
+          "taskDefinition": "arn:aws:ecs:us-east-1:429100831877:task-definition/achados-web:2",
+          "deploymentConfiguration": {
+            "deploymentCircuitBreaker": {
+              "enable": true,
+              "rollback": true,
+              "resetOnHealthyTask": true,
+              "thresholdConfiguration": {
+                "type": "BOUNDED_PERCENT",
+                "value": 50
+              }
+            },
+            "maximumPercent": 200,
+            "minimumHealthyPercent": 100,
+            "strategy": "ROLLING",
+            "bakeTimeInMinutes": 0
+          },
+          "deployments": [
+            {
+              "id": "ecs-svc/1911226632245220040",
+              "status": "PRIMARY",
+              "taskDefinition": "arn:aws:ecs:us-east-1:429100831877:task-definition/achados-web:2",
+              "desiredCount": 0,
+              "pendingCount": 0,
+              "runningCount": 0,
+              "failedTasks": 0,
+              "createdAt": "2026-10-26T21:44:49.932000+00:00",
+              "updatedAt": "2026-10-26T21:44:49.932000+00:00",
+              "launchType": "FARGATE",
+              "platformVersion": "1.4.0",
+              "platformFamily": "Linux",
+              "networkConfiguration": {
+                "awsvpcConfiguration": {
+                  "subnets": [
+                    "subnet-05d4324f091ba6877",
+                    "subnet-0eab04bf2964fdeb7"
+                  ],
+                  "securityGroups": [
+                    "sg-0032fd6de918bc221"
+                  ],
+                  "assignPublicIp": "ENABLED"
+                }
+              },
+              "rolloutState": "IN_PROGRESS",
+              "rolloutStateReason": "ECS deployment ecs-svc/1911226632245220040 in progress.",
+              "volumeConfigurations": [
+                {
+                  "name": "fotos"
+                }
+              ]
+            },
+            {
+              "id": "ecs-svc/0209416769692602711",
+              "status": "ACTIVE",
+              "taskDefinition": "arn:aws:ecs:us-east-1:429100831877:task-definition/achados-web:2",
+              "desiredCount": 1,
+              "pendingCount": 0,
+              "runningCount": 1,
+              "failedTasks": 0,
+              "createdAt": "2026-10-26T21:30:12.126000+00:00",
+              "updatedAt": "2026-10-26T21:44:49.932000+00:00",
+              "launchType": "FARGATE",
+              "platformVersion": "1.4.0",
+              "platformFamily": "Linux",
+              "networkConfiguration": {
+                "awsvpcConfiguration": {
+                  "subnets": [
+                    "subnet-05d4324f091ba6877",
+                    "subnet-0eab04bf2964fdeb7"
+                  ],
+                  "securityGroups": [
+                    "sg-0032fd6de918bc221"
+                  ],
+                  "assignPublicIp": "ENABLED"
+                }
+              },
+              "rolloutState": "COMPLETED",
+              "rolloutStateReason": "ECS deployment ecs-svc/0209416769692602711 completed.",
+              "volumeConfigurations": [
+                {
+                  "name": "fotos"
+                }
+              ]
+            }
+          ],
+          "roleArn": "arn:aws:iam::429100831877:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
+          "events": [
+            {
+              "id": "c3588394-3073-4e59-a169-292648964560",
+              "createdAt": "2026-10-26T21:33:02.363000+00:00",
+              "message": "(service achados-web) has reached a steady state."
+            },
+            {
+              "id": "cf0d26f6-4ab1-44f9-9106-a462b892c2da",
+              "createdAt": "2026-10-26T21:33:02.362000+00:00",
+              "message": "(service achados-web) (deployment ecs-svc/0209416769692602711) deployment completed."
+            },
+            {
+              "id": "e5c1404b-992c-472c-95ec-c5e857f7a45e",
+              "createdAt": "2026-10-26T21:32:20.739000+00:00",
+              "message": "(service achados-web) registered 1 targets in (target-group arn:aws:elasticloadbalancing:us-east-1:429100831877:targetgroup/g1-achados-frontend/0b3d34bb8b3c78df)"
+            },
+            {
+              "id": "7d86a0ad-f9a9-4154-88b1-e260df988538",
+              "createdAt": "2026-10-26T21:30:26.766000+00:00",
+              "message": "(service achados-web) has started 1 tasks: (task c590c14e13ef4d6587a339781ea4067d)."
+            }
+          ],
+          "createdAt": "2026-10-26T21:30:12.126000+00:00",
+          "currentServiceRevisions": [
+            {
+              "arn": "arn:aws:ecs:us-east-1:429100831877:service-revision/g1-achados/achados-web/1911226632245220040",
+              "requestedTaskCount": 0,
+              "runningTaskCount": 0,
+              "pendingTaskCount": 0
+            },
+            {
+              "arn": "arn:aws:ecs:us-east-1:429100831877:service-revision/g1-achados/achados-web/0209416769692602711",
+              "requestedTaskCount": 1,
+              "runningTaskCount": 1,
+              "pendingTaskCount": 0
+            }
+          ],
+          "placementConstraints": [],
+          "placementStrategy": [],
+          "networkConfiguration": {
+            "awsvpcConfiguration": {
+              "subnets": [
+                "subnet-05d4324f091ba6877",
+                "subnet-0eab04bf2964fdeb7"
+              ],
+              "securityGroups": [
+                "sg-0032fd6de918bc221"
+              ],
+              "assignPublicIp": "ENABLED"
+            }
+          },
+          "healthCheckGracePeriodSeconds": 120,
+          "schedulingStrategy": "REPLICA",
+          "deploymentController": {
+            "type": "ECS"
+          },
+          "createdBy": "arn:aws:iam::429100831877:root",
+          "enableECSManagedTags": true,
+          "propagateTags": "SERVICE",
+          "enableExecuteCommand": false,
+          "availabilityZoneRebalancing": "ENABLED",
+          "resourceManagementType": "CUSTOMER"
+        }
+      }
+    },
+    "api_calls": [
+      {
+        "service": "ecs",
+        "operation": "ListTasks",
+        "status": "success",
+        "n_items": {
+          "taskArns": 1
+        }
+      },
+      {
+        "service": "ecs",
+        "operation": "UpdateService",
+        "status": "success"
+      }
+    ]
+  },
+  "finalReadback": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "0_DescribeServices": {
+        "services": [
+          {
+            "serviceArn": "arn:aws:ecs:us-east-1:429100831877:service/g1-achados/achados-web",
+            "serviceName": "achados-web",
+            "clusterArn": "arn:aws:ecs:us-east-1:429100831877:cluster/g1-achados",
+            "loadBalancers": [
+              {
+                "targetGroupArn": "arn:aws:elasticloadbalancing:us-east-1:429100831877:targetgroup/g1-achados-frontend/0b3d34bb8b3c78df",
+                "containerName": "frontend",
+                "containerPort": 80
+              }
+            ],
+            "serviceRegistries": [],
+            "status": "ACTIVE",
+            "desiredCount": 1,
+            "runningCount": 1,
+            "pendingCount": 0,
+            "launchType": "FARGATE",
+            "platformVersion": "LATEST",
+            "platformFamily": "Linux",
+            "taskDefinition": "arn:aws:ecs:us-east-1:429100831877:task-definition/achados-web:2",
+            "deploymentConfiguration": {
+              "deploymentCircuitBreaker": {
+                "enable": true,
+                "rollback": true,
+                "resetOnHealthyTask": true,
+                "thresholdConfiguration": {
+                  "type": "BOUNDED_PERCENT",
+                  "value": 50
+                }
+              },
+              "maximumPercent": 200,
+              "minimumHealthyPercent": 100,
+              "strategy": "ROLLING",
+              "bakeTimeInMinutes": 0
+            },
+            "deployments": [
+              {
+                "id": "ecs-svc/1911226632245220040",
+                "status": "PRIMARY",
+                "taskDefinition": "arn:aws:ecs:us-east-1:429100831877:task-definition/achados-web:2",
+                "desiredCount": 1,
+                "pendingCount": 0,
+                "runningCount": 1,
+                "failedTasks": 0,
+                "createdAt": "2026-10-26T21:44:49.932000+00:00",
+                "updatedAt": "2026-10-26T21:47:52.828000+00:00",
+                "launchType": "FARGATE",
+                "platformVersion": "1.4.0",
+                "platformFamily": "Linux",
+                "networkConfiguration": {
+                  "awsvpcConfiguration": {
+                    "subnets": [
+                      "subnet-05d4324f091ba6877",
+                      "subnet-0eab04bf2964fdeb7"
+                    ],
+                    "securityGroups": [
+                      "sg-0032fd6de918bc221"
+                    ],
+                    "assignPublicIp": "ENABLED"
+                  }
+                },
+                "rolloutState": "COMPLETED",
+                "rolloutStateReason": "ECS deployment ecs-svc/1911226632245220040 completed.",
+                "volumeConfigurations": [
+                  {
+                    "name": "fotos"
+                  }
+                ]
+              }
+            ],
+            "roleArn": "arn:aws:iam::429100831877:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
+            "events": [
+              {
+                "id": "490ce735-bc8a-4ea2-82b4-0047de8c1477",
+                "createdAt": "2026-10-26T21:47:52.834000+00:00",
+                "message": "(service achados-web) has reached a steady state."
+              },
+              {
+                "id": "3435818b-34dd-49e3-87d8-6598c113b30a",
+                "createdAt": "2026-10-26T21:47:52.833000+00:00",
+                "message": "(service achados-web) (deployment ecs-svc/1911226632245220040) deployment completed."
+              },
+              {
+                "id": "e7b94e01-d665-46d0-8d83-d54b112b7ba6",
+                "createdAt": "2026-10-26T21:47:00.255000+00:00",
+                "message": "(service achados-web, taskSet ecs-svc/0209416769692602711) has begun draining connections on 1 tasks."
+              },
+              {
+                "id": "d71f0936-d29f-469c-ae3d-ac0061b5491a",
+                "createdAt": "2026-10-26T21:47:00.249000+00:00",
+                "message": "(service achados-web) deregistered 1 targets in (target-group arn:aws:elasticloadbalancing:us-east-1:429100831877:targetgroup/g1-achados-frontend/0b3d34bb8b3c78df)"
+              },
+              {
+                "id": "f2eb08bc-cbb1-4122-8b1f-3ac0b33948fe",
+                "createdAt": "2026-10-26T21:46:50.907000+00:00",
+                "message": "(service achados-web) has stopped 1 running tasks: (task c590c14e13ef4d6587a339781ea4067d)."
+              },
+              {
+                "id": "7877092f-cd3c-443d-88eb-355e9133ec8d",
+                "createdAt": "2026-10-26T21:46:09.887000+00:00",
+                "message": "(service achados-web) registered 1 targets in (target-group arn:aws:elasticloadbalancing:us-east-1:429100831877:targetgroup/g1-achados-frontend/0b3d34bb8b3c78df)"
+              },
+              {
+                "id": "91b92b02-040b-4133-8b9c-945e34b1ba54",
+                "createdAt": "2026-10-26T21:45:07.537000+00:00",
+                "message": "(service achados-web) has started 1 tasks: (task 2f64cf62769f45a28c9ac48a31fe4666)."
+              },
+              {
+                "id": "c3588394-3073-4e59-a169-292648964560",
+                "createdAt": "2026-10-26T21:33:02.363000+00:00",
+                "message": "(service achados-web) has reached a steady state."
+              },
+              {
+                "id": "cf0d26f6-4ab1-44f9-9106-a462b892c2da",
+                "createdAt": "2026-10-26T21:33:02.362000+00:00",
+                "message": "(service achados-web) (deployment ecs-svc/0209416769692602711) deployment completed."
+              },
+              {
+                "id": "e5c1404b-992c-472c-95ec-c5e857f7a45e",
+                "createdAt": "2026-10-26T21:32:20.739000+00:00",
+                "message": "(service achados-web) registered 1 targets in (target-group arn:aws:elasticloadbalancing:us-east-1:429100831877:targetgroup/g1-achados-frontend/0b3d34bb8b3c78df)"
+              },
+              {
+                "id": "7d86a0ad-f9a9-4154-88b1-e260df988538",
+                "createdAt": "2026-10-26T21:30:26.766000+00:00",
+                "message": "(service achados-web) has started 1 tasks: (task c590c14e13ef4d6587a339781ea4067d)."
+              }
+            ],
+            "createdAt": "2026-10-26T21:30:12.126000+00:00",
+            "currentServiceRevisions": [
+              {
+                "arn": "arn:aws:ecs:us-east-1:429100831877:service-revision/g1-achados/achados-web/1911226632245220040",
+                "requestedTaskCount": 1,
+                "runningTaskCount": 1,
+                "pendingTaskCount": 0
+              }
+            ],
+            "placementConstraints": [],
+            "placementStrategy": [],
+            "networkConfiguration": {
+              "awsvpcConfiguration": {
+                "subnets": [
+                  "subnet-05d4324f091ba6877",
+                  "subnet-0eab04bf2964fdeb7"
+                ],
+                "securityGroups": [
+                  "sg-0032fd6de918bc221"
+                ],
+                "assignPublicIp": "ENABLED"
+              }
+            },
+            "healthCheckGracePeriodSeconds": 120,
+            "schedulingStrategy": "REPLICA",
+            "deploymentController": {
+              "type": "ECS"
+            },
+            "createdBy": "arn:aws:iam::429100831877:root",
+            "enableECSManagedTags": true,
+            "propagateTags": "SERVICE",
+            "enableExecuteCommand": false,
+            "availabilityZoneRebalancing": "ENABLED",
+            "resourceManagementType": "CUSTOMER"
+          }
+        ],
+        "failures": []
+      },
+      "1_DescribeTasks": {
+        "tasks": [
+          {
+            "attachments": [
+              {
+                "id": "4ad6f6fb-1de4-43f7-92a7-b511d9f8af77",
+                "type": "S3Files",
+                "status": "CREATED",
+                "details": [
+                  {
+                    "name": "volumeId",
+                    "value": "fs-03cc16c6148b70bad"
+                  },
+                  {
+                    "name": "volumeName",
+                    "value": "fotos"
+                  }
+                ]
+              },
+              {
+                "id": "8331de53-1237-4c51-9124-5ef1a8bf3c57",
+                "type": "ElasticNetworkInterface",
+                "status": "ATTACHED",
+                "details": [
+                  {
+                    "name": "subnetId",
+                    "value": "subnet-05d4324f091ba6877"
+                  },
+                  {
+                    "name": "networkInterfaceId",
+                    "value": "eni-0b834498c10c7b4d2"
+                  },
+                  {
+                    "name": "macAddress",
+                    "value": "0a:ff:d1:23:bb:cd"
+                  },
+                  {
+                    "name": "privateDnsName",
+                    "value": "ip-172-31-19-34.ec2.internal"
+                  },
+                  {
+                    "name": "privateIPv4Address",
+                    "value": "172.31.19.34"
+                  }
+                ]
+              }
+            ],
+            "attributes": [
+              {
+                "name": "ecs.cpu-architecture",
+                "value": "x86_64"
+              }
+            ],
+            "availabilityZone": "us-east-1b",
+            "clusterArn": "arn:aws:ecs:us-east-1:429100831877:cluster/g1-achados",
+            "connectivity": "CONNECTED",
+            "connectivityAt": "2026-10-26T21:45:11.321000+00:00",
+            "containers": [
+              {
+                "containerArn": "arn:aws:ecs:us-east-1:429100831877:container/g1-achados/2f64cf62769f45a28c9ac48a31fe4666/4ccda1b4-3f73-4e21-8b24-dd893d77dc32",
+                "taskArn": "arn:aws:ecs:us-east-1:429100831877:task/g1-achados/2f64cf62769f45a28c9ac48a31fe4666",
+                "name": "web",
+                "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-web:aws-v1",
+                "imageDigest": "sha256:974595484c975b0427a78d42fba7bee02ded70ce191d6a4cd5c98b85d8164cbd",
+                "runtimeId": "2f64cf62769f45a28c9ac48a31fe4666-0265927825",
+                "lastStatus": "RUNNING",
+                "networkBindings": [],
+                "networkInterfaces": [
+                  {
+                    "attachmentId": "8331de53-1237-4c51-9124-5ef1a8bf3c57",
+                    "privateIpv4Address": "172.31.19.34"
+                  }
+                ],
+                "healthStatus": "HEALTHY",
+                "cpu": "0"
+              },
+              {
+                "containerArn": "arn:aws:ecs:us-east-1:429100831877:container/g1-achados/2f64cf62769f45a28c9ac48a31fe4666/c97df2da-cc89-49d5-a0e8-4e459dc6654c",
+                "taskArn": "arn:aws:ecs:us-east-1:429100831877:task/g1-achados/2f64cf62769f45a28c9ac48a31fe4666",
+                "name": "frontend",
+                "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-frontend:aws-v3",
+                "imageDigest": "sha256:87e6fde02bacefbfa504fa854f55e0743f95941c3e6a4990c1a98e21cecac3b4",
+                "runtimeId": "2f64cf62769f45a28c9ac48a31fe4666-3860412285",
+                "lastStatus": "RUNNING",
+                "networkBindings": [],
+                "networkInterfaces": [
+                  {
+                    "attachmentId": "8331de53-1237-4c51-9124-5ef1a8bf3c57",
+                    "privateIpv4Address": "172.31.19.34"
+                  }
+                ],
+                "healthStatus": "HEALTHY",
+                "cpu": "0"
+              }
+            ],
+            "cpu": "256",
+            "createdAt": "2026-10-26T21:45:07.474000+00:00",
+            "desiredStatus": "RUNNING",
+            "enableExecuteCommand": false,
+            "group": "service:achados-web",
+            "healthStatus": "HEALTHY",
+            "lastStatus": "RUNNING",
+            "launchType": "FARGATE",
+            "memory": "512",
+            "overrides": {
+              "containerOverrides": [
+                {
+                  "name": "web"
+                },
+                {
+                  "name": "frontend"
+                }
+              ],
+              "inferenceAcceleratorOverrides": []
+            },
+            "platformVersion": "1.4.0",
+            "platformFamily": "Linux",
+            "pullStartedAt": "2026-10-26T21:45:18.274000+00:00",
+            "pullStoppedAt": "2026-10-26T21:45:22.360000+00:00",
+            "startedAt": "2026-10-26T21:46:17.952000+00:00",
+            "startedBy": "ecs-svc/1911226632245220040",
+            "tags": [],
+            "taskArn": "arn:aws:ecs:us-east-1:429100831877:task/g1-achados/2f64cf62769f45a28c9ac48a31fe4666",
+            "taskDefinitionArn": "arn:aws:ecs:us-east-1:429100831877:task-definition/achados-web:2",
+            "version": 7,
+            "ephemeralStorage": {
+              "sizeInGiB": 20
+            },
+            "fargateEphemeralStorage": {
+              "sizeInGiB": 20
+            }
+          },
+          {
+            "attachments": [
+              {
+                "id": "7b76d8a1-cb9a-43ae-ad13-ead275a3a2a0",
+                "type": "ElasticNetworkInterface",
+                "status": "DELETED",
+                "details": [
+                  {
+                    "name": "subnetId",
+                    "value": "subnet-05d4324f091ba6877"
+                  },
+                  {
+                    "name": "networkInterfaceId",
+                    "value": "eni-0f94ab6b265be283a"
+                  },
+                  {
+                    "name": "macAddress",
+                    "value": "0a:ff:f2:7e:28:41"
+                  },
+                  {
+                    "name": "privateDnsName",
+                    "value": "ip-172-31-18-85.ec2.internal"
+                  },
+                  {
+                    "name": "privateIPv4Address",
+                    "value": "172.31.18.85"
+                  }
+                ]
+              },
+              {
+                "id": "bc77d1a1-794a-42e3-8a76-8ad7e586fb0e",
+                "type": "S3Files",
+                "status": "DELETED",
+                "details": [
+                  {
+                    "name": "volumeId",
+                    "value": "fs-03cc16c6148b70bad"
+                  },
+                  {
+                    "name": "volumeName",
+                    "value": "fotos"
+                  }
+                ]
+              }
+            ],
+            "attributes": [
+              {
+                "name": "ecs.cpu-architecture",
+                "value": "x86_64"
+              }
+            ],
+            "availabilityZone": "us-east-1b",
+            "clusterArn": "arn:aws:ecs:us-east-1:429100831877:cluster/g1-achados",
+            "connectivity": "CONNECTED",
+            "connectivityAt": "2026-10-26T21:30:35.979000+00:00",
+            "containers": [
+              {
+                "containerArn": "arn:aws:ecs:us-east-1:429100831877:container/g1-achados/c590c14e13ef4d6587a339781ea4067d/744086e5-8ca8-40da-bf42-da44b5447dda",
+                "taskArn": "arn:aws:ecs:us-east-1:429100831877:task/g1-achados/c590c14e13ef4d6587a339781ea4067d",
+                "name": "frontend",
+                "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-frontend:aws-v3",
+                "imageDigest": "sha256:87e6fde02bacefbfa504fa854f55e0743f95941c3e6a4990c1a98e21cecac3b4",
+                "runtimeId": "c590c14e13ef4d6587a339781ea4067d-3860412285",
+                "lastStatus": "STOPPED",
+                "exitCode": 0,
+                "networkBindings": [],
+                "networkInterfaces": [
+                  {
+                    "attachmentId": "7b76d8a1-cb9a-43ae-ad13-ead275a3a2a0",
+                    "privateIpv4Address": "172.31.18.85"
+                  }
+                ],
+                "healthStatus": "UNKNOWN",
+                "cpu": "0"
+              },
+              {
+                "containerArn": "arn:aws:ecs:us-east-1:429100831877:container/g1-achados/c590c14e13ef4d6587a339781ea4067d/eff970e2-b820-414c-8752-c8f7a0764650",
+                "taskArn": "arn:aws:ecs:us-east-1:429100831877:task/g1-achados/c590c14e13ef4d6587a339781ea4067d",
+                "name": "web",
+                "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-web:aws-v1",
+                "imageDigest": "sha256:974595484c975b0427a78d42fba7bee02ded70ce191d6a4cd5c98b85d8164cbd",
+                "runtimeId": "c590c14e13ef4d6587a339781ea4067d-0265927825",
+                "lastStatus": "STOPPED",
+                "exitCode": 0,
+                "networkBindings": [],
+                "networkInterfaces": [
+                  {
+                    "attachmentId": "7b76d8a1-cb9a-43ae-ad13-ead275a3a2a0",
+                    "privateIpv4Address": "172.31.18.85"
+                  }
+                ],
+                "healthStatus": "HEALTHY",
+                "cpu": "0"
+              }
+            ],
+            "cpu": "256",
+            "createdAt": "2026-10-26T21:30:26.710000+00:00",
+            "desiredStatus": "STOPPED",
+            "enableExecuteCommand": false,
+            "executionStoppedAt": "2026-10-26T21:47:50.746000+00:00",
+            "group": "service:achados-web",
+            "healthStatus": "UNKNOWN",
+            "lastStatus": "STOPPED",
+            "launchType": "FARGATE",
+            "memory": "512",
+            "overrides": {
+              "containerOverrides": [
+                {
+                  "name": "web"
+                },
+                {
+                  "name": "frontend"
+                }
+              ],
+              "inferenceAcceleratorOverrides": []
+            },
+            "platformVersion": "1.4.0",
+            "platformFamily": "Linux",
+            "pullStartedAt": "2026-10-26T21:30:46.925000+00:00",
+            "pullStoppedAt": "2026-10-26T21:30:51.414000+00:00",
+            "startedAt": "2026-10-26T21:32:24.992000+00:00",
+            "startedBy": "ecs-svc/0209416769692602711",
+            "stopCode": "ServiceSchedulerInitiated",
+            "stoppedAt": "2026-10-26T21:48:29.960000+00:00",
+            "stoppedReason": "Scaling activity initiated by (deployment ecs-svc/0209416769692602711)",
+            "stoppingAt": "2026-10-26T21:46:50.877000+00:00",
+            "tags": [],
+            "taskArn": "arn:aws:ecs:us-east-1:429100831877:task/g1-achados/c590c14e13ef4d6587a339781ea4067d",
+            "taskDefinitionArn": "arn:aws:ecs:us-east-1:429100831877:task-definition/achados-web:2",
+            "version": 10,
+            "ephemeralStorage": {
+              "sizeInGiB": 20
+            },
+            "fargateEphemeralStorage": {
+              "sizeInGiB": 20
+            }
+          }
+        ],
+        "failures": []
+      },
+      "2_GetDistribution": {
+        "ETag": "E23ZP02F085DFQ",
+        "Distribution": {
+          "Id": "E3TRUXI3LTMDAF",
+          "ARN": "arn:aws:cloudfront::429100831877:distribution/E3TRUXI3LTMDAF",
+          "Status": "Deployed",
+          "LastModifiedTime": "2026-10-26T21:40:36.022000+00:00",
+          "InProgressInvalidationBatches": 0,
+          "DomainName": "di54x57cfrcxq.cloudfront.net",
+          "ActiveTrustedSigners": {
+            "Enabled": false,
+            "Quantity": 0
+          },
+          "ActiveTrustedKeyGroups": {
+            "Enabled": false,
+            "Quantity": 0
+          },
+          "DistributionConfig": {
+            "CallerReference": "g1-achados-20261026-2131",
+            "Aliases": {
+              "Quantity": 0
+            },
+            "DefaultRootObject": "",
+            "Origins": {
+              "Quantity": 1,
+              "Items": [
+                {
+                  "Id": "g1-private-alb",
+                  "DomainName": "internal-g1-achados-interno-898232288.us-east-1.elb.amazonaws.com",
+                  "OriginPath": "",
+                  "CustomHeaders": {
+                    "Quantity": 0
+                  },
+                  "VpcOriginConfig": {
+                    "VpcOriginId": "vo_0ZwUL6nFfRzDiTxcZa6ToO",
+                    "OriginReadTimeout": 30,
+                    "OriginKeepaliveTimeout": 5
+                  },
+                  "ConnectionAttempts": 3,
+                  "ConnectionTimeout": 10,
+                  "OriginShield": {
+                    "Enabled": false
+                  },
+                  "OriginAccessControlId": ""
+                }
+              ]
+            },
+            "OriginGroups": {
+              "Quantity": 0
+            },
+            "DefaultCacheBehavior": {
+              "TargetOriginId": "g1-private-alb",
+              "TrustedSigners": {
+                "Enabled": false,
+                "Quantity": 0
+              },
+              "TrustedKeyGroups": {
+                "Enabled": false,
+                "Quantity": 0
+              },
+              "ViewerProtocolPolicy": "redirect-to-https",
+              "AllowedMethods": {
+                "Quantity": 7,
+                "Items": [
+                  "HEAD",
+                  "DELETE",
+                  "POST",
+                  "GET",
+                  "OPTIONS",
+                  "PUT",
+                  "PATCH"
+                ],
+                "CachedMethods": {
+                  "Quantity": 2,
+                  "Items": [
+                    "HEAD",
+                    "GET"
+                  ]
+                }
+              },
+              "SmoothStreaming": false,
+              "Compress": true,
+              "LambdaFunctionAssociations": {
+                "Quantity": 0
+              },
+              "FunctionAssociations": {
+                "Quantity": 0
+              },
+              "FieldLevelEncryptionId": "",
+              "CachePolicyId": "4135ea2d-6df8-44a3-9df3-4b5a84be39ad",
+              "OriginRequestPolicyId": "33f36d7e-f396-46d9-90e0-52428a34d9dc",
+              "ResponseHeadersPolicyId": "3b029522-5304-47b2-bd92-32a73931b650",
+              "GrpcConfig": {
+                "Enabled": false
+              }
+            },
+            "CacheBehaviors": {
+              "Quantity": 0
+            },
+            "CustomErrorResponses": {
+              "Quantity": 6,
+              "Items": [
+                {
+                  "ErrorCode": 403,
+                  "ResponsePagePath": "",
+                  "ResponseCode": "",
+                  "ErrorCachingMinTTL": 0
+                },
+                {
+                  "ErrorCode": 404,
+                  "ResponsePagePath": "",
+                  "ResponseCode": "",
+                  "ErrorCachingMinTTL": 0
+                },
+                {
+                  "ErrorCode": 500,
+                  "ResponsePagePath": "",
+                  "ResponseCode": "",
+                  "ErrorCachingMinTTL": 0
+                },
+                {
+                  "ErrorCode": 502,
+                  "ResponsePagePath": "",
+                  "ResponseCode": "",
+                  "ErrorCachingMinTTL": 0
+                },
+                {
+                  "ErrorCode": 503,
+                  "ResponsePagePath": "",
+                  "ResponseCode": "",
+                  "ErrorCachingMinTTL": 0
+                },
+                {
+                  "ErrorCode": 504,
+                  "ResponsePagePath": "",
+                  "ResponseCode": "",
+                  "ErrorCachingMinTTL": 0
+                }
+              ]
+            },
+            "Comment": "G1 Achados e Perdidos - laboratorio temporario",
+            "Logging": {
+              "Enabled": false,
+              "IncludeCookies": false,
+              "Bucket": "",
+              "Prefix": ""
+            },
+            "PriceClass": "PriceClass_100",
+            "Enabled": true,
+            "ViewerCertificate": {
+              "CloudFrontDefaultCertificate": true,
+              "SSLSupportMethod": "vip",
+              "MinimumProtocolVersion": "TLSv1",
+              "CertificateSource": "cloudfront"
+            },
+            "Restrictions": {
+              "GeoRestriction": {
+                "RestrictionType": "none",
+                "Quantity": 0
+              }
+            },
+            "WebACLId": "",
+            "HttpVersion": "http2",
+            "IsIPV6Enabled": true,
+            "ContinuousDeploymentPolicyId": "",
+            "Staging": false
+          }
+        }
+      },
+      "3_DescribeTargetHealth": {
+        "TargetHealthDescriptions": [
+          {
+            "Target": {
+              "Id": "172.31.19.34",
+              "Port": 80,
+              "AvailabilityZone": "us-east-1b"
+            },
+            "HealthCheckPort": "8082",
+            "TargetHealth": {
+              "State": "healthy"
+            },
+            "AdministrativeOverride": {
+              "State": "no_override",
+              "Reason": "AdministrativeOverride.NoOverride",
+              "Description": "No override is currently active on target"
+            }
+          }
+        ]
+      },
+      "4_GetLogEvents": {
+        "events": [
+          {
+            "timestamp": 1793051133928,
+            "message": "[2026-10-26 21:45:33 +0000] [1] [INFO] Starting gunicorn 23.0.0",
+            "ingestionTime": 1793051134133
+          },
+          {
+            "timestamp": 1793051133928,
+            "message": "[2026-10-26 21:45:33 +0000] [1] [INFO] Listening at: http://0.0.0.0:5000 (1)",
+            "ingestionTime": 1793051134133
+          },
+          {
+            "timestamp": 1793051133928,
+            "message": "[2026-10-26 21:45:33 +0000] [1] [INFO] Using worker: sync",
+            "ingestionTime": 1793051134133
+          },
+          {
+            "timestamp": 1793051133931,
+            "message": "[2026-10-26 21:45:33 +0000] [14] [INFO] Booting worker with pid: 14",
+            "ingestionTime": 1793051134133
+          }
+        ],
+        "nextForwardToken": "f/39986376465731637541126314965453607282345052695911071747/s",
+        "nextBackwardToken": "b/39986376465664735305530723096029000127527107611393130496/s"
+      },
+      "5_GetLogEvents": {
+        "events": [
+          {
+            "timestamp": 1793051165927,
+            "message": "2026/10/26 21:46:05 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 65535:65535",
+            "ingestionTime": 1793051170249
+          },
+          {
+            "timestamp": 1793051165927,
+            "message": "2026/10/26 21:46:05 [notice] 1#1: start worker processes",
+            "ingestionTime": 1793051170249
+          },
+          {
+            "timestamp": 1793051165927,
+            "message": "2026/10/26 21:46:05 [notice] 1#1: start worker process 49",
+            "ingestionTime": 1793051170249
+          },
+          {
+            "timestamp": 1793051165928,
+            "message": "2026/10/26 21:46:05 [notice] 1#1: start worker process 50",
+            "ingestionTime": 1793051170249
+          },
+          {
+            "timestamp": 1793051234468,
+            "message": "172.31.97.105 - - [26/Oct/2026:21:47:14 +0000] \"GET / HTTP/1.1\" 401 172 \"-\" \"Mozilla/5.0 (Windows NT 10.0; Microsoft Windows 10.0.19045; pt-BR) PowerShell/7.6.5\" \"2804:d59:b023:5200:602b:e387:9121:479b, 130.176.119.65\"",
+            "ingestionTime": 1793051235236
+          },
+          {
+            "timestamp": 1793051252901,
+            "message": "172.31.96.147 - - [26/Oct/2026:21:47:32 +0000] \"GET / HTTP/1.1\" 401 172 \"-\" \"curl/8.13.0\" \"2804:d59:b023:5200:602b:e387:9121:479b, 130.176.119.80\"",
+            "ingestionTime": 1793051255237
+          },
+          {
+            "timestamp": 1793051253651,
+            "message": "172.31.96.147 - - [26/Oct/2026:21:47:33 +0000] \"GET /health HTTP/1.1\" 401 172 \"-\" \"curl/8.13.0\" \"2804:d59:b023:5200:602b:e387:9121:479b, 130.176.119.80\"",
+            "ingestionTime": 1793051255237
+          },
+          {
+            "timestamp": 1793051254519,
+            "message": "172.31.96.147 - - [26/Oct/2026:21:47:34 +0000] \"GET /itens HTTP/1.1\" 401 172 \"-\" \"curl/8.13.0\" \"2804:d59:b023:5200:602b:e387:9121:479b, 130.176.119.80\"",
+            "ingestionTime": 1793051255237
+          },
+          {
+            "timestamp": 1793051255350,
+            "message": "172.31.96.147 - - [26/Oct/2026:21:47:35 +0000] \"GET /estatisticas HTTP/1.1\" 401 172 \"-\" \"curl/8.13.0\" \"2804:d59:b023:5200:602b:e387:9121:479b, 130.176.119.80\"",
+            "ingestionTime": 1793051260222
+          },
+          {
+            "timestamp": 1793051256168,
+            "message": "172.31.96.147 - - [26/Oct/2026:21:47:36 +0000] \"GET /fotos/inexistente.png HTTP/1.1\" 401 172 \"-\" \"curl/8.13.0\" \"2804:d59:b023:5200:602b:e387:9121:479b, 130.176.119.80\"",
+            "ingestionTime": 1793051260222
+          },
+          {
+            "timestamp": 1793051257165,
+            "message": "172.31.96.147 - visitante [26/Oct/2026:21:47:37 +0000] \"GET /health HTTP/1.1\" 200 79 \"-\" \"curl/8.13.0\" \"2804:d59:b023:5200:602b:e387:9121:479b, 130.176.119.80\"",
+            "ingestionTime": 1793051260222
+          },
+          {
+            "timestamp": 1793051258222,
+            "message": "172.31.96.147 - visitante [26/Oct/2026:21:47:38 +0000] \"GET /itens HTTP/1.1\" 200 852 \"-\" \"curl/8.13.0\" \"2804:d59:b023:5200:602b:e387:9121:479b, 130.176.119.80\"",
+            "ingestionTime": 1793051260222
+          },
+          {
+            "timestamp": 1793051259141,
+            "message": "172.31.96.147 - visitante [26/Oct/2026:21:47:39 +0000] \"GET /itens?local=biblio HTTP/1.1\" 200 467 \"-\" \"curl/8.13.0\" \"2804:d59:b023:5200:602b:e387:9121:479b, 130.176.119.80\"",
+            "ingestionTime": 1793051260222
+          },
+          {
+            "timestamp": 1793051260264,
+            "message": "172.31.96.147 - visitante [26/Oct/2026:21:47:40 +0000] \"GET /estatisticas HTTP/1.1\" 200 41 \"-\" \"curl/8.13.0\" \"2804:d59:b023:5200:602b:e387:9121:479b, 130.176.119.80\"",
+            "ingestionTime": 1793051265220
+          },
+          {
+            "timestamp": 1793051261570,
+            "message": "172.31.96.147 - visitante [26/Oct/2026:21:47:41 +0000] \"GET /itens HTTP/1.1\" 200 852 \"-\" \"curl/8.13.0\" \"2804:d59:b023:5200:602b:e387:9121:479b, 130.176.119.80\"",
+            "ingestionTime": 1793051265220
+          },
+          {
+            "timestamp": 1793051262328,
+            "message": "172.31.96.147 - - [26/Oct/2026:21:47:42 +0000] \"GET /fotos/143bc554bb1d4584aa16ff6d0810667f.png HTTP/1.1\" 401 172 \"-\" \"curl/8.13.0\" \"2804:d59:b023:5200:602b:e387:9121:479b, 130.176.119.80\"",
+            "ingestionTime": 1793051265220
+          },
+          {
+            "timestamp": 1793051263624,
+            "message": "172.31.96.147 - visitante [26/Oct/2026:21:47:43 +0000] \"GET /fotos/143bc554bb1d4584aa16ff6d0810667f.png HTTP/1.1\" 200 179 \"-\" \"curl/8.13.0\" \"2804:d59:b023:5200:602b:e387:9121:479b, 130.176.119.80\"",
+            "ingestionTime": 1793051265220
+          },
+          {
+            "timestamp": 1793051265025,
+            "message": "172.31.96.147 - - [26/Oct/2026:21:47:45 +0000] \"GET /fotos/89594ce917da44a5aae6b999696eacb7.png HTTP/1.1\" 401 172 \"-\" \"curl/8.13.0\" \"2804:d59:b023:5200:602b:e387:9121:479b, 130.176.119.80\"",
+            "ingestionTime": 1793051265220
+          },
+          {
+            "timestamp": 1793051266131,
+            "message": "172.31.96.147 - visitante [26/Oct/2026:21:47:46 +0000] \"GET /fotos/89594ce917da44a5aae6b999696eacb7.png HTTP/1.1\" 200 179 \"-\" \"curl/8.13.0\" \"2804:d59:b023:5200:602b:e387:9121:479b, 130.176.119.80\"",
+            "ingestionTime": 1793051270222
+          },
+          {
+            "timestamp": 1793051267070,
+            "message": "172.31.96.147 - visitante [26/Oct/2026:21:47:47 +0000] \"GET /estatisticas HTTP/1.1\" 200 41 \"-\" \"curl/8.13.0\" \"2804:d59:b023:5200:602b:e387:9121:479b, 130.176.119.80\"",
+            "ingestionTime": 1793051270222
+          }
+        ],
+        "nextForwardToken": "f/39986379434830552528294949570899203327292992710358073345/s",
+        "nextBackwardToken": "b/39986377179266280913312133045692097735283506458265976846/s"
+      }
+    },
+    "api_calls": [
+      {
+        "service": "ecs",
+        "operation": "DescribeServices",
+        "status": "success",
+        "n_items": {
+          "services": 1,
+          "failures": 0
+        }
+      },
+      {
+        "service": "ecs",
+        "operation": "DescribeTasks",
+        "status": "success",
+        "n_items": {
+          "tasks": 2,
+          "failures": 0
+        }
+      },
+      {
+        "service": "cloudfront",
+        "operation": "GetDistribution",
+        "status": "success"
+      },
+      {
+        "service": "elbv2",
+        "operation": "DescribeTargetHealth",
+        "status": "success",
+        "n_items": {
+          "TargetHealthDescriptions": 1
+        }
+      },
+      {
+        "service": "logs",
+        "operation": "GetLogEvents",
+        "status": "success",
+        "n_items": {
+          "events": 4
+        }
+      },
+      {
+        "service": "logs",
+        "operation": "GetLogEvents",
+        "status": "success",
+        "n_items": {
+          "events": 20
+        }
+      }
+    ]
+  },
+  "prices": {
+    "return_value": {
+      "2_GetProducts": {
+        "PriceList": [
+          "{\"product\":{\"productFamily\":\"Compute\",\"attributes\":{\"regionCode\":\"us-east-1\",\"servicecode\":\"AmazonECS\",\"tenancy\":\"Shared\",\"usagetype\":\"USE1-Fargate-vCPU-Hours:perCPU\",\"locationType\":\"AWS Region\",\"location\":\"US East (N. Virginia)\",\"servicename\":\"Amazon Elastic Container Service\",\"cputype\":\"perCPU\",\"operation\":\"\"},\"sku\":\"8CESGAFWKAJ98PME\"},\"serviceCode\":\"AmazonECS\",\"terms\":{\"OnDemand\":{\"8CESGAFWKAJ98PME.JRTCKXETXF\":{\"priceDimensions\":{\"8CESGAFWKAJ98PME.JRTCKXETXF.6YS6EN2CT7\":{\"unit\":\"hours\",\"endRange\":\"Inf\",\"description\":\"AWS Fargate - vCPU - US East (N.Virginia)\",\"appliesTo\":[],\"rateCode\":\"8CESGAFWKAJ98PME.JRTCKXETXF.6YS6EN2CT7\",\"beginRange\":\"0\",\"pricePerUnit\":{\"USD\":\"0.0404800000\"}}},\"sku\":\"8CESGAFWKAJ98PME\",\"effectiveDate\":\"2026-10-01T00:00:00Z\",\"offerTermCode\":\"JRTCKXETXF\",\"termAttributes\":{}}}},\"version\":\"20261019224317\",\"publicationDate\":\"2026-10-19T22:43:17Z\"}"
+        ],
+        "FormatVersion": "aws_v1"
+      },
+      "3_GetProducts": {
+        "PriceList": [
+          "{\"product\":{\"productFamily\":\"Compute\",\"attributes\":{\"regionCode\":\"us-east-1\",\"servicecode\":\"AmazonECS\",\"tenancy\":\"Shared\",\"usagetype\":\"USE1-Fargate-GB-Hours\",\"locationType\":\"AWS Region\",\"location\":\"US East (N. Virginia)\",\"servicename\":\"Amazon Elastic Container Service\",\"memorytype\":\"perGB\",\"operation\":\"\"},\"sku\":\"PBZNQUSEXZUC34C9\"},\"serviceCode\":\"AmazonECS\",\"terms\":{\"OnDemand\":{\"PBZNQUSEXZUC34C9.JRTCKXETXF\":{\"priceDimensions\":{\"PBZNQUSEXZUC34C9.JRTCKXETXF.6YS6EN2CT7\":{\"unit\":\"hours\",\"endRange\":\"Inf\",\"description\":\"AWS Fargate - Memory  - US East (N.Virginia)\",\"appliesTo\":[],\"rateCode\":\"PBZNQUSEXZUC34C9.JRTCKXETXF.6YS6EN2CT7\",\"beginRange\":\"0\",\"pricePerUnit\":{\"USD\":\"0.0044450000\"}}},\"sku\":\"PBZNQUSEXZUC34C9\",\"effectiveDate\":\"2026-10-01T00:00:00Z\",\"offerTermCode\":\"JRTCKXETXF\",\"termAttributes\":{}}}},\"version\":\"20261019224317\",\"publicationDate\":\"2026-10-19T22:43:17Z\"}"
+        ],
+        "FormatVersion": "aws_v1"
+      },
+      "4_GetProducts": {
+        "PriceList": [
+          "{\"product\":{\"productFamily\":\"Load Balancer-Application\",\"attributes\":{\"regionCode\":\"us-east-1\",\"servicecode\":\"AWSELB\",\"groupDescription\":\"LoadBalancer hourly usage by Application Load Balancer\",\"usagetype\":\"LoadBalancerUsage\",\"locationType\":\"AWS Region\",\"location\":\"US East (N. Virginia)\",\"servicename\":\"Elastic Load Balancing\",\"operation\":\"LoadBalancing:Application\",\"group\":\"ELB:Balancing\"},\"sku\":\"37CUWUT8GSNQEPUV\"},\"serviceCode\":\"AWSELB\",\"terms\":{\"OnDemand\":{\"37CUWUT8GSNQEPUV.JRTCKXETXF\":{\"priceDimensions\":{\"37CUWUT8GSNQEPUV.JRTCKXETXF.6YS6EN2CT7\":{\"unit\":\"Hrs\",\"endRange\":\"Inf\",\"description\":\"$0.0225 per Application LoadBalancer-hour (or partial hour)\",\"appliesTo\":[],\"rateCode\":\"37CUWUT8GSNQEPUV.JRTCKXETXF.6YS6EN2CT7\",\"beginRange\":\"0\",\"pricePerUnit\":{\"USD\":\"0.0225000000\"}}},\"sku\":\"37CUWUT8GSNQEPUV\",\"effectiveDate\":\"2026-08-01T00:00:00Z\",\"offerTermCode\":\"JRTCKXETXF\",\"termAttributes\":{}}}},\"version\":\"20260911124544\",\"publicationDate\":\"2026-09-11T12:45:44Z\"}",
+          "{\"product\":{\"productFamily\":\"Load Balancer-Gateway\",\"attributes\":{\"regionCode\":\"us-east-1\",\"servicecode\":\"AWSELB\",\"groupDescription\":\"LoadBalancer hourly usage by Gateway Load Balancer\",\"usagetype\":\"LoadBalancerUsage\",\"locationType\":\"AWS Region\",\"location\":\"US East (N. Virginia)\",\"servicename\":\"Elastic Load Balancing\",\"operation\":\"LoadBalancing:Gateway\",\"group\":\"ELB:Balancing\"},\"sku\":\"4XCKHVEY2F7FVHE3\"},\"serviceCode\":\"AWSELB\",\"terms\":{\"OnDemand\":{\"4XCKHVEY2F7FVHE3.JRTCKXETXF\":{\"priceDimensions\":{\"4XCKHVEY2F7FVHE3.JRTCKXETXF.6YS6EN2CT7\":{\"unit\":\"Hrs\",\"endRange\":\"Inf\",\"description\":\"$0.0125 per Gateway LoadBalancer-hour (or partial hour) US East (N. Virginia)\",\"appliesTo\":[],\"rateCode\":\"4XCKHVEY2F7FVHE3.JRTCKXETXF.6YS6EN2CT7\",\"beginRange\":\"0\",\"pricePerUnit\":{\"USD\":\"0.0125000000\"}}},\"sku\":\"4XCKHVEY2F7FVHE3\",\"effectiveDate\":\"2026-08-01T00:00:00Z\",\"offerTermCode\":\"JRTCKXETXF\",\"termAttributes\":{}}}},\"version\":\"20260911124544\",\"publicationDate\":\"2026-09-11T12:45:44Z\"}",
+          "{\"product\":{\"productFamily\":\"Load Balancer\",\"attributes\":{\"regionCode\":\"us-east-1\",\"servicecode\":\"AWSELB\",\"groupDescription\":\"LoadBalancer hourly usage by Classic Load Balancer\",\"usagetype\":\"LoadBalancerUsage\",\"locationType\":\"AWS Region\",\"location\":\"US East (N. Virginia)\",\"servicename\":\"Elastic Load Balancing\",\"operation\":\"LoadBalancing\",\"group\":\"ELB:Balancing\"},\"sku\":\"6XT9C7FFNQ3T39YK\"},\"serviceCode\":\"AWSELB\",\"terms\":{\"OnDemand\":{\"6XT9C7FFNQ3T39YK.JRTCKXETXF\":{\"priceDimensions\":{\"6XT9C7FFNQ3T39YK.JRTCKXETXF.6YS6EN2CT7\":{\"unit\":\"Hrs\",\"endRange\":\"Inf\",\"description\":\"$0.025 per LoadBalancer-hour (or partial hour)\",\"appliesTo\":[],\"rateCode\":\"6XT9C7FFNQ3T39YK.JRTCKXETXF.6YS6EN2CT7\",\"beginRange\":\"0\",\"pricePerUnit\":{\"USD\":\"0.0250000000\"}}},\"sku\":\"6XT9C7FFNQ3T39YK\",\"effectiveDate\":\"2026-08-01T00:00:00Z\",\"offerTermCode\":\"JRTCKXETXF\",\"termAttributes\":{}}}},\"version\":\"20260911124544\",\"publicationDate\":\"2026-09-11T12:45:44Z\"}",
+          "{\"product\":{\"productFamily\":\"Load Balancer-Network\",\"attributes\":{\"regionCode\":\"us-east-1\",\"servicecode\":\"AWSELB\",\"groupDescription\":\"LoadBalancer hourly usage by Network Load Balancer\",\"usagetype\":\"LoadBalancerUsage\",\"locationType\":\"AWS Region\",\"location\":\"US East (N. Virginia)\",\"servicename\":\"Elastic Load Balancing\",\"operation\":\"LoadBalancing:Network\",\"group\":\"ELB:Balancing\"},\"sku\":\"YKBGGP5EBGDU9T5W\"},\"serviceCode\":\"AWSELB\",\"terms\":{\"OnDemand\":{\"YKBGGP5EBGDU9T5W.JRTCKXETXF\":{\"priceDimensions\":{\"YKBGGP5EBGDU9T5W.JRTCKXETXF.6YS6EN2CT7\":{\"unit\":\"Hrs\",\"endRange\":\"Inf\",\"description\":\"$0.0225 per Network LoadBalancer-hour (or partial hour)\",\"appliesTo\":[],\"rateCode\":\"YKBGGP5EBGDU9T5W.JRTCKXETXF.6YS6EN2CT7\",\"beginRange\":\"0\",\"pricePerUnit\":{\"USD\":\"0.0225000000\"}}},\"sku\":\"YKBGGP5EBGDU9T5W\",\"effectiveDate\":\"2026-08-01T00:00:00Z\",\"offerTermCode\":\"JRTCKXETXF\",\"termAttributes\":{}}}},\"version\":\"20260911124544\",\"publicationDate\":\"2026-09-11T12:45:44Z\"}"
+        ],
+        "FormatVersion": "aws_v1"
+      }
+    },
+    "api_calls": [
+      {
+        "service": "pricing",
+        "operation": "GetProducts",
+        "status": "success",
+        "n_items": {
+          "PriceList": 1
+        }
+      },
+      {
+        "service": "pricing",
+        "operation": "GetProducts",
+        "status": "success",
+        "n_items": {
+          "PriceList": 1
+        }
+      },
+      {
+        "service": "pricing",
+        "operation": "GetProducts",
+        "status": "success",
+        "n_items": {
+          "PriceList": 4
+        }
+      }
+    ]
+  },
+  "limitations": [
+    "MCP nao suporta ListGateways; nenhum ECS Gateway foi criado. CloudFront VPC origin foi a alternativa utilizada.",
+    "Grupo novo exclusivo para ALB; as regras anteriores dos grupos existentes foram preservadas.",
+    "Certificado padrao CloudFront retornou MinimumProtocolVersion TLSv1; nao se afirma minimo TLS1.2.",
+    "MCP autenticou como root. O usuario IAM humano nao foi alterado.",
+    "Registros de preparacao refletem o momento de cada chamada, inclusive estados Deploying/provisioning. O estado final esta em finalReadback."
+  ]
+}

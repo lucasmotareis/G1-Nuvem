@@ -3,8 +3,9 @@
 Executada em **26/10/2026**, pelo MCP oficial da AWS, na região **`us-east-1`**,
 conta com final **1877**. A inspeção inicial autenticou como `root`; a troca para
 uma identidade de trabalho com credenciais temporárias continua recomendada.
-Esta etapa configurou rede e permissões de tráfego; a aplicação ainda não foi
-implantada em ECS, RDS ou S3 Files.
+Esta etapa configurou rede e permissões de tráfego; ao concluí-la, ainda não
+havia implantação em ECS, RDS ou S3 Files. O RDS foi criado posteriormente na
+[etapa 4](AWS-ETAPA-04.md).
 
 ## VPC e sub-redes selecionadas
 
@@ -69,12 +70,15 @@ configuração, não um teste de conexão entre componentes ainda inexistentes.
 
 ## Estado para continuar
 
+Os resultados da etapa 3 estão preservados acima. A continuação está no
+[registro da etapa 4](AWS-ETAPA-04.md), que documenta o banco e os segredos.
+
 - [x] VPC padrão e DNS conferidos.
 - [x] Duas sub-redes disponíveis, em zonas diferentes, identificadas.
 - [x] Quatro grupos do projeto criados com seis regras de entrada.
 - [x] Leitura posterior confirma as regras e a saída padrão.
 - [x] Grupo `default` preservado.
-- [ ] Etapa 4: criar os dois segredos e o RDS.
+- [x] Etapa 4 executada posteriormente: dois segredos criados e RDS disponível.
 - [ ] Etapas seguintes: armazenamento, imagens, IAM, ECS e ALB/HTTPS.
 
 A senha compartilhada será aplicada pelo Nginx na etapa de publicação, conforme

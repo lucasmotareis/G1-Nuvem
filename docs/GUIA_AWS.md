@@ -2,9 +2,10 @@
 
 Roteiro preparado em 26/10/2026 a partir da [reflexão, seção 5.1](REFLEXAO.md#51--do-ambiente-local-para-a-nuvem),
 do código atual e das fontes oficiais vinculadas abaixo. **Execução parcial:**
-a etapa 3 foi realizada em 26/10/2026, com as regras de rede conferidas na conta.
-Os [IDs e resultados reais](AWS-ETAPA-03.md) estão registrados separadamente.
-A aplicação, banco e armazenamento ainda não foram implantados na AWS.
+a etapa 3 configurou a rede, e a etapa 4 criou o RDS e os dois segredos em
+26/10/2026, com o banco confirmado como **Available**. Os resultados estão registrados em
+[rede](AWS-ETAPA-03.md) e [banco e segredos](AWS-ETAPA-04.md).
+A aplicação e o armazenamento de fotos ainda não foram implantados na AWS.
 
 ## 1. O caminho recomendado para começar
 
@@ -152,6 +153,11 @@ Manager, S3 e logs. Veja [rede do Fargate](https://docs.aws.amazon.com/AmazonECS
 
 ## 4. Secrets Manager e RDS: criar o banco
 
+**Etapa executada:** os dois segredos e o grupo de sub-redes foram criados;
+o RDS está **Available**. A configuração real e as verificações
+estão em [AWS-ETAPA-04.md](AWS-ETAPA-04.md). Use os recursos registrados para
+continuar o laboratório, sem criar uma segunda instância.
+
 ### 4.1. Guardar a credencial
 
 Em **Secrets Manager → Store a new secret → Other type of secret**, crie as chaves:
@@ -162,7 +168,8 @@ Em **Secrets Manager → Store a new secret → Other type of secret**, crie as 
 | `password` | Uma senha nova, aleatória, exclusiva deste laboratório. |
 
 Use uma senha de 32 caracteres aleatórios com letras e números, gerada por um
-gerenciador de senhas. Essa escolha mantém compatibilidade com o código
+gerenciador de senhas ou pelo Secrets Manager (`GetRandomPassword`, excluindo
+pontuação e espaços). Essa escolha mantém compatibilidade com o código
 fornecido: `app.py` monta a string libpq sem escapar espaços, aspas e barras
 invertidas. Não reaproveite os valores de demonstração do `.env.example`.
 
@@ -178,11 +185,11 @@ Em **RDS → Databases → Create database**, use criação padrão e confira:
 
 | Campo | Escolha para laboratório |
 | --- | --- |
-| Engine | PostgreSQL, versão principal **16**, minor disponível. |
+| Engine | PostgreSQL, versão principal **16**, minor disponível; **16.15** na execução de 26/10/2026. |
 | Identificador | `g1-achados-db`. |
 | Disponibilidade | Uma instância **Single-AZ**. |
-| Classe | Uma classe pequena compatível, por exemplo `db.t4g.micro`, se disponível. |
-| Armazenamento | SSD de uso geral; tamanho mínimo permitido pela seleção. |
+| Classe | `db.t4g.micro`, confirmada como disponível na região do projeto. |
+| Armazenamento | **20 GiB gp3**, mínimo confirmado para esta configuração; sem expansão automática. |
 | Credenciais | **Self managed**; usuário e senha iguais aos do segredo. |
 | VPC | A VPC padrão anotada no passo 3. |
 | DB subnet group | Grupo com pelo menos duas sub-redes em zonas diferentes dessa VPC. |
@@ -191,7 +198,10 @@ Em **RDS → Databases → Create database**, use criação padrão e confira:
 | Porta | `5432`. |
 | Initial database name | **`achados`**; não confundir com o identificador da instância. |
 | Criptografia | Ativada. |
-| Backup | Defina a retenção e confira os custos antes de criar. |
+| Backup | Retenção de **7 dias**; confira os custos antes de criar. |
+| Proteção contra exclusão | **Ativada**; desative somente ao encerrar definitivamente o laboratório. |
+| Monitoramento | Database Insights Standard com retenção de 7 dias (API: Performance Insights); sem Enhanced Monitoring. |
+| RDS Extended Support | Desativado; manter versão com suporte padrão. |
 
 Não selecione conexão automática com EC2, pois não estamos usando EC2. Revise
 opcionais de monitoramento e proteção contra exclusão conforme o laboratório.
@@ -644,7 +654,8 @@ Para encerrar definitivamente, depois de preservar os dados necessários:
 
 1. Reduza o service a zero, espere as tasks pararem e exclua o service.
 2. Exclua o ALB/listeners/target group, se foram criados.
-3. Faça o backup necessário do RDS; exclua a instância. Decida explicitamente
+3. Faça o backup necessário do RDS; desative sua proteção contra exclusão e
+   exclua a instância. Decida explicitamente
    quais snapshots/backups guardar, pois eles podem continuar cobrando.
 4. Confirme que o S3 Files exportou as fotos e não tem erros de sincronização;
    remova access points, mount targets e o sistema de arquivos.
@@ -664,7 +675,8 @@ CloudFormation ou Terraform, depois de confirmar as escolhas e os custos.
 ## 14. O que precisa ser comprovado ao executar
 
 - [ ] Duas imagens enviadas ao ECR e contêiner `web` executando sem root.
-- [ ] RDS sem acesso público, alcançável apenas pelo grupo web na porta 5432.
+- [x] RDS **Available**, sem acesso público e regra 5432 somente do grupo web: [evidência da etapa 4](evidencias/aws/02-banco-segredos.json).
+- [ ] Conexão SQL a partir da task confirmada na etapa 9.
 - [ ] Segredos injetados por referência, sem senha no JSON, logs ou Git.
 - [ ] Inicialização avulsa terminou com exit code 0 e criou os três exemplos.
 - [ ] Todas as rotas testadas, incluindo cadastro e recuperação da foto.
@@ -676,5 +688,5 @@ CloudFormation ou Terraform, depois de confirmar as escolhas e os custos.
 - [ ] Recursos removidos ou custos de retenção conscientemente mantidos.
 
 Registre resultados reais em uma pasta de evidências AWS separada dos ensaios
-locais. Nunca registre a tela de visualização do segredo. Todos os itens acima
-permanecem pendentes até a execução.
+locais. Nunca registre a tela de visualização do segredo. Os itens não marcados
+permanecem pendentes de execução e verificação.

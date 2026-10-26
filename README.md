@@ -51,8 +51,9 @@ estrutura apresentada como `achados-perdidos` no enunciado. Os arquivos
 | [A3 — Relatório técnico](docs/RELATORIO.md) | Dockerfile, Compose, caminho do POST e ciclo de vida dos volumes. |
 | [A4 — Evidências](docs/evidencias/README.md) | Índice com legendas, saídas reais e imagens dos ensaios. |
 | [A5 — Reflexão](docs/REFLEXAO.md) | Sete respostas e tabela de equivalência Azure, AWS e Google Cloud. |
-| [Guia AWS](docs/GUIA_AWS.md) | Roteiro com ECS/Fargate, RDS, S3 Files, VPC, Secrets Manager e ECR; etapa 3 de rede executada, publicação da aplicação pendente. |
+| [Guia AWS](docs/GUIA_AWS.md) | Roteiro com ECS/Fargate, RDS, S3 Files, VPC, Secrets Manager e ECR; rede preparada, RDS disponível e segredos criados; publicação da aplicação pendente. |
 | [Preparação de rede AWS](docs/AWS-ETAPA-03.md) | VPC, sub-redes e grupos de segurança reais criados/conferidos para continuar o roteiro. |
+| [Banco e segredos AWS](docs/AWS-ETAPA-04.md) | Configuração real do RDS privado, dois segredos, custos consultados e acompanhamento no console. |
 | [Frontend](docs/FRONTEND.md) | Interface, integração com a API, roteiro para demonstração e testes de navegador. |
 | [Acesso por senha](docs/ACESSO.md) | Entrada compartilhada no Nginx, segredo local/AWS, curl autenticado e HTTPS. |
 | [Bônus](docs/BONUS.md) | Proxy reverso, backup com restauração e Adminer no perfil `debug`. |
@@ -230,7 +231,9 @@ posteriores à publicação registrada em 28. Os testes desta branch estão nos
 registros 29 a 32 do [índice](docs/evidencias/README.md). As referências ao clone
 e à publicação abaixo correspondem à versão anterior; esta branch ainda não
 foi publicada. A aplicação continua sem implantação na AWS; a rede da etapa 3
-foi preparada posteriormente, conforme o [registro de execução](docs/AWS-ETAPA-03.md).
+e o provisionamento do banco/segredos da etapa 4 foram feitos posteriormente,
+conforme os registros de [rede](docs/AWS-ETAPA-03.md) e
+[banco e segredos](docs/AWS-ETAPA-04.md).
 
 As saídas reais estão no [índice de evidências](docs/evidencias/README.md).
 Os registros 01 a 17 documentam a arquitetura básica. Os registros a partir de
@@ -248,8 +251,9 @@ O `.env` e os backups locais continuam ignorados; `.env.example` faz parte da en
 
 A [revisão final contra o PDF](docs/REVISAO_FINAL.md) relaciona os requisitos aos
 arquivos e testes. As equivalências em nuvem orientam a migração; a etapa 3 da
-AWS já tem [rede preparada e evidências reais](docs/AWS-ETAPA-03.md). A aplicação
-e os serviços de dados continuam pendentes de implantação.
+AWS já tem [rede preparada e evidências reais](docs/AWS-ETAPA-03.md), e a etapa 4
+registra o [provisionamento do banco e dos segredos](docs/AWS-ETAPA-04.md).
+A aplicação e o armazenamento de fotos continuam pendentes de implantação.
 
 ## Checklist de entrega verificado
 

@@ -5,7 +5,9 @@ do código atual e das fontes oficiais vinculadas abaixo. **Execução parcial:*
 a etapa 3 configurou a rede, e a etapa 4 criou o RDS e os dois segredos em
 26/10/2026, com o banco confirmado como **Available**. Os resultados estão registrados em
 [rede](AWS-ETAPA-03.md) e [banco e segredos](AWS-ETAPA-04.md).
-A aplicação e o armazenamento de fotos ainda não foram implantados na AWS.
+A etapa 5 criou o bucket e o S3 Files, com os dois mount targets **Available**,
+conforme o [registro do armazenamento](AWS-ETAPA-05.md). A aplicação ainda não
+foi implantada no ECS.
 
 ## 1. O caminho recomendado para começar
 
@@ -237,6 +239,11 @@ evidências. Não use a credencial pública do `.env.example` na internet.
 
 ## 5. S3 e S3 Files: persistir as fotos
 
+**Etapa executada:** bucket privado criado, S3 Files, access point e os dois
+mount targets **Available**. Os IDs, políticas e preços
+consultados estão em [AWS-ETAPA-05.md](AWS-ETAPA-05.md). Continue com esses
+recursos, sem criar outro bucket ou sistema de arquivos.
+
 1. Em **S3 → General purpose buckets → Create bucket**, escolha um nome único,
    por exemplo `g1-achados-fotos-<conta>-<sufixo>`, na mesma região.
 2. Mantenha **Block all public access**, ACLs desativadas e criptografia SSE-S3.
@@ -247,6 +254,13 @@ evidências. Não use a credencial pública do `.env.example` na internet.
 5. Confira os **mount targets** nas zonas das duas sub-redes escolhidas. Troque
    o security group de cada um para somente `g1-fotos-sg`, removendo o padrão.
 6. Anote o **file system ID**, seu **ARN** e o nome do bucket.
+
+Na execução pelo MCP, a role de sincronização foi criada explicitamente, com
+trust policy restrita à conta e ao sistema de arquivos. A política do sistema
+de arquivos rejeita montagens por outras identidades ou outros access points:
+a role `g1-ecs-task-role`, criada no passo 7, deve manter esse nome e receber
+as permissões descritas abaixo. Se mudar seu nome, atualize também essa política.
+Essas restrições complementam a porta 2049 permitida somente do grupo web.
 
 Fontes: [tutorial do S3 Files](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-files-getting-started.html)
 e [pré-requisitos](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-files-prereq-policies.html).
@@ -270,6 +284,13 @@ No contêiner, a raiz desse access point será montada em `/app/uploads`.
 No bucket, os arquivos ficam sob `uploads/`. Upload, leitura e contagem continuam
 usando o código original. A sincronização com os objetos do bucket é assíncrona:
 confira também seu estado antes de remover o sistema de arquivos.
+
+Para o laboratório de poucas horas, o armazenamento é cobrado pelo volume e
+pelas operações. Em `us-east-1`, a consulta de 26/10/2026 retornou US$ 0,023/GB-mês
+para S3 Standard e US$ 0,30/GB-mês para a camada ativa do S3 Files, além de
+leituras, gravações, metadados, sincronização e requisições S3. Não é uma tarifa
+fixa por bucket. Consulte os [preços](https://aws.amazon.com/s3/pricing/)
+e o [registro desta etapa](AWS-ETAPA-05.md#custo-para-o-laboratório-de-hoje).
 
 Se sua CLI não reconhecer `s3files`, atualize a AWS CLI. Se a integração não
 estiver disponível no console da sua região/conta, confirme a disponibilidade
@@ -376,8 +397,10 @@ autoriza o acesso ao sistema de arquivos e a leitura dos objetos pelo cliente.
 ```
 
 Ela é diferente da role de sincronização criada pelo S3 Files. Esta última
-escreve no bucket em nome do serviço e deve permanecer com as permissões geradas
-pelo assistente. Não são necessárias access keys dentro do contêiner.
+escreve no bucket em nome do serviço e deve permanecer com as permissões
+configuradas na etapa 5 (geradas pelo assistente do console ou criadas pelo MCP).
+A política do sistema de arquivos também precisa permitir a identidade e o
+access point usados pela task. Não são necessárias access keys dentro do contêiner.
 Fonte: [acesso IAM ao S3 Files](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-files-security-iam.html).
 
 ## 8. ECS: registrar a receita de execução
@@ -677,6 +700,8 @@ CloudFormation ou Terraform, depois de confirmar as escolhas e os custos.
 - [ ] Duas imagens enviadas ao ECR e contêiner `web` executando sem root.
 - [x] RDS **Available**, sem acesso público e regra 5432 somente do grupo web: [evidência da etapa 4](evidencias/aws/02-banco-segredos.json).
 - [ ] Conexão SQL a partir da task confirmada na etapa 9.
+- [x] Bucket privado/versionado, S3 Files, access point e dois mount targets disponíveis: [evidência da etapa 5](evidencias/aws/03-fotos-s3files.json).
+- [ ] Montagem do access point e escrita/leitura de fotos confirmadas pela aplicação.
 - [ ] Segredos injetados por referência, sem senha no JSON, logs ou Git.
 - [ ] Inicialização avulsa terminou com exit code 0 e criou os três exemplos.
 - [ ] Todas as rotas testadas, incluindo cadastro e recuperação da foto.

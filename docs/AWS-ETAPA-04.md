@@ -125,6 +125,8 @@ endpoint e versões atuais dos dois segredos. A consulta dos segredos confirmou
 as chaves JSON e o formato das senhas sem retornar seus valores.
 
 A etapa 4 está concluída; a próxima etapa do roteiro é a **5: S3 e S3 Files**.
+Essa etapa foi executada posteriormente, conforme o
+[registro do armazenamento](AWS-ETAPA-05.md). A continuação atual é a etapa 6, ECR.
 `app/app.py`, `app/requirements.txt` e `db/init.sql` permanecem preservados.
 
 Fontes: [criação do RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_CreateDBInstance.html),

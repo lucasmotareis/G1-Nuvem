@@ -51,9 +51,10 @@ estrutura apresentada como `achados-perdidos` no enunciado. Os arquivos
 | [A3 — Relatório técnico](docs/RELATORIO.md) | Dockerfile, Compose, caminho do POST e ciclo de vida dos volumes. |
 | [A4 — Evidências](docs/evidencias/README.md) | Índice com legendas, saídas reais e imagens dos ensaios. |
 | [A5 — Reflexão](docs/REFLEXAO.md) | Sete respostas e tabela de equivalência Azure, AWS e Google Cloud. |
-| [Guia AWS](docs/GUIA_AWS.md) | Roteiro com ECS/Fargate, RDS, S3 Files, VPC, Secrets Manager e ECR; rede preparada, RDS disponível e segredos criados; publicação da aplicação pendente. |
+| [Guia AWS](docs/GUIA_AWS.md) | Roteiro com ECS/Fargate, RDS, S3 Files, VPC, Secrets Manager e ECR; rede, banco/segredos e armazenamento preparados; publicação e integração da aplicação pendentes. |
 | [Preparação de rede AWS](docs/AWS-ETAPA-03.md) | VPC, sub-redes e grupos de segurança reais criados/conferidos para continuar o roteiro. |
 | [Banco e segredos AWS](docs/AWS-ETAPA-04.md) | Configuração real do RDS privado, dois segredos, custos consultados e acompanhamento no console. |
+| [Fotos na AWS](docs/AWS-ETAPA-05.md) | Bucket privado, S3 Files, access point, rede, permissões e custos por uso do laboratório. |
 | [Frontend](docs/FRONTEND.md) | Interface, integração com a API, roteiro para demonstração e testes de navegador. |
 | [Acesso por senha](docs/ACESSO.md) | Entrada compartilhada no Nginx, segredo local/AWS, curl autenticado e HTTPS. |
 | [Bônus](docs/BONUS.md) | Proxy reverso, backup com restauração e Adminer no perfil `debug`. |
@@ -253,7 +254,8 @@ A [revisão final contra o PDF](docs/REVISAO_FINAL.md) relaciona os requisitos a
 arquivos e testes. As equivalências em nuvem orientam a migração; a etapa 3 da
 AWS já tem [rede preparada e evidências reais](docs/AWS-ETAPA-03.md), e a etapa 4
 registra o [provisionamento do banco e dos segredos](docs/AWS-ETAPA-04.md).
-A aplicação e o armazenamento de fotos continuam pendentes de implantação.
+A etapa 5 registra a [criação do armazenamento de fotos](docs/AWS-ETAPA-05.md).
+A aplicação e os testes de integração com esses serviços continuam pendentes.
 
 ## Checklist de entrega verificado
 

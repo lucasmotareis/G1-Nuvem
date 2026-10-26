@@ -70,7 +70,8 @@ Esta tabela apresenta **propostas de equivalência funcional**, com os serviços
 conferidos nas fontes oficiais vinculadas em cada célula. Em 26/10/2026, a
 [etapa 3 da AWS](AWS-ETAPA-03.md) preparou a rede e os grupos de segurança reais;
 a [etapa 4](AWS-ETAPA-04.md) criou os segredos e o RDS, confirmado como disponível.
-Aplicação e armazenamento de fotos permanecem como etapas futuras de implantação.
+A [etapa 5](AWS-ETAPA-05.md) criou o bucket e o sistema S3 Files para as fotos;
+a montagem no ECS e os testes de integração da aplicação permanecem pendentes.
 
 | Peça do ambiente local | Microsoft Azure | AWS | Google Cloud |
 | --- | --- | --- | --- |
@@ -107,5 +108,6 @@ proposta por etapas. A análise de fotos acima considera o uso direto das APIs d
 objetos. O guia apresenta também a alternativa **S3 Files integrado ao ECS**, que
 fornece uma montagem de arquivos para preservar o código do protótipo, conforme
 a [documentação da AWS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/s3files-volumes.html).
-As etapas de rede e criação de banco/segredos foram executadas na conta
-AWS; o modelo de task definition ainda não foi registrado nem executado no ECS.
+As etapas de rede, banco/segredos e criação do armazenamento foram executadas
+na conta AWS. A montagem e a sincronização de fotos ainda precisam ser testadas;
+o modelo de task definition ainda não foi registrado nem executado no ECS.

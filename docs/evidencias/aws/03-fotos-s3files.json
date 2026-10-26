@@ -1,0 +1,1647 @@
+{
+  "legenda": "26/10/2026: criação e verificação real de bucket S3 privado, S3 Files disponível, role de sincronização, dois mount targets disponíveis e access point para /uploads; 26 verificações de configuração aprovadas. A montagem e a sincronização pela aplicação ainda não foram testadas.",
+  "region": "us-east-1",
+  "account": "429100831877",
+  "records": {
+    "preflight": {
+      "status": "success",
+      "return_value": {
+        "timestamp": "2026-10-26T19:53:47.285571+00:00",
+        "identity": {
+          "UserId": "429100831877",
+          "Account": "429100831877",
+          "Arn": "arn:aws:iam::429100831877:root"
+        },
+        "filesystems": {
+          "fileSystems": []
+        },
+        "storage_sg": {
+          "SecurityGroups": [
+            {
+              "GroupId": "sg-019dba9bb8b41b0e9",
+              "IpPermissionsEgress": [
+                {
+                  "IpProtocol": "-1",
+                  "UserIdGroupPairs": [],
+                  "IpRanges": [
+                    {
+                      "CidrIp": "0.0.0.0/0"
+                    }
+                  ],
+                  "Ipv6Ranges": [],
+                  "PrefixListIds": []
+                }
+              ],
+              "Tags": [
+                {
+                  "Key": "Name",
+                  "Value": "g1-fotos-sg"
+                },
+                {
+                  "Key": "Project",
+                  "Value": "achados-perdidos"
+                },
+                {
+                  "Key": "Environment",
+                  "Value": "laboratorio"
+                }
+              ],
+              "VpcId": "vpc-0de41f84c70ccf93b",
+              "SecurityGroupArn": "arn:aws:ec2:us-east-1:429100831877:security-group/sg-019dba9bb8b41b0e9",
+              "OwnerId": "429100831877",
+              "GroupName": "g1-fotos-sg",
+              "Description": "Achados e Perdidos - file storage only from application",
+              "IpPermissions": [
+                {
+                  "IpProtocol": "tcp",
+                  "FromPort": 2049,
+                  "ToPort": 2049,
+                  "UserIdGroupPairs": [
+                    {
+                      "Description": "NFS file access only from application",
+                      "UserId": "429100831877",
+                      "GroupId": "sg-0032fd6de918bc221"
+                    }
+                  ],
+                  "IpRanges": [],
+                  "Ipv6Ranges": [],
+                  "PrefixListIds": []
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "api_calls": [
+        {
+          "service": "sts",
+          "operation": "GetCallerIdentity",
+          "status": "success"
+        },
+        {
+          "service": "s3files",
+          "operation": "ListFileSystems",
+          "status": "success",
+          "n_items": {
+            "fileSystems": 0
+          }
+        },
+        {
+          "service": "ec2",
+          "operation": "DescribeSecurityGroups",
+          "status": "success",
+          "n_items": {
+            "SecurityGroups": 1
+          }
+        }
+      ]
+    },
+    "create_bucket_role": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T19:57:26.586768+00:00",
+        "bucket_name": "g1-achados-fotos-429100831877-20261026",
+        "create_bucket": {
+          "Location": "/g1-achados-fotos-429100831877-20261026",
+          "BucketArn": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026"
+        },
+        "public_access_block": {},
+        "encryption": {},
+        "versioning": {},
+        "bucket_policy": {},
+        "eventbridge_notifications": {},
+        "bucket_tags": {},
+        "create_role": {
+          "Role": {
+            "Path": "/",
+            "RoleName": "g1-s3files-sync-role",
+            "RoleId": "AROAWH2DHCSCVG3ICXX4K",
+            "Arn": "arn:aws:iam::429100831877:role/g1-s3files-sync-role",
+            "CreateDate": "2026-10-26T19:57:30+00:00",
+            "AssumeRolePolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Sid": "AllowS3FilesAssumeRole",
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": "elasticfilesystem.amazonaws.com"
+                  },
+                  "Action": "sts:AssumeRole",
+                  "Condition": {
+                    "StringEquals": {
+                      "aws:SourceAccount": "429100831877"
+                    },
+                    "ArnLike": {
+                      "aws:SourceArn": "arn:aws:s3files:us-east-1:429100831877:file-system/*"
+                    }
+                  }
+                }
+              ]
+            },
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "achados-perdidos"
+              },
+              {
+                "Key": "Environment",
+                "Value": "laboratorio"
+              }
+            ]
+          }
+        },
+        "role_policy": {}
+      },
+      "api_calls": [
+        {
+          "service": "sts",
+          "operation": "GetCallerIdentity",
+          "status": "success"
+        },
+        {
+          "service": "s3",
+          "operation": "CreateBucket",
+          "status": "success"
+        },
+        {
+          "service": "s3",
+          "operation": "PutPublicAccessBlock",
+          "status": "success"
+        },
+        {
+          "service": "s3",
+          "operation": "PutBucketEncryption",
+          "status": "success"
+        },
+        {
+          "service": "s3",
+          "operation": "PutBucketVersioning",
+          "status": "success"
+        },
+        {
+          "service": "s3",
+          "operation": "PutBucketPolicy",
+          "status": "success"
+        },
+        {
+          "service": "s3",
+          "operation": "PutBucketNotificationConfiguration",
+          "status": "success"
+        },
+        {
+          "service": "s3",
+          "operation": "PutBucketTagging",
+          "status": "success"
+        },
+        {
+          "service": "iam",
+          "operation": "CreateRole",
+          "status": "success"
+        },
+        {
+          "service": "iam",
+          "operation": "PutRolePolicy",
+          "status": "success"
+        }
+      ]
+    },
+    "create_filesystem": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T19:57:56.673138+00:00",
+        "filesystem": {
+          "creationTime": "2026-10-26T19:57:56+00:00",
+          "fileSystemArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+          "fileSystemId": "fs-03cc16c6148b70bad",
+          "bucket": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026",
+          "prefix": "",
+          "clientToken": "g1-achados-fotos-20261026-v1",
+          "status": "creating",
+          "roleArn": "arn:aws:iam::429100831877:role/g1-s3files-sync-role",
+          "ownerId": "429100831877",
+          "tags": [
+            {
+              "key": "Environment",
+              "value": "laboratorio"
+            },
+            {
+              "key": "Name",
+              "value": "g1-achados-fotos"
+            },
+            {
+              "key": "Project",
+              "value": "achados-perdidos"
+            }
+          ]
+        }
+      },
+      "api_calls": [
+        {
+          "service": "sts",
+          "operation": "GetCallerIdentity",
+          "status": "success"
+        },
+        {
+          "service": "s3files",
+          "operation": "CreateFileSystem",
+          "status": "success",
+          "n_items": {
+            "tags": 3
+          }
+        }
+      ]
+    },
+    "trust_and_policy_validation": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T19:58:16.387498+00:00",
+        "narrow_trust": {},
+        "filesystem": {
+          "creationTime": "2026-10-26T19:57:56+00:00",
+          "fileSystemArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+          "fileSystemId": "fs-03cc16c6148b70bad",
+          "bucket": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026",
+          "prefix": "",
+          "clientToken": "g1-achados-fotos-20261026-v1",
+          "status": "available",
+          "roleArn": "arn:aws:iam::429100831877:role/g1-s3files-sync-role",
+          "ownerId": "429100831877",
+          "tags": [
+            {
+              "key": "Environment",
+              "value": "laboratorio"
+            },
+            {
+              "key": "Name",
+              "value": "g1-achados-fotos"
+            },
+            {
+              "key": "Project",
+              "value": "achados-perdidos"
+            }
+          ],
+          "name": "g1-achados-fotos"
+        },
+        "sync_policy_validation": {
+          "findings": []
+        }
+      },
+      "api_calls": [
+        {
+          "service": "iam",
+          "operation": "UpdateAssumeRolePolicy",
+          "status": "success"
+        },
+        {
+          "service": "s3files",
+          "operation": "GetFileSystem",
+          "status": "success",
+          "n_items": {
+            "tags": 3
+          }
+        },
+        {
+          "service": "accessanalyzer",
+          "operation": "ValidatePolicy",
+          "status": "success",
+          "n_items": {
+            "findings": 0
+          }
+        }
+      ]
+    },
+    "create_mounts_access_point": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T19:58:37.585623+00:00",
+        "mount_target_a": {
+          "availabilityZoneId": "use1-az2",
+          "ownerId": "429100831877",
+          "mountTargetId": "fsmt-0d7e6123c5bd2fca3",
+          "fileSystemId": "fs-03cc16c6148b70bad",
+          "subnetId": "subnet-0eab04bf2964fdeb7",
+          "ipv4Address": "172.31.83.176",
+          "networkInterfaceId": "eni-001ef10023357e365",
+          "vpcId": "vpc-0de41f84c70ccf93b",
+          "securityGroups": [
+            "sg-019dba9bb8b41b0e9"
+          ],
+          "status": "creating"
+        },
+        "mount_target_b": {
+          "availabilityZoneId": "use1-az4",
+          "ownerId": "429100831877",
+          "mountTargetId": "fsmt-0225d5e0f36a518f1",
+          "fileSystemId": "fs-03cc16c6148b70bad",
+          "subnetId": "subnet-05d4324f091ba6877",
+          "ipv4Address": "172.31.26.73",
+          "networkInterfaceId": "eni-07b2e889ffc1d9867",
+          "vpcId": "vpc-0de41f84c70ccf93b",
+          "securityGroups": [
+            "sg-019dba9bb8b41b0e9"
+          ],
+          "status": "creating"
+        },
+        "access_point": {
+          "accessPointArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137",
+          "accessPointId": "fsap-02894e11d3d7d7137",
+          "clientToken": "g1-achados-uploads-20261026-v1",
+          "fileSystemId": "fs-03cc16c6148b70bad",
+          "status": "available",
+          "ownerId": "429100831877",
+          "posixUser": {
+            "uid": 1000,
+            "gid": 1000
+          },
+          "rootDirectory": {
+            "path": "/uploads",
+            "creationPermissions": {
+              "ownerUid": 1000,
+              "ownerGid": 1000,
+              "permissions": "750"
+            }
+          },
+          "tags": [
+            {
+              "key": "Environment",
+              "value": "laboratorio"
+            },
+            {
+              "key": "Name",
+              "value": "g1-achados-uploads"
+            },
+            {
+              "key": "Project",
+              "value": "achados-perdidos"
+            }
+          ]
+        }
+      },
+      "api_calls": [
+        {
+          "service": "s3files",
+          "operation": "CreateMountTarget",
+          "status": "success",
+          "n_items": {
+            "securityGroups": 1
+          }
+        },
+        {
+          "service": "s3files",
+          "operation": "CreateMountTarget",
+          "status": "success",
+          "n_items": {
+            "securityGroups": 1
+          }
+        },
+        {
+          "service": "s3files",
+          "operation": "CreateAccessPoint",
+          "status": "success",
+          "n_items": {
+            "tags": 3
+          }
+        }
+      ]
+    },
+    "filesystem_policy": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T19:59:07.229518+00:00",
+        "filesystem_policy": {},
+        "mount_targets": {
+          "mountTargets": [
+            {
+              "availabilityZoneId": "use1-az2",
+              "fileSystemId": "fs-03cc16c6148b70bad",
+              "ipv4Address": "172.31.83.176",
+              "status": "creating",
+              "mountTargetId": "fsmt-0d7e6123c5bd2fca3",
+              "networkInterfaceId": "eni-001ef10023357e365",
+              "ownerId": "429100831877",
+              "subnetId": "subnet-0eab04bf2964fdeb7",
+              "vpcId": "vpc-0de41f84c70ccf93b"
+            },
+            {
+              "availabilityZoneId": "use1-az4",
+              "fileSystemId": "fs-03cc16c6148b70bad",
+              "ipv4Address": "172.31.26.73",
+              "status": "creating",
+              "mountTargetId": "fsmt-0225d5e0f36a518f1",
+              "networkInterfaceId": "eni-07b2e889ffc1d9867",
+              "ownerId": "429100831877",
+              "subnetId": "subnet-05d4324f091ba6877",
+              "vpcId": "vpc-0de41f84c70ccf93b"
+            }
+          ]
+        },
+        "access_point": {
+          "accessPointArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137",
+          "accessPointId": "fsap-02894e11d3d7d7137",
+          "clientToken": "g1-achados-uploads-20261026-v1",
+          "fileSystemId": "fs-03cc16c6148b70bad",
+          "status": "available",
+          "ownerId": "429100831877",
+          "posixUser": {
+            "uid": 1000,
+            "gid": 1000
+          },
+          "rootDirectory": {
+            "path": "/uploads",
+            "creationPermissions": {
+              "ownerUid": 1000,
+              "ownerGid": 1000,
+              "permissions": "750"
+            }
+          },
+          "tags": [
+            {
+              "key": "Environment",
+              "value": "laboratorio"
+            },
+            {
+              "key": "Name",
+              "value": "g1-achados-uploads"
+            },
+            {
+              "key": "Project",
+              "value": "achados-perdidos"
+            }
+          ],
+          "name": "g1-achados-uploads"
+        },
+        "filesystem_policy_read": {
+          "fileSystemId": "fs-03cc16c6148b70bad",
+          "policy": "{\n  \"Version\" : \"2012-10-17\",\n  \"Statement\" : [ {\n    \"Sid\" : \"DenyOtherClientPrincipals\",\n    \"Effect\" : \"Deny\",\n    \"Principal\" : \"*\",\n    \"Action\" : \"s3files:Client*\",\n    \"Resource\" : \"arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad\",\n    \"Condition\" : {\n      \"ArnNotEquals\" : {\n        \"aws:PrincipalArn\" : \"arn:aws:iam::429100831877:role/g1-ecs-task-role\"\n      }\n    }\n  }, {\n    \"Sid\" : \"DenyOtherAccessPoints\",\n    \"Effect\" : \"Deny\",\n    \"Principal\" : \"*\",\n    \"Action\" : \"s3files:Client*\",\n    \"Resource\" : \"arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad\",\n    \"Condition\" : {\n      \"ArnNotEquals\" : {\n        \"s3files:AccessPointArn\" : \"arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137\"\n      }\n    }\n  } ]\n}"
+        }
+      },
+      "api_calls": [
+        {
+          "service": "s3files",
+          "operation": "PutFileSystemPolicy",
+          "status": "success"
+        },
+        {
+          "service": "s3files",
+          "operation": "ListMountTargets",
+          "status": "success",
+          "n_items": {
+            "mountTargets": 2
+          }
+        },
+        {
+          "service": "s3files",
+          "operation": "GetAccessPoint",
+          "status": "success",
+          "n_items": {
+            "tags": 3
+          }
+        },
+        {
+          "service": "s3files",
+          "operation": "GetFileSystemPolicy",
+          "status": "success"
+        }
+      ]
+    },
+    "configuration_readback": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T19:59:45.013954+00:00",
+        "public_access_block": {
+          "PublicAccessBlockConfiguration": {
+            "BlockPublicAcls": true,
+            "IgnorePublicAcls": true,
+            "BlockPublicPolicy": true,
+            "RestrictPublicBuckets": true
+          }
+        },
+        "encryption": {
+          "ServerSideEncryptionConfiguration": {
+            "Rules": [
+              {
+                "ApplyServerSideEncryptionByDefault": {
+                  "SSEAlgorithm": "AES256"
+                },
+                "BucketKeyEnabled": false,
+                "BlockedEncryptionTypes": {
+                  "EncryptionType": [
+                    "SSE-C"
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        "versioning": {
+          "Status": "Enabled"
+        },
+        "ownership": {
+          "OwnershipControls": {
+            "Rules": [
+              {
+                "ObjectOwnership": "BucketOwnerEnforced"
+              }
+            ]
+          }
+        },
+        "bucket_policy": {
+          "Policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"DenyNonTLSRequests\",\"Effect\":\"Deny\",\"Principal\":\"*\",\"Action\":\"s3:*\",\"Resource\":[\"arn:aws:s3:::g1-achados-fotos-429100831877-20261026\",\"arn:aws:s3:::g1-achados-fotos-429100831877-20261026/*\"],\"Condition\":{\"Bool\":{\"aws:PrincipalIsAWSService\":\"false\",\"aws:SecureTransport\":\"false\"}}}]}"
+        },
+        "public_policy_status": {
+          "PolicyStatus": {
+            "IsPublic": false
+          }
+        },
+        "notifications": {
+          "EventBridgeConfiguration": {}
+        },
+        "object_versions": {
+          "Prefix": ""
+        },
+        "sync_role": {
+          "Role": {
+            "Path": "/",
+            "RoleName": "g1-s3files-sync-role",
+            "RoleId": "AROAWH2DHCSCVG3ICXX4K",
+            "Arn": "arn:aws:iam::429100831877:role/g1-s3files-sync-role",
+            "CreateDate": "2026-10-26T19:57:30+00:00",
+            "AssumeRolePolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Sid": "AllowS3FilesAssumeRole",
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": "elasticfilesystem.amazonaws.com"
+                  },
+                  "Action": "sts:AssumeRole",
+                  "Condition": {
+                    "StringEquals": {
+                      "aws:SourceAccount": "429100831877"
+                    },
+                    "ArnLike": {
+                      "aws:SourceArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad"
+                    }
+                  }
+                }
+              ]
+            },
+            "Description": "Sincronizacao S3 Files exclusiva do bucket de fotos do laboratorio G1",
+            "MaxSessionDuration": 3600,
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "achados-perdidos"
+              },
+              {
+                "Key": "Environment",
+                "Value": "laboratorio"
+              }
+            ],
+            "RoleLastUsed": {}
+          }
+        },
+        "sync_role_policy": {
+          "RoleName": "g1-s3files-sync-role",
+          "PolicyName": "g1-s3files-sync",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "S3BucketPermissions",
+                "Effect": "Allow",
+                "Action": [
+                  "s3:ListBucket",
+                  "s3:ListBucketVersions"
+                ],
+                "Resource": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026",
+                "Condition": {
+                  "StringEquals": {
+                    "aws:ResourceAccount": "429100831877"
+                  }
+                }
+              },
+              {
+                "Sid": "S3ObjectPermissions",
+                "Effect": "Allow",
+                "Action": [
+                  "s3:AbortMultipartUpload",
+                  "s3:DeleteObject*",
+                  "s3:GetObject*",
+                  "s3:List*",
+                  "s3:PutObject*"
+                ],
+                "Resource": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026/*",
+                "Condition": {
+                  "StringEquals": {
+                    "aws:ResourceAccount": "429100831877"
+                  }
+                }
+              },
+              {
+                "Sid": "EventBridgeManage",
+                "Effect": "Allow",
+                "Action": [
+                  "events:DeleteRule",
+                  "events:DisableRule",
+                  "events:EnableRule",
+                  "events:PutRule",
+                  "events:PutTargets",
+                  "events:RemoveTargets"
+                ],
+                "Resource": "arn:aws:events:us-east-1:429100831877:rule/DO-NOT-DELETE-S3-Files*",
+                "Condition": {
+                  "StringEquals": {
+                    "events:ManagedBy": "elasticfilesystem.amazonaws.com"
+                  }
+                }
+              },
+              {
+                "Sid": "EventBridgeRead",
+                "Effect": "Allow",
+                "Action": [
+                  "events:DescribeRule",
+                  "events:ListRuleNamesByTarget",
+                  "events:ListRules",
+                  "events:ListTargetsByRule"
+                ],
+                "Resource": "arn:aws:events:us-east-1:429100831877:rule/*"
+              }
+            ]
+          }
+        },
+        "sync_managed_policies": {
+          "AttachedPolicies": []
+        },
+        "filesystem": {
+          "creationTime": "2026-10-26T19:57:56+00:00",
+          "fileSystemArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+          "fileSystemId": "fs-03cc16c6148b70bad",
+          "bucket": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026",
+          "prefix": "",
+          "clientToken": "g1-achados-fotos-20261026-v1",
+          "status": "available",
+          "roleArn": "arn:aws:iam::429100831877:role/g1-s3files-sync-role",
+          "ownerId": "429100831877",
+          "tags": [
+            {
+              "key": "Environment",
+              "value": "laboratorio"
+            },
+            {
+              "key": "Name",
+              "value": "g1-achados-fotos"
+            },
+            {
+              "key": "Project",
+              "value": "achados-perdidos"
+            }
+          ],
+          "name": "g1-achados-fotos"
+        },
+        "mount_targets": {
+          "mountTargets": [
+            {
+              "availabilityZoneId": "use1-az2",
+              "fileSystemId": "fs-03cc16c6148b70bad",
+              "ipv4Address": "172.31.83.176",
+              "status": "creating",
+              "mountTargetId": "fsmt-0d7e6123c5bd2fca3",
+              "networkInterfaceId": "eni-001ef10023357e365",
+              "ownerId": "429100831877",
+              "subnetId": "subnet-0eab04bf2964fdeb7",
+              "vpcId": "vpc-0de41f84c70ccf93b"
+            },
+            {
+              "availabilityZoneId": "use1-az4",
+              "fileSystemId": "fs-03cc16c6148b70bad",
+              "ipv4Address": "172.31.26.73",
+              "status": "creating",
+              "mountTargetId": "fsmt-0225d5e0f36a518f1",
+              "networkInterfaceId": "eni-07b2e889ffc1d9867",
+              "ownerId": "429100831877",
+              "subnetId": "subnet-05d4324f091ba6877",
+              "vpcId": "vpc-0de41f84c70ccf93b"
+            }
+          ]
+        },
+        "access_point": {
+          "accessPointArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137",
+          "accessPointId": "fsap-02894e11d3d7d7137",
+          "clientToken": "g1-achados-uploads-20261026-v1",
+          "fileSystemId": "fs-03cc16c6148b70bad",
+          "status": "available",
+          "ownerId": "429100831877",
+          "posixUser": {
+            "uid": 1000,
+            "gid": 1000
+          },
+          "rootDirectory": {
+            "path": "/uploads",
+            "creationPermissions": {
+              "ownerUid": 1000,
+              "ownerGid": 1000,
+              "permissions": "750"
+            }
+          },
+          "tags": [
+            {
+              "key": "Environment",
+              "value": "laboratorio"
+            },
+            {
+              "key": "Name",
+              "value": "g1-achados-uploads"
+            },
+            {
+              "key": "Project",
+              "value": "achados-perdidos"
+            }
+          ],
+          "name": "g1-achados-uploads"
+        },
+        "filesystem_policy": {
+          "fileSystemId": "fs-03cc16c6148b70bad",
+          "policy": "{\n  \"Version\" : \"2012-10-17\",\n  \"Statement\" : [ {\n    \"Sid\" : \"DenyOtherClientPrincipals\",\n    \"Effect\" : \"Deny\",\n    \"Principal\" : \"*\",\n    \"Action\" : \"s3files:Client*\",\n    \"Resource\" : \"arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad\",\n    \"Condition\" : {\n      \"ArnNotEquals\" : {\n        \"aws:PrincipalArn\" : \"arn:aws:iam::429100831877:role/g1-ecs-task-role\"\n      }\n    }\n  }, {\n    \"Sid\" : \"DenyOtherAccessPoints\",\n    \"Effect\" : \"Deny\",\n    \"Principal\" : \"*\",\n    \"Action\" : \"s3files:Client*\",\n    \"Resource\" : \"arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad\",\n    \"Condition\" : {\n      \"ArnNotEquals\" : {\n        \"s3files:AccessPointArn\" : \"arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137\"\n      }\n    }\n  } ]\n}"
+        },
+        "mount_interfaces": {
+          "NetworkInterfaces": [
+            {
+              "Attachment": {
+                "AttachmentId": "ela-attach-0499a1397bf4382d1",
+                "DeleteOnTermination": false,
+                "DeviceIndex": 1,
+                "InstanceOwnerId": "amazon-aws",
+                "Status": "attached"
+              },
+              "AvailabilityZone": "us-east-1b",
+              "Description": "S3 Files mount target for fs-03cc16c6148b70bad (fsmt-0225d5e0f36a518f1)",
+              "Groups": [
+                {
+                  "GroupId": "sg-019dba9bb8b41b0e9",
+                  "GroupName": "g1-fotos-sg"
+                }
+              ],
+              "InterfaceType": "efs",
+              "Ipv6Addresses": [],
+              "MacAddress": "0a:ff:ca:17:83:0d",
+              "NetworkInterfaceId": "eni-07b2e889ffc1d9867",
+              "OwnerId": "429100831877",
+              "PrivateDnsName": "ip-172-31-26-73.ec2.internal",
+              "PublicDnsName": "",
+              "PrivateIpAddress": "172.31.26.73",
+              "PrivateIpAddresses": [
+                {
+                  "Primary": true,
+                  "PrivateDnsName": "ip-172-31-26-73.ec2.internal",
+                  "PrivateIpAddress": "172.31.26.73"
+                }
+              ],
+              "RequesterId": "473331812372",
+              "RequesterManaged": true,
+              "SourceDestCheck": true,
+              "Status": "in-use",
+              "SubnetId": "subnet-05d4324f091ba6877",
+              "TagSet": [],
+              "VpcId": "vpc-0de41f84c70ccf93b",
+              "Operator": {
+                "Managed": false,
+                "HiddenByDefault": false
+              },
+              "AvailabilityZoneId": "use1-az4"
+            },
+            {
+              "Attachment": {
+                "AttachmentId": "ela-attach-014af9e2b0e5356d4",
+                "DeleteOnTermination": false,
+                "DeviceIndex": 1,
+                "InstanceOwnerId": "amazon-aws",
+                "Status": "attached"
+              },
+              "AvailabilityZone": "us-east-1a",
+              "Description": "S3 Files mount target for fs-03cc16c6148b70bad (fsmt-0d7e6123c5bd2fca3)",
+              "Groups": [
+                {
+                  "GroupId": "sg-019dba9bb8b41b0e9",
+                  "GroupName": "g1-fotos-sg"
+                }
+              ],
+              "InterfaceType": "efs",
+              "Ipv6Addresses": [],
+              "MacAddress": "12:ff:c1:30:90:cf",
+              "NetworkInterfaceId": "eni-001ef10023357e365",
+              "OwnerId": "429100831877",
+              "PrivateDnsName": "ip-172-31-83-176.ec2.internal",
+              "PublicDnsName": "",
+              "PrivateIpAddress": "172.31.83.176",
+              "PrivateIpAddresses": [
+                {
+                  "Primary": true,
+                  "PrivateDnsName": "ip-172-31-83-176.ec2.internal",
+                  "PrivateIpAddress": "172.31.83.176"
+                }
+              ],
+              "RequesterId": "473331812372",
+              "RequesterManaged": true,
+              "SourceDestCheck": true,
+              "Status": "in-use",
+              "SubnetId": "subnet-0eab04bf2964fdeb7",
+              "TagSet": [],
+              "VpcId": "vpc-0de41f84c70ccf93b",
+              "Operator": {
+                "Managed": false,
+                "HiddenByDefault": false
+              },
+              "AvailabilityZoneId": "use1-az2"
+            }
+          ]
+        },
+        "storage_security_group": {
+          "SecurityGroups": [
+            {
+              "GroupId": "sg-019dba9bb8b41b0e9",
+              "IpPermissionsEgress": [
+                {
+                  "IpProtocol": "-1",
+                  "UserIdGroupPairs": [],
+                  "IpRanges": [
+                    {
+                      "CidrIp": "0.0.0.0/0"
+                    }
+                  ],
+                  "Ipv6Ranges": [],
+                  "PrefixListIds": []
+                }
+              ],
+              "Tags": [
+                {
+                  "Key": "Name",
+                  "Value": "g1-fotos-sg"
+                },
+                {
+                  "Key": "Project",
+                  "Value": "achados-perdidos"
+                },
+                {
+                  "Key": "Environment",
+                  "Value": "laboratorio"
+                }
+              ],
+              "VpcId": "vpc-0de41f84c70ccf93b",
+              "SecurityGroupArn": "arn:aws:ec2:us-east-1:429100831877:security-group/sg-019dba9bb8b41b0e9",
+              "OwnerId": "429100831877",
+              "GroupName": "g1-fotos-sg",
+              "Description": "Achados e Perdidos - file storage only from application",
+              "IpPermissions": [
+                {
+                  "IpProtocol": "tcp",
+                  "FromPort": 2049,
+                  "ToPort": 2049,
+                  "UserIdGroupPairs": [
+                    {
+                      "Description": "NFS file access only from application",
+                      "UserId": "429100831877",
+                      "GroupId": "sg-0032fd6de918bc221"
+                    }
+                  ],
+                  "IpRanges": [],
+                  "Ipv6Ranges": [],
+                  "PrefixListIds": []
+                }
+              ]
+            }
+          ]
+        },
+        "filesystem_policy_validation": {
+          "findings": []
+        }
+      },
+      "api_calls": [
+        {
+          "service": "s3",
+          "operation": "GetPublicAccessBlock",
+          "status": "success"
+        },
+        {
+          "service": "s3",
+          "operation": "GetBucketEncryption",
+          "status": "success"
+        },
+        {
+          "service": "s3",
+          "operation": "GetBucketVersioning",
+          "status": "success"
+        },
+        {
+          "service": "s3",
+          "operation": "GetBucketOwnershipControls",
+          "status": "success"
+        },
+        {
+          "service": "s3",
+          "operation": "GetBucketPolicy",
+          "status": "success"
+        },
+        {
+          "service": "s3",
+          "operation": "GetBucketPolicyStatus",
+          "status": "success"
+        },
+        {
+          "service": "s3",
+          "operation": "GetBucketNotificationConfiguration",
+          "status": "success"
+        },
+        {
+          "service": "s3",
+          "operation": "ListObjectVersions",
+          "status": "success"
+        },
+        {
+          "service": "iam",
+          "operation": "GetRole",
+          "status": "success"
+        },
+        {
+          "service": "iam",
+          "operation": "GetRolePolicy",
+          "status": "success"
+        },
+        {
+          "service": "iam",
+          "operation": "ListAttachedRolePolicies",
+          "status": "success",
+          "n_items": {
+            "AttachedPolicies": 0
+          }
+        },
+        {
+          "service": "s3files",
+          "operation": "GetFileSystem",
+          "status": "success",
+          "n_items": {
+            "tags": 3
+          }
+        },
+        {
+          "service": "s3files",
+          "operation": "ListMountTargets",
+          "status": "success",
+          "n_items": {
+            "mountTargets": 2
+          }
+        },
+        {
+          "service": "s3files",
+          "operation": "GetAccessPoint",
+          "status": "success",
+          "n_items": {
+            "tags": 3
+          }
+        },
+        {
+          "service": "s3files",
+          "operation": "GetFileSystemPolicy",
+          "status": "success"
+        },
+        {
+          "service": "ec2",
+          "operation": "DescribeNetworkInterfaces",
+          "status": "success",
+          "n_items": {
+            "NetworkInterfaces": 2
+          }
+        },
+        {
+          "service": "ec2",
+          "operation": "DescribeSecurityGroups",
+          "status": "success",
+          "n_items": {
+            "SecurityGroups": 1
+          }
+        },
+        {
+          "service": "accessanalyzer",
+          "operation": "ValidatePolicy",
+          "status": "success",
+          "n_items": {
+            "findings": 0
+          }
+        }
+      ]
+    },
+    "pricing_files": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "s3_files_products": [
+          {
+            "product": {
+              "productFamily": "Storage",
+              "attributes": {
+                "volumeType": "Files",
+                "storageClass": "Files",
+                "regionCode": "us-east-1",
+                "servicecode": "AmazonS3",
+                "durability": "99.999999999%",
+                "usagetype": "USE1-Files-TimedStorage-ByteHrs",
+                "locationType": "AWS Region",
+                "location": "US East (N. Virginia)",
+                "servicename": "Amazon Simple Storage Service",
+                "operation": "Storage"
+              },
+              "sku": "2N3NKSP5AF8HYTS2"
+            },
+            "on_demand": {
+              "2N3NKSP5AF8HYTS2.JRTCKXETXF": {
+                "priceDimensions": {
+                  "2N3NKSP5AF8HYTS2.JRTCKXETXF.6YS6EN2CT7": {
+                    "unit": "GB-Mo",
+                    "endRange": "Inf",
+                    "description": "$0.30 per GB-Mo of Storage in Files ",
+                    "appliesTo": [],
+                    "rateCode": "2N3NKSP5AF8HYTS2.JRTCKXETXF.6YS6EN2CT7",
+                    "beginRange": "0",
+                    "pricePerUnit": {
+                      "USD": "0.3000000000"
+                    }
+                  }
+                },
+                "sku": "2N3NKSP5AF8HYTS2",
+                "effectiveDate": "2026-10-01T00:00:00Z",
+                "offerTermCode": "JRTCKXETXF",
+                "termAttributes": {}
+              }
+            }
+          },
+          {
+            "product": {
+              "attributes": {
+                "regionCode": "us-east-1",
+                "servicecode": "AmazonS3",
+                "groupDescription": "Files data writes",
+                "usagetype": "USE1-Files-Write",
+                "locationType": "AWS Region",
+                "location": "US East (N. Virginia)",
+                "servicename": "Amazon Simple Storage Service",
+                "operation": "Write",
+                "group": "S3-API-Files-Write"
+              },
+              "sku": "2VZ9XK6PS8MRHKCM"
+            },
+            "on_demand": {
+              "2VZ9XK6PS8MRHKCM.JRTCKXETXF": {
+                "priceDimensions": {
+                  "2VZ9XK6PS8MRHKCM.JRTCKXETXF.6YS6EN2CT7": {
+                    "unit": "GB",
+                    "endRange": "Inf",
+                    "description": "USD 0.06 per GB for USE1-Files-Write in US East (N. Virginia)",
+                    "appliesTo": [],
+                    "rateCode": "2VZ9XK6PS8MRHKCM.JRTCKXETXF.6YS6EN2CT7",
+                    "beginRange": "0",
+                    "pricePerUnit": {
+                      "USD": "0.0600000000"
+                    }
+                  }
+                },
+                "sku": "2VZ9XK6PS8MRHKCM",
+                "effectiveDate": "2026-10-01T00:00:00Z",
+                "offerTermCode": "JRTCKXETXF",
+                "termAttributes": {}
+              }
+            }
+          },
+          {
+            "product": {
+              "attributes": {
+                "regionCode": "us-east-1",
+                "servicecode": "AmazonS3",
+                "groupDescription": "Files data reads",
+                "usagetype": "USE1-Files-Read",
+                "locationType": "AWS Region",
+                "location": "US East (N. Virginia)",
+                "servicename": "Amazon Simple Storage Service",
+                "operation": "Read",
+                "group": "S3-API-Files-Read"
+              },
+              "sku": "5EQEX3JGMHP6ANKD"
+            },
+            "on_demand": {
+              "5EQEX3JGMHP6ANKD.JRTCKXETXF": {
+                "priceDimensions": {
+                  "5EQEX3JGMHP6ANKD.JRTCKXETXF.6YS6EN2CT7": {
+                    "unit": "GB",
+                    "endRange": "Inf",
+                    "description": "USD 0.03 per GB for USE1-Files-Read in US East (N. Virginia)",
+                    "appliesTo": [],
+                    "rateCode": "5EQEX3JGMHP6ANKD.JRTCKXETXF.6YS6EN2CT7",
+                    "beginRange": "0",
+                    "pricePerUnit": {
+                      "USD": "0.0300000000"
+                    }
+                  }
+                },
+                "sku": "5EQEX3JGMHP6ANKD",
+                "effectiveDate": "2026-10-01T00:00:00Z",
+                "offerTermCode": "JRTCKXETXF",
+                "termAttributes": {}
+              }
+            }
+          }
+        ],
+        "products_returned": 179,
+        "next_token_present": false
+      },
+      "api_calls": [
+        {
+          "service": "pricing",
+          "operation": "GetProducts",
+          "status": "success",
+          "n_items": {
+            "PriceList": 179
+          }
+        }
+      ]
+    },
+    "pricing_standard": {
+      "status": "success",
+      "return_value": {
+        "products": [
+          {
+            "product": {
+              "productFamily": "Storage",
+              "attributes": {
+                "volumeType": "Standard",
+                "storageClass": "General Purpose",
+                "regionCode": "us-east-1",
+                "servicecode": "AmazonS3",
+                "durability": "99.999999999%",
+                "usagetype": "TimedStorage-ByteHrs",
+                "locationType": "AWS Region",
+                "location": "US East (N. Virginia)",
+                "servicename": "Amazon Simple Storage Service",
+                "availability": "99.99%",
+                "operation": ""
+              },
+              "sku": "WP9ANXZGBYYSGJEA"
+            },
+            "on_demand": {
+              "WP9ANXZGBYYSGJEA.JRTCKXETXF": {
+                "priceDimensions": {
+                  "WP9ANXZGBYYSGJEA.JRTCKXETXF.D42MF2PVJS": {
+                    "unit": "GB-Mo",
+                    "endRange": "512000",
+                    "description": "$0.022 per GB - next 450 TB / month of storage used",
+                    "appliesTo": [],
+                    "rateCode": "WP9ANXZGBYYSGJEA.JRTCKXETXF.D42MF2PVJS",
+                    "beginRange": "51200",
+                    "pricePerUnit": {
+                      "USD": "0.0220000000"
+                    }
+                  },
+                  "WP9ANXZGBYYSGJEA.JRTCKXETXF.PXJDJ3YRG3": {
+                    "unit": "GB-Mo",
+                    "endRange": "Inf",
+                    "description": "$0.021 per GB - storage used / month over 500 TB",
+                    "appliesTo": [],
+                    "rateCode": "WP9ANXZGBYYSGJEA.JRTCKXETXF.PXJDJ3YRG3",
+                    "beginRange": "512000",
+                    "pricePerUnit": {
+                      "USD": "0.0210000000"
+                    }
+                  },
+                  "WP9ANXZGBYYSGJEA.JRTCKXETXF.PGHJ3S3EYE": {
+                    "unit": "GB-Mo",
+                    "endRange": "51200",
+                    "description": "$0.023 per GB - first 50 TB / month of storage used",
+                    "appliesTo": [],
+                    "rateCode": "WP9ANXZGBYYSGJEA.JRTCKXETXF.PGHJ3S3EYE",
+                    "beginRange": "0",
+                    "pricePerUnit": {
+                      "USD": "0.0230000000"
+                    }
+                  }
+                },
+                "sku": "WP9ANXZGBYYSGJEA",
+                "effectiveDate": "2026-10-01T00:00:00Z",
+                "offerTermCode": "JRTCKXETXF",
+                "termAttributes": {}
+              }
+            }
+          }
+        ]
+      },
+      "api_calls": [
+        {
+          "service": "pricing",
+          "operation": "GetProducts",
+          "status": "success",
+          "n_items": {
+            "PriceList": 1
+          }
+        }
+      ]
+    },
+    "final_status": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:04:40.818164+00:00",
+        "filesystem": {
+          "creationTime": "2026-10-26T19:57:56+00:00",
+          "fileSystemArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+          "fileSystemId": "fs-03cc16c6148b70bad",
+          "bucket": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026",
+          "prefix": "",
+          "clientToken": "g1-achados-fotos-20261026-v1",
+          "status": "available",
+          "roleArn": "arn:aws:iam::429100831877:role/g1-s3files-sync-role",
+          "ownerId": "429100831877",
+          "tags": [
+            {
+              "key": "Environment",
+              "value": "laboratorio"
+            },
+            {
+              "key": "Name",
+              "value": "g1-achados-fotos"
+            },
+            {
+              "key": "Project",
+              "value": "achados-perdidos"
+            }
+          ],
+          "name": "g1-achados-fotos"
+        },
+        "mount_targets": {
+          "mountTargets": [
+            {
+              "availabilityZoneId": "use1-az2",
+              "fileSystemId": "fs-03cc16c6148b70bad",
+              "ipv4Address": "172.31.83.176",
+              "status": "available",
+              "mountTargetId": "fsmt-0d7e6123c5bd2fca3",
+              "networkInterfaceId": "eni-001ef10023357e365",
+              "ownerId": "429100831877",
+              "subnetId": "subnet-0eab04bf2964fdeb7",
+              "vpcId": "vpc-0de41f84c70ccf93b"
+            },
+            {
+              "availabilityZoneId": "use1-az4",
+              "fileSystemId": "fs-03cc16c6148b70bad",
+              "ipv4Address": "172.31.26.73",
+              "status": "available",
+              "mountTargetId": "fsmt-0225d5e0f36a518f1",
+              "networkInterfaceId": "eni-07b2e889ffc1d9867",
+              "ownerId": "429100831877",
+              "subnetId": "subnet-05d4324f091ba6877",
+              "vpcId": "vpc-0de41f84c70ccf93b"
+            }
+          ]
+        },
+        "access_point": {
+          "accessPointArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137",
+          "accessPointId": "fsap-02894e11d3d7d7137",
+          "clientToken": "g1-achados-uploads-20261026-v1",
+          "fileSystemId": "fs-03cc16c6148b70bad",
+          "status": "available",
+          "ownerId": "429100831877",
+          "posixUser": {
+            "uid": 1000,
+            "gid": 1000
+          },
+          "rootDirectory": {
+            "path": "/uploads",
+            "creationPermissions": {
+              "ownerUid": 1000,
+              "ownerGid": 1000,
+              "permissions": "750"
+            }
+          },
+          "tags": [
+            {
+              "key": "Environment",
+              "value": "laboratorio"
+            },
+            {
+              "key": "Name",
+              "value": "g1-achados-uploads"
+            },
+            {
+              "key": "Project",
+              "value": "achados-perdidos"
+            }
+          ],
+          "name": "g1-achados-uploads"
+        },
+        "mount_interfaces": {
+          "NetworkInterfaces": [
+            {
+              "Attachment": {
+                "AttachmentId": "ela-attach-014af9e2b0e5356d4",
+                "DeleteOnTermination": false,
+                "DeviceIndex": 1,
+                "InstanceOwnerId": "amazon-aws",
+                "Status": "attached"
+              },
+              "AvailabilityZone": "us-east-1a",
+              "Description": "S3 Files mount target for fs-03cc16c6148b70bad (fsmt-0d7e6123c5bd2fca3)",
+              "Groups": [
+                {
+                  "GroupId": "sg-019dba9bb8b41b0e9",
+                  "GroupName": "g1-fotos-sg"
+                }
+              ],
+              "InterfaceType": "efs",
+              "Ipv6Addresses": [],
+              "MacAddress": "12:ff:c1:30:90:cf",
+              "NetworkInterfaceId": "eni-001ef10023357e365",
+              "OwnerId": "429100831877",
+              "PrivateDnsName": "ip-172-31-83-176.ec2.internal",
+              "PublicDnsName": "",
+              "PrivateIpAddress": "172.31.83.176",
+              "PrivateIpAddresses": [
+                {
+                  "Primary": true,
+                  "PrivateDnsName": "ip-172-31-83-176.ec2.internal",
+                  "PrivateIpAddress": "172.31.83.176"
+                }
+              ],
+              "RequesterId": "473331812372",
+              "RequesterManaged": true,
+              "SourceDestCheck": true,
+              "Status": "in-use",
+              "SubnetId": "subnet-0eab04bf2964fdeb7",
+              "TagSet": [],
+              "VpcId": "vpc-0de41f84c70ccf93b",
+              "Operator": {
+                "Managed": false,
+                "HiddenByDefault": false
+              },
+              "AvailabilityZoneId": "use1-az2"
+            },
+            {
+              "Attachment": {
+                "AttachmentId": "ela-attach-0499a1397bf4382d1",
+                "DeleteOnTermination": false,
+                "DeviceIndex": 1,
+                "InstanceOwnerId": "amazon-aws",
+                "Status": "attached"
+              },
+              "AvailabilityZone": "us-east-1b",
+              "Description": "S3 Files mount target for fs-03cc16c6148b70bad (fsmt-0225d5e0f36a518f1)",
+              "Groups": [
+                {
+                  "GroupId": "sg-019dba9bb8b41b0e9",
+                  "GroupName": "g1-fotos-sg"
+                }
+              ],
+              "InterfaceType": "efs",
+              "Ipv6Addresses": [],
+              "MacAddress": "0a:ff:ca:17:83:0d",
+              "NetworkInterfaceId": "eni-07b2e889ffc1d9867",
+              "OwnerId": "429100831877",
+              "PrivateDnsName": "ip-172-31-26-73.ec2.internal",
+              "PublicDnsName": "",
+              "PrivateIpAddress": "172.31.26.73",
+              "PrivateIpAddresses": [
+                {
+                  "Primary": true,
+                  "PrivateDnsName": "ip-172-31-26-73.ec2.internal",
+                  "PrivateIpAddress": "172.31.26.73"
+                }
+              ],
+              "RequesterId": "473331812372",
+              "RequesterManaged": true,
+              "SourceDestCheck": true,
+              "Status": "in-use",
+              "SubnetId": "subnet-05d4324f091ba6877",
+              "TagSet": [],
+              "VpcId": "vpc-0de41f84c70ccf93b",
+              "Operator": {
+                "Managed": false,
+                "HiddenByDefault": false
+              },
+              "AvailabilityZoneId": "use1-az4"
+            }
+          ]
+        }
+      },
+      "api_calls": [
+        {
+          "service": "s3files",
+          "operation": "GetFileSystem",
+          "status": "success",
+          "n_items": {
+            "tags": 3
+          }
+        },
+        {
+          "service": "s3files",
+          "operation": "ListMountTargets",
+          "status": "success",
+          "n_items": {
+            "mountTargets": 2
+          }
+        },
+        {
+          "service": "s3files",
+          "operation": "GetAccessPoint",
+          "status": "success",
+          "n_items": {
+            "tags": 3
+          }
+        },
+        {
+          "service": "ec2",
+          "operation": "DescribeNetworkInterfaces",
+          "status": "success",
+          "n_items": {
+            "NetworkInterfaces": 2
+          }
+        }
+      ]
+    }
+  },
+  "expected_policy_documents": {
+    "bucket": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "DenyNonTLSRequests",
+          "Effect": "Deny",
+          "Principal": "*",
+          "Action": "s3:*",
+          "Resource": [
+            "arn:aws:s3:::g1-achados-fotos-429100831877-20261026",
+            "arn:aws:s3:::g1-achados-fotos-429100831877-20261026/*"
+          ],
+          "Condition": {
+            "Bool": {
+              "aws:SecureTransport": "false",
+              "aws:PrincipalIsAWSService": "false"
+            }
+          }
+        }
+      ]
+    },
+    "sync_role_trust": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "AllowS3FilesAssumeRole",
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "elasticfilesystem.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole",
+          "Condition": {
+            "StringEquals": {
+              "aws:SourceAccount": "429100831877"
+            },
+            "ArnLike": {
+              "aws:SourceArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad"
+            }
+          }
+        }
+      ]
+    },
+    "sync_role_permissions": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "S3BucketPermissions",
+          "Effect": "Allow",
+          "Action": [
+            "s3:ListBucket",
+            "s3:ListBucketVersions"
+          ],
+          "Resource": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026",
+          "Condition": {
+            "StringEquals": {
+              "aws:ResourceAccount": "429100831877"
+            }
+          }
+        },
+        {
+          "Sid": "S3ObjectPermissions",
+          "Effect": "Allow",
+          "Action": [
+            "s3:AbortMultipartUpload",
+            "s3:DeleteObject*",
+            "s3:GetObject*",
+            "s3:List*",
+            "s3:PutObject*"
+          ],
+          "Resource": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026/*",
+          "Condition": {
+            "StringEquals": {
+              "aws:ResourceAccount": "429100831877"
+            }
+          }
+        },
+        {
+          "Sid": "EventBridgeManage",
+          "Effect": "Allow",
+          "Action": [
+            "events:DeleteRule",
+            "events:DisableRule",
+            "events:EnableRule",
+            "events:PutRule",
+            "events:PutTargets",
+            "events:RemoveTargets"
+          ],
+          "Resource": "arn:aws:events:us-east-1:429100831877:rule/DO-NOT-DELETE-S3-Files*",
+          "Condition": {
+            "StringEquals": {
+              "events:ManagedBy": "elasticfilesystem.amazonaws.com"
+            }
+          }
+        },
+        {
+          "Sid": "EventBridgeRead",
+          "Effect": "Allow",
+          "Action": [
+            "events:DescribeRule",
+            "events:ListRuleNamesByTarget",
+            "events:ListRules",
+            "events:ListTargetsByRule"
+          ],
+          "Resource": "arn:aws:events:us-east-1:429100831877:rule/*"
+        }
+      ]
+    },
+    "filesystem": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "DenyOtherClientPrincipals",
+          "Effect": "Deny",
+          "Principal": "*",
+          "Action": "s3files:Client*",
+          "Resource": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+          "Condition": {
+            "ArnNotEquals": {
+              "aws:PrincipalArn": "arn:aws:iam::429100831877:role/g1-ecs-task-role"
+            }
+          }
+        },
+        {
+          "Sid": "DenyOtherAccessPoints",
+          "Effect": "Deny",
+          "Principal": "*",
+          "Action": "s3files:Client*",
+          "Resource": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+          "Condition": {
+            "ArnNotEquals": {
+              "s3files:AccessPointArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "limits": {
+    "application_deployed": false,
+    "mounted_from_ecs": false,
+    "photo_write_tested": false,
+    "synchronization_tested": false,
+    "notes": "Sistema de arquivos, access point e ambos os mount targets disponíveis. Leituras de configuração e validação de políticas aprovadas; montagem, upload e sincronização fim a fim serão testados com a task. Somente o conteúdo do novo bucket foi consultado."
+  },
+  "configuration_checks": {
+    "filesystem_available": true,
+    "filesystem_bucket_matches": true,
+    "synchronization_role_matches": true,
+    "both_mount_targets_available": true,
+    "expected_subnets": true,
+    "expected_vpc": true,
+    "only_storage_security_group": true,
+    "mount_interfaces_private": true,
+    "only_web_nfs_ingress": true,
+    "access_point_available": true,
+    "expected_posix_identity": true,
+    "expected_root_directory": true,
+    "all_public_access_blocked": true,
+    "bucket_policy_not_public": true,
+    "versioning_enabled": true,
+    "bucket_sse_s3": true,
+    "acls_disabled": true,
+    "bucket_tls_policy_matches": true,
+    "sync_trust_scoped_to_filesystem": true,
+    "sync_permissions_match": true,
+    "no_other_managed_sync_policies": true,
+    "filesystem_policy_matches": true,
+    "synchronization_policy_validation_clean": true,
+    "filesystem_policy_validation_clean": true,
+    "eventbridge_notifications_enabled": true,
+    "no_existing_photo_versions": true
+  }
+}

@@ -1,8 +1,10 @@
 # Achados & Perdidos na AWS — roteiro de laboratório
 
 Roteiro preparado em 26/10/2026 a partir da [reflexão, seção 5.1](REFLEXAO.md#51--do-ambiente-local-para-a-nuvem),
-do código atual e das fontes oficiais vinculadas abaixo. **Este roteiro ainda
-não foi executado na sua conta.** Não representa evidência de implantação.
+do código atual e das fontes oficiais vinculadas abaixo. **Execução parcial:**
+a etapa 3 foi realizada em 26/10/2026, com as regras de rede conferidas na conta.
+Os [IDs e resultados reais](AWS-ETAPA-03.md) estão registrados separadamente.
+A aplicação, banco e armazenamento ainda não foram implantados na AWS.
 
 ## 1. O caminho recomendado para começar
 
@@ -109,6 +111,10 @@ Não coloque access keys no código, no Dockerfile ou na task definition.
 Fonte dos alertas: [AWS Budgets](https://docs.aws.amazon.com/cost-management/latest/userguide/budgets-managing-costs.html).
 
 ## 3. VPC: preparar a comunicação
+
+**Concluída nesta conta:** utilize os IDs de [AWS-ETAPA-03.md](AWS-ETAPA-03.md).
+As instruções abaixo descrevem a preparação para outras contas; não recrie os
+quatro grupos que já existem neste ambiente.
 
 Para este primeiro laboratório, use a **VPC padrão** da região. Ela já possui
 DNS, internet gateway e sub-redes públicas nas zonas de disponibilidade.

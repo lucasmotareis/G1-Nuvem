@@ -67,8 +67,9 @@ Ao final, o ambiente voltou a uma réplica, com seis itens e duas fotos; não fo
 ## 5.1 — Do ambiente local para a nuvem
 
 Esta tabela apresenta **propostas de equivalência funcional**, com os serviços
-conferidos nas fontes oficiais vinculadas em cada célula. Nenhum recurso de nuvem
-foi provisionado por este projeto.
+conferidos nas fontes oficiais vinculadas em cada célula. Em 26/10/2026, a
+[etapa 3 da AWS](AWS-ETAPA-03.md) preparou a rede e os grupos de segurança reais.
+Aplicação, banco e armazenamento permanecem como etapas futuras de implantação.
 
 | Peça do ambiente local | Microsoft Azure | AWS | Google Cloud |
 | --- | --- | --- | --- |

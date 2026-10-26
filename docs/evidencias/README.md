@@ -1,5 +1,9 @@
 # Índice de evidências
 
+**AWS real:** a [pasta aws/](aws/README.md) registra a preparação da rede da
+etapa 3, executada em 26/10/2026. As simulações locais anteriores continuam
+separadas e não representam a publicação da aplicação na nuvem.
+
 Verificações realizadas em 19/10/2026 nas etapas de configuração e testes.
 Os arquivos abaixo registram somente comandos executados e seus resultados.
 Os horários UTC/GMT originais das saídas foram preservados; as legendas usam a

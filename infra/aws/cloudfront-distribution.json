@@ -1,0 +1,99 @@
+{
+  "CallerReference": "g1-achados-20261026-2131",
+  "Comment": "G1 Achados e Perdidos - laboratorio temporario",
+  "Enabled": true,
+  "IsIPV6Enabled": true,
+  "HttpVersion": "http2",
+  "PriceClass": "PriceClass_100",
+  "Origins": {
+    "Quantity": 1,
+    "Items": [
+      {
+        "Id": "g1-private-alb",
+        "DomainName": "internal-g1-achados-interno-898232288.us-east-1.elb.amazonaws.com",
+        "OriginPath": "",
+        "ConnectionAttempts": 3,
+        "ConnectionTimeout": 10,
+        "VpcOriginConfig": {
+          "VpcOriginId": "vo_0ZwUL6nFfRzDiTxcZa6ToO",
+          "OriginReadTimeout": 30,
+          "OriginKeepaliveTimeout": 5
+        }
+      }
+    ]
+  },
+  "DefaultCacheBehavior": {
+    "TargetOriginId": "g1-private-alb",
+    "ViewerProtocolPolicy": "redirect-to-https",
+    "AllowedMethods": {
+      "Quantity": 7,
+      "Items": [
+        "GET",
+        "HEAD",
+        "OPTIONS",
+        "PUT",
+        "PATCH",
+        "POST",
+        "DELETE"
+      ],
+      "CachedMethods": {
+        "Quantity": 2,
+        "Items": [
+          "GET",
+          "HEAD"
+        ]
+      }
+    },
+    "CachePolicyId": "4135ea2d-6df8-44a3-9df3-4b5a84be39ad",
+    "OriginRequestPolicyId": "33f36d7e-f396-46d9-90e0-52428a34d9dc",
+    "ResponseHeadersPolicyId": "3b029522-5304-47b2-bd92-32a73931b650",
+    "Compress": true,
+    "TrustedSigners": {
+      "Enabled": false,
+      "Quantity": 0
+    },
+    "TrustedKeyGroups": {
+      "Enabled": false,
+      "Quantity": 0
+    }
+  },
+  "ViewerCertificate": {
+    "CloudFrontDefaultCertificate": true,
+    "MinimumProtocolVersion": "TLSv1.2_2021"
+  },
+  "Restrictions": {
+    "GeoRestriction": {
+      "RestrictionType": "none",
+      "Quantity": 0
+    }
+  },
+  "CustomErrorResponses": {
+    "Quantity": 6,
+    "Items": [
+      {
+        "ErrorCode": 403,
+        "ErrorCachingMinTTL": 0
+      },
+      {
+        "ErrorCode": 404,
+        "ErrorCachingMinTTL": 0
+      },
+      {
+        "ErrorCode": 500,
+        "ErrorCachingMinTTL": 0
+      },
+      {
+        "ErrorCode": 502,
+        "ErrorCachingMinTTL": 0
+      },
+      {
+        "ErrorCode": 503,
+        "ErrorCachingMinTTL": 0
+      },
+      {
+        "ErrorCode": 504,
+        "ErrorCachingMinTTL": 0
+      }
+    ]
+  }
+}

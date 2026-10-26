@@ -15,3 +15,7 @@ __pycache__/
 # Configurações locais do editor
 .idea/
 .vscode/
+
+# Dependências opcionais de desenvolvimento (testes de navegador)
+node_modules/
+test-results/

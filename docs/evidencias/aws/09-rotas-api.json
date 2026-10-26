@@ -1,0 +1,197 @@
+{
+  "legenda": "Rotas reais na AWS por curl.exe; autenticacao enviada por stdin, sem credencial em argumentos/evidencias.",
+  "executadoEmUtc": "2026-10-26T21:43:01.6011019Z",
+  "baseURL": "https://di54x57cfrcxq.cloudfront.net",
+  "readOnly": false,
+  "before": {
+    "fotos_no_volume": 0,
+    "itens_no_banco": 3
+  },
+  "after": {
+    "fotos_no_volume": 1,
+    "itens_no_banco": 4
+  },
+  "created": {
+    "foto": "89594ce917da44a5aae6b999696eacb7.png",
+    "id": 4
+  },
+  "checks": [
+    {
+      "route": "/",
+      "status": 401,
+      "json": null,
+      "sha256": "9371176869a945e2958e43b349397210a1b72b83f11c67e02e0be1f950254ef2",
+      "bytes": 172
+    },
+    {
+      "route": "/health",
+      "status": 401,
+      "json": null,
+      "sha256": "9371176869a945e2958e43b349397210a1b72b83f11c67e02e0be1f950254ef2",
+      "bytes": 172
+    },
+    {
+      "route": "/itens",
+      "status": 401,
+      "json": null,
+      "sha256": "9371176869a945e2958e43b349397210a1b72b83f11c67e02e0be1f950254ef2",
+      "bytes": 172
+    },
+    {
+      "route": "/estatisticas",
+      "status": 401,
+      "json": null,
+      "sha256": "9371176869a945e2958e43b349397210a1b72b83f11c67e02e0be1f950254ef2",
+      "bytes": 172
+    },
+    {
+      "route": "/fotos/inexistente.png",
+      "status": 401,
+      "json": null,
+      "sha256": "9371176869a945e2958e43b349397210a1b72b83f11c67e02e0be1f950254ef2",
+      "bytes": 172
+    },
+    {
+      "route": "/health",
+      "status": 200,
+      "json": {
+        "banco": "conectado",
+        "container": "ip-172-31-18-85.ec2.internal",
+        "status": "ok"
+      },
+      "sha256": "a006bfe1c04b9afd813a26758b91a5a852393556541659e3d907301265d3f373",
+      "bytes": 79
+    },
+    {
+      "route": "/itens",
+      "status": 200,
+      "json": [
+        {
+          "criado_em": "2026-10-26T21:25:11.415705",
+          "descricao": "Garrafa termica azul",
+          "foto": null,
+          "id": 1,
+          "local": "Biblioteca"
+        },
+        {
+          "criado_em": "2026-10-26T21:25:11.415705",
+          "descricao": "Carregador de notebook USB-C",
+          "foto": null,
+          "id": 2,
+          "local": "Laboratorio 3"
+        },
+        {
+          "criado_em": "2026-10-26T21:25:11.415705",
+          "descricao": "Casaco preto com capuz",
+          "foto": null,
+          "id": 3,
+          "local": "Cantina"
+        }
+      ],
+      "sha256": "488cb39d27fe24951881731f246e80f646470b96be7517b8f3df701cd4eb8502",
+      "bytes": 366
+    },
+    {
+      "route": "/itens?local=biblio",
+      "status": 200,
+      "json": {
+        "criado_em": "2026-10-26T21:25:11.415705",
+        "descricao": "Garrafa termica azul",
+        "foto": null,
+        "id": 1,
+        "local": "Biblioteca"
+      },
+      "sha256": "bbe8f1316d9c398a4eda40f6e2d4ed18f08ec4fe610cccadc4ac01bcab12e12b",
+      "bytes": 120
+    },
+    {
+      "route": "/estatisticas",
+      "status": 200,
+      "json": {
+        "fotos_no_volume": 0,
+        "itens_no_banco": 3
+      },
+      "sha256": "bb52a94be221504b0e623f4d5cc761bd8877c120a01c1b928aab1a882807b4d3",
+      "bytes": 41
+    },
+    {
+      "route": "/itens",
+      "status": 400,
+      "json": {
+        "erro": "campos 'descricao' e 'local' sao obrigatorios"
+      },
+      "sha256": "6034a39586e6ef2ec46557dd29e9b657bce5577b64e5cc46d42186febb97fc18",
+      "bytes": 57
+    },
+    {
+      "route": "/itens",
+      "status": 201,
+      "json": {
+        "foto": "89594ce917da44a5aae6b999696eacb7.png",
+        "id": 4
+      },
+      "sha256": "4f5e74e22607901c5ae3162658895fedf3f381ca636a51c9c97d2fcdddfd2f5b",
+      "bytes": 55
+    },
+    {
+      "route": "/itens",
+      "status": 200,
+      "json": [
+        {
+          "criado_em": "2026-10-26T21:42:57.691217",
+          "descricao": "Garrafa de demonstracao AWS",
+          "foto": "/fotos/89594ce917da44a5aae6b999696eacb7.png",
+          "id": 4,
+          "local": "Biblioteca"
+        },
+        {
+          "criado_em": "2026-10-26T21:25:11.415705",
+          "descricao": "Garrafa termica azul",
+          "foto": null,
+          "id": 1,
+          "local": "Biblioteca"
+        },
+        {
+          "criado_em": "2026-10-26T21:25:11.415705",
+          "descricao": "Carregador de notebook USB-C",
+          "foto": null,
+          "id": 2,
+          "local": "Laboratorio 3"
+        },
+        {
+          "criado_em": "2026-10-26T21:25:11.415705",
+          "descricao": "Casaco preto com capuz",
+          "foto": null,
+          "id": 3,
+          "local": "Cantina"
+        }
+      ],
+      "sha256": "7c7a91b2cd4dc4bcc5059812ac06347478638d753e0be0aaed1721eee87990fd",
+      "bytes": 532
+    },
+    {
+      "route": "/fotos/89594ce917da44a5aae6b999696eacb7.png",
+      "status": 401,
+      "json": null,
+      "sha256": "9371176869a945e2958e43b349397210a1b72b83f11c67e02e0be1f950254ef2",
+      "bytes": 172
+    },
+    {
+      "route": "/fotos/89594ce917da44a5aae6b999696eacb7.png",
+      "status": 200,
+      "json": null,
+      "sha256": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf",
+      "bytes": 179
+    },
+    {
+      "route": "/estatisticas",
+      "status": 200,
+      "json": {
+        "fotos_no_volume": 1,
+        "itens_no_banco": 4
+      },
+      "sha256": "3d906524f7a981e231f42b58bb14cfae62a1f592d5ae9451b556ecf32c62e7b4",
+      "bytes": 41
+    }
+  ]
+}

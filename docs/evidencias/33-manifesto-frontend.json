@@ -1,0 +1,50 @@
+{
+  "legenda": "Manifesto dos arquivos finais da implementacao com frontend; hash SHA256 dos arquivos locais e comparacao Git dos tres arquivos fornecidos.",
+  "geradoEmUtc": "2026-10-26T18:16:54.090116+00:00",
+  "branch": "codex/frontend-achados-perdidos",
+  "commitBase": "a467f834743eda8e8c20b4125d16ed49fc26b6e4",
+  "arquivos": {
+    "app/app.py": "2325d72d02ffafcfef20d2f44b0535a8d5b0e1e021c8b03c2ce37e48e839c046",
+    "app/requirements.txt": "6a33e96bbd2d6ade5c398971b17df9a5e3ca117d25e5f5d5fed1d8451e77739c",
+    "app/Dockerfile": "9cde30530b81690363bd57ca724c49328106ffaa347abb6a422c7c0e30a40910",
+    "app/.dockerignore": "8dbdf9e90662d6b3f5e1657790df6b7fdc175c3bf754e9d4f0ae5066b7708e5e",
+    "db/init.sql": "d8c3afde5ea787c4901fc3a6514faf1b4100025f2737f049923e57c13db682c6",
+    "docker-compose.yml": "d705f909397282e0a2cff3542ea81746522b32d955e6ddf1e389cd9b17049171",
+    "nginx/default.conf": "9bde753bac18766cb3d3f797ca93beb07c109d44feafa51b43ae2ea6164038ab",
+    "frontend/index.html": "aef9ce4d7d75a31edb358184e61f3fbbe6abc14c50c1f8bd394813b7cab3b9be",
+    "frontend/styles.css": "00588b14f0ebb698a7939166a5bc55ef5fa8d52b34b884525691a51e57878a9c",
+    "frontend/app.js": "ada7b9a2e3e113759d057420618c176774e381d7df2faa9b4ec03acef58822a8",
+    "frontend/Dockerfile": "619de3afc4193cb1353a9d01db791758c915bdf2922496fdccd778dc84036136",
+    "frontend/.dockerignore": "b98bd1b7e0a80274f0235a1907e60f2af44e3907c4fe3ef461753bef8fb9810a",
+    "frontend/nginx.conf": "22fb3498aef7297f269ec2309f66415475bdcd3a03d4f18d83a9f7fe75bb2d9d",
+    "frontend/routing.conf": "c47a18624c76127de4c441a0ed6a9e60f2f22841b4110ed5ba5c0aac99230e30",
+    "infra/aws/task-definition.example.json": "9c7e4794b235e8043fad0d3626a1549d8197bbe4eab8849e5075be48223cefb9",
+    "package.json": "7eeb012420549cbd2fd17fcd92f49db5ac42009b89080e7e9aaa73843423e804",
+    "tests/frontend.mjs": "24d1630250362a92cbe45815a4ef2ecb66816ad5e5021fbda0182ba4a1d878d3"
+  },
+  "arquivosFornecidos": {
+    "app/app.py": {
+      "gitBlobAtual": "1c8391556bd02d658e284c15a93f8fabb23ddcee",
+      "gitBlobBase": "1c8391556bd02d658e284c15a93f8fabb23ddcee",
+      "identicoAoGit": true
+    },
+    "app/requirements.txt": {
+      "gitBlobAtual": "e347d0db5b4b4015b7723954458eac0a7e0cbd6d",
+      "gitBlobBase": "e347d0db5b4b4015b7723954458eac0a7e0cbd6d",
+      "identicoAoGit": true
+    },
+    "db/init.sql": {
+      "gitBlobAtual": "3dc71c0e8cfa213c0c49774a560691e46115a67e",
+      "gitBlobBase": "3dc71c0e8cfa213c0c49774a560691e46115a67e",
+      "identicoAoGit": true
+    }
+  },
+  "validacoes": {
+    "jsonValido": true,
+    "linksLocaisValidos": true,
+    "pythonDeInicializacaoValido": true,
+    "envAusenteDoIndiceEHistorico": true,
+    "chavesAwsEChavesPrivadasAusentesDosArquivosAlterados": true
+  },
+  "limite": "O ensaio de rede compartilhada e local. Nao houve provisionamento AWS nem publicacao remota."
+}

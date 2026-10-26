@@ -1,0 +1,35 @@
+{
+  "legenda": "Comparacao real antes/depois de forceNewDeployment: host mudou e os mesmos registros/fotos permaneceram.",
+  "executadoEmUtc": "2026-10-26T21:48:14.0297114Z",
+  "beforeHost": "ip-172-31-18-85.ec2.internal",
+  "afterHost": "ip-172-31-19-34.ec2.internal",
+  "before": {
+    "fotos_no_volume": 2,
+    "itens_no_banco": 6
+  },
+  "after": {
+    "fotos_no_volume": 2,
+    "itens_no_banco": 6
+  },
+  "preservedIds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "photos": [
+    {
+      "route": "/fotos/143bc554bb1d4584aa16ff6d0810667f.png",
+      "sha256": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf",
+      "bytes": 179
+    },
+    {
+      "route": "/fotos/89594ce917da44a5aae6b999696eacb7.png",
+      "sha256": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf",
+      "bytes": 179
+    }
+  ],
+  "resultado": "APROVADO"
+}

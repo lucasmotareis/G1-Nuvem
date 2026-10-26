@@ -1,0 +1,1382 @@
+{
+  "legenda": "26/10/2026: criação e verificação real de RDS PostgreSQL privado no estado available e dois segredos do laboratório, com metadados de API e preços consultados; nenhum valor de senha é incluído.",
+  "region": "us-east-1",
+  "account": "429100831877",
+  "records": {
+    "preflight": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "identity": {
+          "UserId": "429100831877",
+          "Account": "429100831877",
+          "Arn": "arn:aws:iam::429100831877:root"
+        },
+        "instances": {
+          "DBInstances": []
+        },
+        "secrets": {
+          "SecretList": []
+        },
+        "subnet_groups": {
+          "DBSubnetGroups": []
+        },
+        "options": [
+          {
+            "Engine": "postgres",
+            "EngineVersion": "16.15",
+            "DBInstanceClass": "db.t4g.micro",
+            "LicenseModel": "postgresql-license",
+            "AvailabilityZones": [
+              {
+                "Name": "us-east-1a"
+              },
+              {
+                "Name": "us-east-1b"
+              },
+              {
+                "Name": "us-east-1c"
+              },
+              {
+                "Name": "us-east-1d"
+              },
+              {
+                "Name": "us-east-1f"
+              }
+            ],
+            "MultiAZCapable": true,
+            "ReadReplicaCapable": true,
+            "Vpc": true,
+            "SupportsStorageEncryption": true,
+            "StorageType": "gp3",
+            "SupportsIops": true,
+            "SupportsStorageThroughput": true,
+            "SupportsEnhancedMonitoring": true,
+            "SupportsIAMDatabaseAuthentication": true,
+            "SupportsPerformanceInsights": true,
+            "MinStorageSize": 20,
+            "MaxStorageSize": 6144,
+            "MinIopsPerDbInstance": 3000,
+            "MaxIopsPerDbInstance": 64000,
+            "MaxIopsPerGib": 500,
+            "MinStorageThroughputPerDbInstance": 125,
+            "MaxStorageThroughputPerDbInstance": 4000,
+            "AvailableProcessorFeatures": [],
+            "SupportsStorageAutoscaling": true,
+            "SupportsKerberosAuthentication": true,
+            "OutpostCapable": false,
+            "SupportedActivityStreamModes": [],
+            "SupportsGlobalDatabases": false,
+            "SupportedNetworkTypes": [
+              "IPV4",
+              "DUAL"
+            ],
+            "SupportsClusters": false,
+            "SupportsDedicatedLogVolume": false,
+            "SupportsAdditionalStorageVolumes": false,
+            "SupportsHttpEndpoint": false
+          }
+        ],
+        "defaults": [
+          {
+            "ParameterName": "rds.force_ssl",
+            "ParameterValue": "1",
+            "Description": "Force SSL connections.",
+            "Source": "system",
+            "ApplyType": "dynamic",
+            "DataType": "boolean",
+            "AllowedValues": "0,1",
+            "IsModifiable": true
+          }
+        ]
+      },
+      "api_calls": [
+        {
+          "service": "sts",
+          "operation": "GetCallerIdentity",
+          "status": "success"
+        },
+        {
+          "service": "rds",
+          "operation": "DescribeDBInstances",
+          "status": "success",
+          "n_items": {
+            "DBInstances": 0
+          }
+        },
+        {
+          "service": "secretsmanager",
+          "operation": "ListSecrets",
+          "status": "success",
+          "n_items": {
+            "SecretList": 0
+          }
+        },
+        {
+          "service": "rds",
+          "operation": "DescribeDBSubnetGroups",
+          "status": "success",
+          "n_items": {
+            "DBSubnetGroups": 0
+          }
+        },
+        {
+          "service": "rds",
+          "operation": "DescribeOrderableDBInstanceOptions",
+          "status": "success",
+          "n_items": {
+            "OrderableDBInstanceOptions": 4
+          }
+        },
+        {
+          "service": "rds",
+          "operation": "DescribeEngineDefaultParameters",
+          "status": "success"
+        }
+      ]
+    },
+    "create_subnet_secret": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T19:38:09.250369+00:00",
+        "subnet_group": {
+          "DBSubnetGroup": {
+            "DBSubnetGroupName": "g1-achados-db-subnets",
+            "DBSubnetGroupDescription": "Duas zonas da VPC do laboratorio Achados e Perdidos",
+            "VpcId": "vpc-0de41f84c70ccf93b",
+            "SubnetGroupStatus": "Complete",
+            "Subnets": [
+              {
+                "SubnetIdentifier": "subnet-0eab04bf2964fdeb7",
+                "SubnetAvailabilityZone": {
+                  "Name": "us-east-1a"
+                },
+                "SubnetOutpost": {},
+                "SubnetStatus": "Active"
+              },
+              {
+                "SubnetIdentifier": "subnet-05d4324f091ba6877",
+                "SubnetAvailabilityZone": {
+                  "Name": "us-east-1b"
+                },
+                "SubnetOutpost": {},
+                "SubnetStatus": "Active"
+              }
+            ],
+            "DBSubnetGroupArn": "arn:aws:rds:us-east-1:429100831877:subgrp:g1-achados-db-subnets",
+            "SupportedNetworkTypes": [
+              "IPV4"
+            ]
+          }
+        },
+        "database_secret": {
+          "ARN": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y",
+          "Name": "g1/achados/db",
+          "VersionId": "13b55b8a-1763-4fcf-a7c2-c8edafbc3bd4"
+        }
+      },
+      "api_calls": [
+        {
+          "service": "sts",
+          "operation": "GetCallerIdentity",
+          "status": "success"
+        },
+        {
+          "service": "rds",
+          "operation": "CreateDBSubnetGroup",
+          "status": "success"
+        },
+        {
+          "service": "secretsmanager",
+          "operation": "GetRandomPassword",
+          "status": "success"
+        },
+        {
+          "service": "secretsmanager",
+          "operation": "CreateSecret",
+          "status": "success"
+        }
+      ]
+    },
+    "create_db": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T19:38:22.724115+00:00",
+        "instance": {
+          "DBInstance": {
+            "DBInstanceIdentifier": "g1-achados-db",
+            "DBInstanceClass": "db.t4g.micro",
+            "Engine": "postgres",
+            "DBInstanceStatus": "creating",
+            "MasterUsername": "achados_admin",
+            "DBName": "achados",
+            "AllocatedStorage": 20,
+            "PreferredBackupWindow": "05:40-06:10",
+            "BackupRetentionPeriod": 7,
+            "DBSecurityGroups": [],
+            "VpcSecurityGroups": [
+              {
+                "VpcSecurityGroupId": "sg-077c23028b341c028",
+                "Status": "active"
+              }
+            ],
+            "DBParameterGroups": [
+              {
+                "DBParameterGroupName": "default.postgres16",
+                "ParameterApplyStatus": "in-sync"
+              }
+            ],
+            "AvailabilityZone": "us-east-1a",
+            "DBSubnetGroup": {
+              "DBSubnetGroupName": "g1-achados-db-subnets",
+              "DBSubnetGroupDescription": "Duas zonas da VPC do laboratorio Achados e Perdidos",
+              "VpcId": "vpc-0de41f84c70ccf93b",
+              "SubnetGroupStatus": "Complete",
+              "Subnets": [
+                {
+                  "SubnetIdentifier": "subnet-0eab04bf2964fdeb7",
+                  "SubnetAvailabilityZone": {
+                    "Name": "us-east-1a"
+                  },
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                },
+                {
+                  "SubnetIdentifier": "subnet-05d4324f091ba6877",
+                  "SubnetAvailabilityZone": {
+                    "Name": "us-east-1b"
+                  },
+                  "SubnetOutpost": {},
+                  "SubnetStatus": "Active"
+                }
+              ]
+            },
+            "PreferredMaintenanceWindow": "fri:09:21-fri:09:51",
+            "UpgradeRolloutOrder": "second",
+            "PendingModifiedValues": {
+              "MasterUserPassword": "****"
+            },
+            "MultiAZ": false,
+            "EngineVersion": "16.15",
+            "AutoMinorVersionUpgrade": true,
+            "ReadReplicaDBInstanceIdentifiers": [],
+            "LicenseModel": "postgresql-license",
+            "Iops": 3000,
+            "StorageThroughput": 125,
+            "OptionGroupMemberships": [
+              {
+                "OptionGroupName": "default:postgres-16",
+                "Status": "in-sync"
+              }
+            ],
+            "PubliclyAccessible": false,
+            "StorageType": "gp3",
+            "DbInstancePort": 0,
+            "StorageEncrypted": true,
+            "KmsKeyId": "arn:aws:kms:us-east-1:429100831877:key/96e0be21-11a5-4f75-9e40-9af73b4dc629",
+            "DbiResourceId": "db-Y7HIPSTHMMWACZVFDFXAQFGM6E",
+            "CACertificateIdentifier": "rds-ca-rsa2048-g1",
+            "DomainMemberships": [],
+            "CopyTagsToSnapshot": true,
+            "MonitoringInterval": 0,
+            "DBInstanceArn": "arn:aws:rds:us-east-1:429100831877:db:g1-achados-db",
+            "IAMDatabaseAuthenticationEnabled": false,
+            "DatabaseInsightsMode": "standard",
+            "PerformanceInsightsEnabled": true,
+            "PerformanceInsightsKMSKeyId": "arn:aws:kms:us-east-1:429100831877:key/96e0be21-11a5-4f75-9e40-9af73b4dc629",
+            "PerformanceInsightsRetentionPeriod": 7,
+            "DeletionProtection": true,
+            "AssociatedRoles": [],
+            "TagList": [
+              {
+                "Key": "Project",
+                "Value": "achados-perdidos"
+              },
+              {
+                "Key": "Environment",
+                "Value": "laboratorio"
+              },
+              {
+                "Key": "generation_model",
+                "Value": "unspecified"
+              },
+              {
+                "Key": "created_by",
+                "Value": "rds-oss-skill"
+              },
+              {
+                "Key": "Name",
+                "Value": "g1-achados-db"
+              }
+            ],
+            "CustomerOwnedIpEnabled": false,
+            "NetworkType": "IPV4",
+            "BackupTarget": "region",
+            "CertificateDetails": {
+              "CAIdentifier": "rds-ca-rsa2048-g1"
+            },
+            "DedicatedLogVolume": false,
+            "EngineLifecycleSupport": "open-source-rds-extended-support-disabled"
+          }
+        }
+      },
+      "api_calls": [
+        {
+          "service": "sts",
+          "operation": "GetCallerIdentity",
+          "status": "success"
+        },
+        {
+          "service": "secretsmanager",
+          "operation": "GetSecretValue",
+          "status": "success",
+          "n_items": {
+            "VersionStages": 1
+          }
+        },
+        {
+          "service": "rds",
+          "operation": "CreateDBInstance",
+          "status": "success"
+        }
+      ]
+    },
+    "create_access_secret": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T19:38:31.934016+00:00",
+        "access_secret": {
+          "ARN": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/acesso-TR13WW",
+          "Name": "g1/achados/acesso",
+          "VersionId": "4c6538d8-80cc-4233-8d70-2993add1b5d7"
+        }
+      },
+      "api_calls": [
+        {
+          "service": "sts",
+          "operation": "GetCallerIdentity",
+          "status": "success"
+        },
+        {
+          "service": "secretsmanager",
+          "operation": "CreateSecret",
+          "status": "success"
+        }
+      ]
+    },
+    "status_initial": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T19:38:53.528139+00:00",
+        "database": {
+          "DBInstances": [
+            {
+              "DBInstanceIdentifier": "g1-achados-db",
+              "DBInstanceClass": "db.t4g.micro",
+              "Engine": "postgres",
+              "DBInstanceStatus": "creating",
+              "MasterUsername": "achados_admin",
+              "DBName": "achados",
+              "AllocatedStorage": 20,
+              "PreferredBackupWindow": "05:40-06:10",
+              "BackupRetentionPeriod": 7,
+              "DBSecurityGroups": [],
+              "VpcSecurityGroups": [
+                {
+                  "VpcSecurityGroupId": "sg-077c23028b341c028",
+                  "Status": "active"
+                }
+              ],
+              "DBParameterGroups": [
+                {
+                  "DBParameterGroupName": "default.postgres16",
+                  "ParameterApplyStatus": "in-sync"
+                }
+              ],
+              "AvailabilityZone": "us-east-1a",
+              "DBSubnetGroup": {
+                "DBSubnetGroupName": "g1-achados-db-subnets",
+                "DBSubnetGroupDescription": "Duas zonas da VPC do laboratorio Achados e Perdidos",
+                "VpcId": "vpc-0de41f84c70ccf93b",
+                "SubnetGroupStatus": "Complete",
+                "Subnets": [
+                  {
+                    "SubnetIdentifier": "subnet-0eab04bf2964fdeb7",
+                    "SubnetAvailabilityZone": {
+                      "Name": "us-east-1a"
+                    },
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                  },
+                  {
+                    "SubnetIdentifier": "subnet-05d4324f091ba6877",
+                    "SubnetAvailabilityZone": {
+                      "Name": "us-east-1b"
+                    },
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                  }
+                ]
+              },
+              "PreferredMaintenanceWindow": "fri:09:21-fri:09:51",
+              "UpgradeRolloutOrder": "second",
+              "PendingModifiedValues": {
+                "MasterUserPassword": "****"
+              },
+              "MultiAZ": false,
+              "EngineVersion": "16.15",
+              "AutoMinorVersionUpgrade": true,
+              "ReadReplicaDBInstanceIdentifiers": [],
+              "LicenseModel": "postgresql-license",
+              "Iops": 3000,
+              "StorageThroughput": 125,
+              "OptionGroupMemberships": [
+                {
+                  "OptionGroupName": "default:postgres-16",
+                  "Status": "in-sync"
+                }
+              ],
+              "PubliclyAccessible": false,
+              "StorageType": "gp3",
+              "DbInstancePort": 0,
+              "StorageEncrypted": true,
+              "KmsKeyId": "arn:aws:kms:us-east-1:429100831877:key/96e0be21-11a5-4f75-9e40-9af73b4dc629",
+              "DbiResourceId": "db-Y7HIPSTHMMWACZVFDFXAQFGM6E",
+              "CACertificateIdentifier": "rds-ca-rsa2048-g1",
+              "DomainMemberships": [],
+              "CopyTagsToSnapshot": true,
+              "MonitoringInterval": 0,
+              "DBInstanceArn": "arn:aws:rds:us-east-1:429100831877:db:g1-achados-db",
+              "IAMDatabaseAuthenticationEnabled": false,
+              "DatabaseInsightsMode": "standard",
+              "PerformanceInsightsEnabled": true,
+              "PerformanceInsightsKMSKeyId": "arn:aws:kms:us-east-1:429100831877:key/96e0be21-11a5-4f75-9e40-9af73b4dc629",
+              "PerformanceInsightsRetentionPeriod": 7,
+              "DeletionProtection": true,
+              "AssociatedRoles": [],
+              "TagList": [
+                {
+                  "Key": "Project",
+                  "Value": "achados-perdidos"
+                },
+                {
+                  "Key": "Environment",
+                  "Value": "laboratorio"
+                },
+                {
+                  "Key": "generation_model",
+                  "Value": "unspecified"
+                },
+                {
+                  "Key": "created_by",
+                  "Value": "rds-oss-skill"
+                },
+                {
+                  "Key": "Name",
+                  "Value": "g1-achados-db"
+                }
+              ],
+              "CustomerOwnedIpEnabled": false,
+              "NetworkType": "IPV4",
+              "ActivityStreamStatus": "stopped",
+              "BackupTarget": "region",
+              "CertificateDetails": {
+                "CAIdentifier": "rds-ca-rsa2048-g1"
+              },
+              "DedicatedLogVolume": false,
+              "IsStorageConfigUpgradeAvailable": false,
+              "EngineLifecycleSupport": "open-source-rds-extended-support-disabled"
+            }
+          ]
+        },
+        "database_secret": {
+          "ARN": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y",
+          "Name": "g1/achados/db",
+          "Description": "Credenciais PostgreSQL do laboratorio Achados e Perdidos",
+          "LastChangedDate": "2026-10-26T19:38:09.112000+00:00",
+          "LastAccessedDate": "2026-10-26T00:00:00+00:00",
+          "Tags": [
+            {
+              "Key": "Project",
+              "Value": "achados-perdidos"
+            },
+            {
+              "Key": "Environment",
+              "Value": "laboratorio"
+            }
+          ],
+          "VersionIdsToStages": {
+            "13b55b8a-1763-4fcf-a7c2-c8edafbc3bd4": [
+              "AWSCURRENT"
+            ]
+          },
+          "CreatedDate": "2026-10-26T19:38:08.877000+00:00"
+        },
+        "access_secret": {
+          "ARN": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/acesso-TR13WW",
+          "Name": "g1/achados/acesso",
+          "Description": "Senha compartilhada de entrada do frontend Achados e Perdidos",
+          "LastChangedDate": "2026-10-26T19:38:31.795000+00:00",
+          "Tags": [
+            {
+              "Key": "Project",
+              "Value": "achados-perdidos"
+            },
+            {
+              "Key": "Environment",
+              "Value": "laboratorio"
+            }
+          ],
+          "VersionIdsToStages": {
+            "4c6538d8-80cc-4233-8d70-2993add1b5d7": [
+              "AWSCURRENT"
+            ]
+          },
+          "CreatedDate": "2026-10-26T19:38:31.762000+00:00"
+        },
+        "database_sg": {
+          "SecurityGroups": [
+            {
+              "GroupId": "sg-077c23028b341c028",
+              "IpPermissionsEgress": [
+                {
+                  "IpProtocol": "-1",
+                  "UserIdGroupPairs": [],
+                  "IpRanges": [
+                    {
+                      "CidrIp": "0.0.0.0/0"
+                    }
+                  ],
+                  "Ipv6Ranges": [],
+                  "PrefixListIds": []
+                }
+              ],
+              "Tags": [
+                {
+                  "Key": "Name",
+                  "Value": "g1-db-sg"
+                },
+                {
+                  "Key": "Project",
+                  "Value": "achados-perdidos"
+                },
+                {
+                  "Key": "Environment",
+                  "Value": "laboratorio"
+                }
+              ],
+              "VpcId": "vpc-0de41f84c70ccf93b",
+              "SecurityGroupArn": "arn:aws:ec2:us-east-1:429100831877:security-group/sg-077c23028b341c028",
+              "OwnerId": "429100831877",
+              "GroupName": "g1-db-sg",
+              "Description": "Achados e Perdidos - PostgreSQL only from application",
+              "IpPermissions": [
+                {
+                  "IpProtocol": "tcp",
+                  "FromPort": 5432,
+                  "ToPort": 5432,
+                  "UserIdGroupPairs": [
+                    {
+                      "Description": "PostgreSQL only from application",
+                      "UserId": "429100831877",
+                      "GroupId": "sg-0032fd6de918bc221"
+                    }
+                  ],
+                  "IpRanges": [],
+                  "Ipv6Ranges": [],
+                  "PrefixListIds": []
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "api_calls": [
+        {
+          "service": "rds",
+          "operation": "DescribeDBInstances",
+          "status": "success",
+          "n_items": {
+            "DBInstances": 1
+          }
+        },
+        {
+          "service": "secretsmanager",
+          "operation": "DescribeSecret",
+          "status": "success",
+          "n_items": {
+            "Tags": 2
+          }
+        },
+        {
+          "service": "secretsmanager",
+          "operation": "DescribeSecret",
+          "status": "success",
+          "n_items": {
+            "Tags": 2
+          }
+        },
+        {
+          "service": "ec2",
+          "operation": "DescribeSecurityGroups",
+          "status": "success",
+          "n_items": {
+            "SecurityGroups": 1
+          }
+        }
+      ]
+    },
+    "pricing": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "instance": {
+          "products": [
+            {
+              "product": {
+                "productFamily": "Database Instance",
+                "attributes": {
+                  "engineCode": "14",
+                  "instanceTypeFamily": "T4G",
+                  "memory": "1 GiB",
+                  "vcpu": "2",
+                  "instanceType": "db.t4g.micro",
+                  "unbundledLicensing": "FALSE",
+                  "usagetype": "InstanceUsage:db.t4g.micro",
+                  "locationType": "AWS Region",
+                  "storage": "EBS Only",
+                  "normalizationSizeFactor": "0.5",
+                  "instanceFamily": "General purpose",
+                  "databaseEngine": "PostgreSQL",
+                  "regionCode": "us-east-1",
+                  "servicecode": "AmazonRDS",
+                  "physicalProcessor": "AWS Graviton2",
+                  "licenseModel": "No license required",
+                  "currentGeneration": "Yes",
+                  "networkPerformance": "Up to 5 Gigabit",
+                  "deploymentOption": "Single-AZ",
+                  "location": "US East (N. Virginia)",
+                  "servicename": "Amazon Relational Database Service",
+                  "processorArchitecture": "64-bit",
+                  "operation": "CreateDBInstance:0014"
+                },
+                "sku": "9HPEGXQTDDGH53C9"
+              },
+              "on_demand": {
+                "9HPEGXQTDDGH53C9.JRTCKXETXF": {
+                  "priceDimensions": {
+                    "9HPEGXQTDDGH53C9.JRTCKXETXF.6YS6EN2CT7": {
+                      "unit": "Hrs",
+                      "endRange": "Inf",
+                      "description": "$ 0.016 per RDS db.t4g.micro Single-AZ instance hour (or partial hour) running PostgreSQL",
+                      "appliesTo": [],
+                      "rateCode": "9HPEGXQTDDGH53C9.JRTCKXETXF.6YS6EN2CT7",
+                      "beginRange": "0",
+                      "pricePerUnit": {
+                        "USD": "0.0160000000"
+                      }
+                    }
+                  },
+                  "sku": "9HPEGXQTDDGH53C9",
+                  "effectiveDate": "2026-10-01T00:00:00Z",
+                  "offerTermCode": "JRTCKXETXF",
+                  "termAttributes": {}
+                }
+              }
+            },
+            {
+              "product": {
+                "productFamily": "Database Instance",
+                "attributes": {
+                  "engineCode": "14",
+                  "instanceType": "db.t4g.micro",
+                  "usagetype": "UnusedBox:db.t4g.micro",
+                  "locationType": "AWS Region",
+                  "normalizationSizeFactor": "0.5",
+                  "databaseEngine": "PostgreSQL",
+                  "regionCode": "us-east-1",
+                  "servicecode": "AmazonRDS",
+                  "licenseModel": "No license required",
+                  "deploymentOption": "Single-AZ",
+                  "location": "US East (N. Virginia)",
+                  "servicename": "Amazon Relational Database Service",
+                  "operation": "CreateDBInstance:0014"
+                },
+                "sku": "MHBYPGEYAB7WUAKB"
+              },
+              "on_demand": {
+                "MHBYPGEYAB7WUAKB.JRTCKXETXF": {
+                  "priceDimensions": {
+                    "MHBYPGEYAB7WUAKB.JRTCKXETXF.6YS6EN2CT7": {
+                      "unit": "Hrs",
+                      "endRange": "Inf",
+                      "description": "$ 0.016 per RDS db.t4g.micro Single-AZ unused capacity reservation hour (or partial hour) for PostgreSQL",
+                      "appliesTo": [],
+                      "rateCode": "MHBYPGEYAB7WUAKB.JRTCKXETXF.6YS6EN2CT7",
+                      "beginRange": "0",
+                      "pricePerUnit": {
+                        "USD": "0.0160000000"
+                      }
+                    }
+                  },
+                  "sku": "MHBYPGEYAB7WUAKB",
+                  "effectiveDate": "2026-10-01T00:00:00Z",
+                  "offerTermCode": "JRTCKXETXF",
+                  "termAttributes": {}
+                }
+              }
+            }
+          ]
+        },
+        "storage": {
+          "products": [
+            {
+              "product": {
+                "productFamily": "Database Storage",
+                "attributes": {
+                  "volumeType": "General Purpose-GP3",
+                  "engineCode": "14",
+                  "usagetype": "RDS:GP3-Storage",
+                  "locationType": "AWS Region",
+                  "maxVolumeSize": "16 TB",
+                  "databaseEngine": "PostgreSQL",
+                  "storageMedia": "SSD",
+                  "regionCode": "us-east-1",
+                  "servicecode": "AmazonRDS",
+                  "deploymentOption": "Single-AZ",
+                  "location": "US East (N. Virginia)",
+                  "servicename": "Amazon Relational Database Service",
+                  "operation": "CreateDBInstance:0014",
+                  "minVolumeSize": "5 GB"
+                },
+                "sku": "KYVYY29G957PKY3B"
+              },
+              "on_demand": {
+                "KYVYY29G957PKY3B.JRTCKXETXF": {
+                  "priceDimensions": {
+                    "KYVYY29G957PKY3B.JRTCKXETXF.6YS6EN2CT7": {
+                      "unit": "GB-Mo",
+                      "endRange": "Inf",
+                      "description": "$0.115 per GB-month of provisioned GP3 storage running PostgreSQL",
+                      "appliesTo": [],
+                      "rateCode": "KYVYY29G957PKY3B.JRTCKXETXF.6YS6EN2CT7",
+                      "beginRange": "0",
+                      "pricePerUnit": {
+                        "USD": "0.1150000000"
+                      }
+                    }
+                  },
+                  "sku": "KYVYY29G957PKY3B",
+                  "effectiveDate": "2026-10-01T00:00:00Z",
+                  "offerTermCode": "JRTCKXETXF",
+                  "termAttributes": {}
+                }
+              }
+            }
+          ]
+        },
+        "secrets": {
+          "products": [
+            {
+              "product": {
+                "productFamily": "API Request",
+                "attributes": {
+                  "regionCode": "us-east-1",
+                  "servicecode": "AWSSecretsManager",
+                  "usagetype": "USE1-AWSSecretsManagerAPIRequest",
+                  "locationType": "AWS Region",
+                  "location": "US East (N. Virginia)",
+                  "servicename": "AWS Secrets Manager",
+                  "operation": "",
+                  "group": "AWSSecretsManager-APIRequest"
+                },
+                "sku": "4MDZ5VNEJPMUTG9B"
+              },
+              "on_demand": {
+                "4MDZ5VNEJPMUTG9B.JRTCKXETXF": {
+                  "priceDimensions": {
+                    "4MDZ5VNEJPMUTG9B.JRTCKXETXF.6YS6EN2CT7": {
+                      "unit": "API Requests",
+                      "endRange": "Inf",
+                      "description": "$0.05 per 10000 API Requests",
+                      "appliesTo": [],
+                      "rateCode": "4MDZ5VNEJPMUTG9B.JRTCKXETXF.6YS6EN2CT7",
+                      "beginRange": "0",
+                      "pricePerUnit": {
+                        "USD": "0.0000050000"
+                      }
+                    }
+                  },
+                  "sku": "4MDZ5VNEJPMUTG9B",
+                  "effectiveDate": "2025-07-01T00:00:00Z",
+                  "offerTermCode": "JRTCKXETXF",
+                  "termAttributes": {}
+                }
+              }
+            },
+            {
+              "product": {
+                "productFamily": "Secret",
+                "attributes": {
+                  "regionCode": "us-east-1",
+                  "servicecode": "AWSSecretsManager",
+                  "usagetype": "USE1-AWSSecretsManager-Secrets",
+                  "locationType": "AWS Region",
+                  "location": "US East (N. Virginia)",
+                  "servicename": "AWS Secrets Manager",
+                  "operation": "",
+                  "group": "AWSSecretsManager-Secret"
+                },
+                "sku": "BJ3PQ9BYGU6P632F"
+              },
+              "on_demand": {
+                "BJ3PQ9BYGU6P632F.JRTCKXETXF": {
+                  "priceDimensions": {
+                    "BJ3PQ9BYGU6P632F.JRTCKXETXF.6YS6EN2CT7": {
+                      "unit": "Secrets",
+                      "endRange": "Inf",
+                      "description": "$0.40 per Secret",
+                      "appliesTo": [],
+                      "rateCode": "BJ3PQ9BYGU6P632F.JRTCKXETXF.6YS6EN2CT7",
+                      "beginRange": "0",
+                      "pricePerUnit": {
+                        "USD": "0.4000000000"
+                      }
+                    }
+                  },
+                  "sku": "BJ3PQ9BYGU6P632F",
+                  "effectiveDate": "2025-07-01T00:00:00Z",
+                  "offerTermCode": "JRTCKXETXF",
+                  "termAttributes": {}
+                }
+              }
+            }
+          ]
+        }
+      },
+      "api_calls": [
+        {
+          "service": "pricing",
+          "operation": "GetProducts",
+          "status": "success",
+          "n_items": {
+            "PriceList": 2
+          }
+        },
+        {
+          "service": "pricing",
+          "operation": "GetProducts",
+          "status": "success",
+          "n_items": {
+            "PriceList": 1
+          }
+        },
+        {
+          "service": "pricing",
+          "operation": "GetProducts",
+          "status": "success",
+          "n_items": {
+            "PriceList": 2
+          }
+        }
+      ]
+    },
+    "cost_calculation": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "estimate_usd": {
+          "instance_730h": "11.680",
+          "gp3_20gb": "2.300",
+          "two_secrets": "0.8",
+          "total": "14.780"
+        },
+        "timestamp": "2026-10-26T19:36:50.951689+00:00"
+      }
+    },
+    "secret_checks": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T19:40:17.473562+00:00",
+        "database_secret": {
+          "ARN": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y",
+          "Name": "g1/achados/db",
+          "keys": [
+            "password",
+            "username"
+          ],
+          "password_length": 32,
+          "password_format_valid": true,
+          "VersionStages": [
+            "AWSCURRENT"
+          ]
+        },
+        "access_secret": {
+          "ARN": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/acesso-TR13WW",
+          "Name": "g1/achados/acesso",
+          "keys": [
+            "password"
+          ],
+          "password_length": 26,
+          "password_format_valid": true,
+          "VersionStages": [
+            "AWSCURRENT"
+          ]
+        },
+        "rds_key": {
+          "KeyMetadata": {
+            "AWSAccountId": "429100831877",
+            "KeyId": "96e0be21-11a5-4f75-9e40-9af73b4dc629",
+            "Arn": "arn:aws:kms:us-east-1:429100831877:key/96e0be21-11a5-4f75-9e40-9af73b4dc629",
+            "CreationDate": "2026-10-26T19:38:22.186000+00:00",
+            "Enabled": true,
+            "Description": "Default key that protects my RDS database volumes when no other key is defined",
+            "KeyUsage": "ENCRYPT_DECRYPT",
+            "KeyState": "Enabled",
+            "Origin": "AWS_KMS",
+            "KeyManager": "AWS",
+            "CustomerMasterKeySpec": "SYMMETRIC_DEFAULT",
+            "KeySpec": "SYMMETRIC_DEFAULT",
+            "EncryptionAlgorithms": [
+              "SYMMETRIC_DEFAULT"
+            ],
+            "MultiRegion": false,
+            "CurrentKeyMaterialId": "b87ee5ee822821d6a24167a9c2a47e44c17252c0134904a32dec9bcb2d35c4fc"
+          }
+        },
+        "secrets_key": {
+          "KeyMetadata": {
+            "AWSAccountId": "429100831877",
+            "KeyId": "95497c88-ad4d-4488-8609-e7ac7ae259f1",
+            "Arn": "arn:aws:kms:us-east-1:429100831877:key/95497c88-ad4d-4488-8609-e7ac7ae259f1",
+            "CreationDate": "2026-10-26T19:38:08.901000+00:00",
+            "Enabled": true,
+            "Description": "Default key that protects my Secrets Manager data when no other key is defined",
+            "KeyUsage": "ENCRYPT_DECRYPT",
+            "KeyState": "Enabled",
+            "Origin": "AWS_KMS",
+            "KeyManager": "AWS",
+            "CustomerMasterKeySpec": "SYMMETRIC_DEFAULT",
+            "KeySpec": "SYMMETRIC_DEFAULT",
+            "EncryptionAlgorithms": [
+              "SYMMETRIC_DEFAULT"
+            ],
+            "MultiRegion": false,
+            "CurrentKeyMaterialId": "977bbce38a723439a52a651c27b877d5f7534aebec8c9c56dcdc37853ed58739"
+          }
+        }
+      },
+      "api_calls": [
+        {
+          "service": "secretsmanager",
+          "operation": "GetSecretValue",
+          "status": "success",
+          "n_items": {
+            "VersionStages": 1
+          }
+        },
+        {
+          "service": "secretsmanager",
+          "operation": "GetSecretValue",
+          "status": "success",
+          "n_items": {
+            "VersionStages": 1
+          }
+        },
+        {
+          "service": "kms",
+          "operation": "DescribeKey",
+          "status": "success"
+        },
+        {
+          "service": "kms",
+          "operation": "DescribeKey",
+          "status": "success"
+        }
+      ]
+    },
+    "network_check": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T19:42:31.053341+00:00",
+        "database_network_interfaces": {
+          "NetworkInterfaces": [
+            {
+              "Attachment": {
+                "AttachTime": "2026-10-26T19:39:35+00:00",
+                "AttachmentId": "eni-attach-0ecfb1351a0a7a303",
+                "DeleteOnTermination": false,
+                "DeviceIndex": 1,
+                "NetworkCardIndex": 0,
+                "InstanceOwnerId": "669721064323",
+                "Status": "attached"
+              },
+              "AvailabilityZone": "us-east-1a",
+              "Description": "RDSNetworkInterface",
+              "Groups": [
+                {
+                  "GroupId": "sg-077c23028b341c028",
+                  "GroupName": "g1-db-sg"
+                }
+              ],
+              "InterfaceType": "interface",
+              "Ipv6Addresses": [],
+              "MacAddress": "12:ff:ed:76:e6:f5",
+              "NetworkInterfaceId": "eni-0da1916823d5ad929",
+              "OwnerId": "429100831877",
+              "PrivateDnsName": "ip-172-31-88-99.ec2.internal",
+              "PublicDnsName": "",
+              "PrivateIpAddress": "172.31.88.99",
+              "PrivateIpAddresses": [
+                {
+                  "Primary": true,
+                  "PrivateDnsName": "ip-172-31-88-99.ec2.internal",
+                  "PrivateIpAddress": "172.31.88.99"
+                }
+              ],
+              "RequesterId": "669721064323",
+              "RequesterManaged": true,
+              "SourceDestCheck": true,
+              "Status": "in-use",
+              "SubnetId": "subnet-0eab04bf2964fdeb7",
+              "TagSet": [],
+              "VpcId": "vpc-0de41f84c70ccf93b",
+              "DenyAllIgwTraffic": true,
+              "Operator": {
+                "Managed": false,
+                "HiddenByDefault": false
+              },
+              "AvailabilityZoneId": "use1-az2"
+            }
+          ]
+        }
+      },
+      "api_calls": [
+        {
+          "service": "ec2",
+          "operation": "DescribeNetworkInterfaces",
+          "status": "success",
+          "n_items": {
+            "NetworkInterfaces": 1
+          }
+        }
+      ]
+    },
+    "final_verification": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T19:48:13.080488+00:00",
+        "database": {
+          "DBInstances": [
+            {
+              "DBInstanceIdentifier": "g1-achados-db",
+              "DBInstanceClass": "db.t4g.micro",
+              "Engine": "postgres",
+              "DBInstanceStatus": "available",
+              "MasterUsername": "achados_admin",
+              "DBName": "achados",
+              "Endpoint": {
+                "Address": "g1-achados-db.cwzoegmiwx9c.us-east-1.rds.amazonaws.com",
+                "Port": 5432,
+                "HostedZoneId": "Z2R2ITUGPM61AM"
+              },
+              "AllocatedStorage": 20,
+              "InstanceCreateTime": "2026-10-26T19:42:36.274000+00:00",
+              "PreferredBackupWindow": "05:40-06:10",
+              "BackupRetentionPeriod": 7,
+              "DBSecurityGroups": [],
+              "VpcSecurityGroups": [
+                {
+                  "VpcSecurityGroupId": "sg-077c23028b341c028",
+                  "Status": "active"
+                }
+              ],
+              "DBParameterGroups": [
+                {
+                  "DBParameterGroupName": "default.postgres16",
+                  "ParameterApplyStatus": "in-sync"
+                }
+              ],
+              "AvailabilityZone": "us-east-1a",
+              "DBSubnetGroup": {
+                "DBSubnetGroupName": "g1-achados-db-subnets",
+                "DBSubnetGroupDescription": "Duas zonas da VPC do laboratorio Achados e Perdidos",
+                "VpcId": "vpc-0de41f84c70ccf93b",
+                "SubnetGroupStatus": "Complete",
+                "Subnets": [
+                  {
+                    "SubnetIdentifier": "subnet-0eab04bf2964fdeb7",
+                    "SubnetAvailabilityZone": {
+                      "Name": "us-east-1a"
+                    },
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                  },
+                  {
+                    "SubnetIdentifier": "subnet-05d4324f091ba6877",
+                    "SubnetAvailabilityZone": {
+                      "Name": "us-east-1b"
+                    },
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                  }
+                ]
+              },
+              "PreferredMaintenanceWindow": "fri:09:21-fri:09:51",
+              "UpgradeRolloutOrder": "second",
+              "PendingModifiedValues": {},
+              "LatestRestorableTime": "2026-10-26T19:43:49.181000+00:00",
+              "MultiAZ": false,
+              "EngineVersion": "16.15",
+              "AutoMinorVersionUpgrade": true,
+              "ReadReplicaDBInstanceIdentifiers": [],
+              "LicenseModel": "postgresql-license",
+              "Iops": 3000,
+              "StorageThroughput": 125,
+              "OptionGroupMemberships": [
+                {
+                  "OptionGroupName": "default:postgres-16",
+                  "Status": "in-sync"
+                }
+              ],
+              "PubliclyAccessible": false,
+              "StorageType": "gp3",
+              "DbInstancePort": 0,
+              "StorageEncrypted": true,
+              "KmsKeyId": "arn:aws:kms:us-east-1:429100831877:key/96e0be21-11a5-4f75-9e40-9af73b4dc629",
+              "DbiResourceId": "db-Y7HIPSTHMMWACZVFDFXAQFGM6E",
+              "CACertificateIdentifier": "rds-ca-rsa2048-g1",
+              "DomainMemberships": [],
+              "CopyTagsToSnapshot": true,
+              "MonitoringInterval": 0,
+              "DBInstanceArn": "arn:aws:rds:us-east-1:429100831877:db:g1-achados-db",
+              "IAMDatabaseAuthenticationEnabled": false,
+              "DatabaseInsightsMode": "standard",
+              "PerformanceInsightsEnabled": true,
+              "PerformanceInsightsKMSKeyId": "arn:aws:kms:us-east-1:429100831877:key/96e0be21-11a5-4f75-9e40-9af73b4dc629",
+              "PerformanceInsightsRetentionPeriod": 7,
+              "DeletionProtection": true,
+              "AssociatedRoles": [],
+              "TagList": [
+                {
+                  "Key": "Project",
+                  "Value": "achados-perdidos"
+                },
+                {
+                  "Key": "Environment",
+                  "Value": "laboratorio"
+                },
+                {
+                  "Key": "generation_model",
+                  "Value": "unspecified"
+                },
+                {
+                  "Key": "created_by",
+                  "Value": "rds-oss-skill"
+                },
+                {
+                  "Key": "Name",
+                  "Value": "g1-achados-db"
+                }
+              ],
+              "CustomerOwnedIpEnabled": false,
+              "NetworkType": "IPV4",
+              "ActivityStreamStatus": "stopped",
+              "BackupTarget": "region",
+              "CertificateDetails": {
+                "CAIdentifier": "rds-ca-rsa2048-g1",
+                "ValidTill": "2027-10-26T19:41:17+00:00"
+              },
+              "DedicatedLogVolume": false,
+              "IsStorageConfigUpgradeAvailable": false,
+              "EngineLifecycleSupport": "open-source-rds-extended-support-disabled"
+            }
+          ]
+        },
+        "database_sg": {
+          "SecurityGroups": [
+            {
+              "GroupId": "sg-077c23028b341c028",
+              "IpPermissionsEgress": [
+                {
+                  "IpProtocol": "-1",
+                  "UserIdGroupPairs": [],
+                  "IpRanges": [
+                    {
+                      "CidrIp": "0.0.0.0/0"
+                    }
+                  ],
+                  "Ipv6Ranges": [],
+                  "PrefixListIds": []
+                }
+              ],
+              "Tags": [
+                {
+                  "Key": "Name",
+                  "Value": "g1-db-sg"
+                },
+                {
+                  "Key": "Project",
+                  "Value": "achados-perdidos"
+                },
+                {
+                  "Key": "Environment",
+                  "Value": "laboratorio"
+                }
+              ],
+              "VpcId": "vpc-0de41f84c70ccf93b",
+              "SecurityGroupArn": "arn:aws:ec2:us-east-1:429100831877:security-group/sg-077c23028b341c028",
+              "OwnerId": "429100831877",
+              "GroupName": "g1-db-sg",
+              "Description": "Achados e Perdidos - PostgreSQL only from application",
+              "IpPermissions": [
+                {
+                  "IpProtocol": "tcp",
+                  "FromPort": 5432,
+                  "ToPort": 5432,
+                  "UserIdGroupPairs": [
+                    {
+                      "Description": "PostgreSQL only from application",
+                      "UserId": "429100831877",
+                      "GroupId": "sg-0032fd6de918bc221"
+                    }
+                  ],
+                  "IpRanges": [],
+                  "Ipv6Ranges": [],
+                  "PrefixListIds": []
+                }
+              ]
+            }
+          ]
+        },
+        "tls_defaults": [
+          {
+            "ParameterName": "rds.force_ssl",
+            "ParameterValue": "1",
+            "Description": "Force SSL connections.",
+            "Source": "system",
+            "ApplyType": "dynamic",
+            "DataType": "boolean",
+            "AllowedValues": "0,1",
+            "IsModifiable": true
+          }
+        ],
+        "database_secret": {
+          "ARN": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y",
+          "Name": "g1/achados/db",
+          "Description": "Credenciais PostgreSQL do laboratorio Achados e Perdidos",
+          "LastChangedDate": "2026-10-26T19:38:09.112000+00:00",
+          "LastAccessedDate": "2026-10-26T00:00:00+00:00",
+          "Tags": [
+            {
+              "Key": "Project",
+              "Value": "achados-perdidos"
+            },
+            {
+              "Key": "Environment",
+              "Value": "laboratorio"
+            }
+          ],
+          "VersionIdsToStages": {
+            "13b55b8a-1763-4fcf-a7c2-c8edafbc3bd4": [
+              "AWSCURRENT"
+            ]
+          },
+          "CreatedDate": "2026-10-26T19:38:08.877000+00:00"
+        },
+        "access_secret": {
+          "ARN": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/acesso-TR13WW",
+          "Name": "g1/achados/acesso",
+          "Description": "Senha compartilhada de entrada do frontend Achados e Perdidos",
+          "LastChangedDate": "2026-10-26T19:38:31.795000+00:00",
+          "LastAccessedDate": "2026-10-26T00:00:00+00:00",
+          "Tags": [
+            {
+              "Key": "Project",
+              "Value": "achados-perdidos"
+            },
+            {
+              "Key": "Environment",
+              "Value": "laboratorio"
+            }
+          ],
+          "VersionIdsToStages": {
+            "4c6538d8-80cc-4233-8d70-2993add1b5d7": [
+              "AWSCURRENT"
+            ]
+          },
+          "CreatedDate": "2026-10-26T19:38:31.762000+00:00"
+        },
+        "checks": {
+          "available": true,
+          "expected_engine": true,
+          "private": true,
+          "storage_encrypted": true,
+          "single_az": true,
+          "expected_storage": true,
+          "expected_subnets": true,
+          "only_database_sg": true,
+          "only_web_can_connect": true,
+          "tls_required": true,
+          "backups_seven_days": true,
+          "deletion_protection": true,
+          "endpoint_present": true,
+          "database_secret_current": true,
+          "access_secret_current": true
+        }
+      },
+      "api_calls": [
+        {
+          "service": "rds",
+          "operation": "DescribeDBInstances",
+          "status": "success",
+          "n_items": {
+            "DBInstances": 1
+          }
+        },
+        {
+          "service": "ec2",
+          "operation": "DescribeSecurityGroups",
+          "status": "success",
+          "n_items": {
+            "SecurityGroups": 1
+          }
+        },
+        {
+          "service": "rds",
+          "operation": "DescribeEngineDefaultParameters",
+          "status": "success"
+        },
+        {
+          "service": "secretsmanager",
+          "operation": "DescribeSecret",
+          "status": "success",
+          "n_items": {
+            "Tags": 2
+          }
+        },
+        {
+          "service": "secretsmanager",
+          "operation": "DescribeSecret",
+          "status": "success",
+          "n_items": {
+            "Tags": 2
+          }
+        }
+      ]
+    }
+  },
+  "limits": {
+    "sql_connection_tested": false,
+    "application_deployed": false,
+    "schema_initialized": false,
+    "notes": "As leituras confirmam configuração e estado available. A conexão SQL e a execução do init.sql ficam para a task na etapa 9."
+  }
+}

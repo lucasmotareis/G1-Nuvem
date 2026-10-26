@@ -1,0 +1,42 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "GetECRAuthorization",
+      "Effect": "Allow",
+      "Action": "ecr:GetAuthorizationToken",
+      "Resource": "*"
+    },
+    {
+      "Sid": "PullProjectImages",
+      "Effect": "Allow",
+      "Action": [
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:BatchGetImage"
+      ],
+      "Resource": [
+        "arn:aws:ecr:us-east-1:429100831877:repository/achados-web",
+        "arn:aws:ecr:us-east-1:429100831877:repository/achados-frontend"
+      ]
+    },
+    {
+      "Sid": "WriteProjectContainerLogs",
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:*"
+    },
+    {
+      "Sid": "ReadProjectSecrets",
+      "Effect": "Allow",
+      "Action": "secretsmanager:GetSecretValue",
+      "Resource": [
+        "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y",
+        "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/acesso-TR13WW"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "MountWritePhotosThroughAccessPoint",
+      "Effect": "Allow",
+      "Action": [
+        "s3files:ClientMount",
+        "s3files:ClientWrite"
+      ],
+      "Resource": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+      "Condition": {
+        "ArnEquals": {
+          "s3files:AccessPointArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137"
+        }
+      }
+    },
+    {
+      "Sid": "ReadPhotoObjects",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:GetObjectVersion"
+      ],
+      "Resource": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026/uploads/*"
+    },
+    {
+      "Sid": "ListPhotoBucket",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026"
+    }
+  ]
+}

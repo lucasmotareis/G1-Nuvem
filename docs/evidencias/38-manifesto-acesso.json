@@ -1,0 +1,48 @@
+{
+  "legenda": "Versao com senha no Nginx; segredo real e seu hash de autenticacao nao estao neste manifesto. Ensaio AWS somente local.",
+  "geradoEmUtc": "2026-10-26T18:46:56.220003+00:00",
+  "branch": "codex/frontend-achados-perdidos",
+  "commitBase": "bfb2778face1a0f6fe932c3c5f523c25cbda316a",
+  "arquivos": {
+    ".gitattributes": "ea2168ef29b9a8dd027136672e6ca6dc772d84e030101e508b73eea53ed7d35f",
+    ".env.example": "e4f55ba2195984ef3da0c3329b3bbb9c6fa5b3d99fca136325d82ce9ee88f335",
+    "docker-compose.yml": "7c4820153c0916351907eea901d0879b61277a7c217b6c436d1098fe8c454133",
+    "nginx/default.conf": "9bde753bac18766cb3d3f797ca93beb07c109d44feafa51b43ae2ea6164038ab",
+    "frontend/Dockerfile": "9f7c73c79b6b1a54485e6211af75a89e584becb7e045d127ce4afcb1d9971140",
+    "frontend/.dockerignore": "1ab6c7be76a52e5e70f70d266c4d743dc5956c5eec28baf8dbb6307cf2ac4f14",
+    "frontend/40-access-password.sh": "5866cf9221497435022b30d0ed61adface94de4d31fcc95123183f22500c9fba",
+    "frontend/internal-health.conf": "8019eaa252902b3a84a172742d90e1864753e4a0672185f096003f991d83d1ce",
+    "frontend/routing.conf": "5ad438458e6de9c4e4c6b16bc32b27d1b461d491635a2354a4cccd220c0f5034",
+    "frontend/nginx.conf": "4a426641bec7d6a56a2f5f07651de43011788e7dbf60968f734bb483f17551b3",
+    "frontend/index.html": "aef9ce4d7d75a31edb358184e61f3fbbe6abc14c50c1f8bd394813b7cab3b9be",
+    "frontend/styles.css": "00588b14f0ebb698a7939166a5bc55ef5fa8d52b34b884525691a51e57878a9c",
+    "frontend/app.js": "ada7b9a2e3e113759d057420618c176774e381d7df2faa9b4ec03acef58822a8",
+    "infra/aws/task-definition.example.json": "2f88d5cde9bf7b635963515dff2ba22054d488602ac70c6c4c2c48b73e036e78",
+    "tests/access.mjs": "90e6765db384bd7c13f4eb2536415f985f783c56c26ceb6d1255e6d9a95f7257",
+    "tests/frontend.mjs": "ddd06790f73c1d7dd61efde30820fda7a2167155d9487fec95a7b84f2d553bdb",
+    "tests/probe_shared_network.py": "723856c7519e5f7eb2f6bfdfa8231a9955aa135fa0382cf0303d0da3bd9dbb74"
+  },
+  "fornecidos": {
+    "app/app.py": {
+      "gitBlob": "1c8391556bd02d658e284c15a93f8fabb23ddcee",
+      "preservado": true
+    },
+    "app/requirements.txt": {
+      "gitBlob": "e347d0db5b4b4015b7723954458eac0a7e0cbd6d",
+      "preservado": true
+    },
+    "db/init.sql": {
+      "gitBlob": "3dc71c0e8cfa213c0c49774a560691e46115a67e",
+      "preservado": true
+    }
+  },
+  "validacoes": {
+    "segredoAusenteDosArquivosDoGitEDasEvidencias": true,
+    "authorizationBasicAusenteDosArquivosDoGit": true,
+    "envIgnoradoENaoRastreado": true,
+    "jsonValido": true,
+    "linksLocaisValidos": true,
+    "pythonValido": true
+  },
+  "awsImplantada": false
+}

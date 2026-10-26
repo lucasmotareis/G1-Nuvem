@@ -1,0 +1,383 @@
+{
+  "legenda": "Etapa 9: aplicacao real do SQL original por tarefa Fargate, tres itens, TLS e logs confirmados.",
+  "capturadoEm": "2026-10-26T21:30:11.492Z",
+  "registro": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "taskDefinition": {
+        "taskDefinitionArn": "arn:aws:ecs:us-east-1:429100831877:task-definition/achados-init:1",
+        "containerDefinitions": [
+          {
+            "name": "web",
+            "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-web:aws-v1",
+            "cpu": 0,
+            "portMappings": [],
+            "essential": true,
+            "environment": [
+              {
+                "name": "PGSSLMODE",
+                "value": "require"
+              },
+              {
+                "name": "DB_NAME",
+                "value": "achados"
+              },
+              {
+                "name": "DB_HOST",
+                "value": "g1-achados-db.cwzoegmiwx9c.us-east-1.rds.amazonaws.com"
+              },
+              {
+                "name": "DB_PORT",
+                "value": "5432"
+              },
+              {
+                "name": "UPLOAD_DIR",
+                "value": "/app/uploads"
+              }
+            ],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "secrets": [
+              {
+                "name": "DB_USER",
+                "valueFrom": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y:username::"
+              },
+              {
+                "name": "DB_PASSWORD",
+                "valueFrom": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y:password::"
+              }
+            ],
+            "logConfiguration": {
+              "logDriver": "awslogs",
+              "options": {
+                "awslogs-group": "/ecs/achados-web",
+                "awslogs-region": "us-east-1",
+                "awslogs-stream-prefix": "web"
+              }
+            },
+            "systemControls": []
+          }
+        ],
+        "family": "achados-init",
+        "executionRoleArn": "arn:aws:iam::429100831877:role/g1-ecs-execution-role",
+        "networkMode": "awsvpc",
+        "revision": 1,
+        "volumes": [],
+        "status": "ACTIVE",
+        "requiresAttributes": [
+          {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+          },
+          {
+            "name": "ecs.capability.execution-role-awslogs"
+          },
+          {
+            "name": "com.amazonaws.ecs.capability.ecr-auth"
+          },
+          {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+          },
+          {
+            "name": "ecs.capability.secrets.asm.environment-variables"
+          },
+          {
+            "name": "ecs.capability.execution-role-ecr-pull"
+          },
+          {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+          },
+          {
+            "name": "ecs.capability.task-eni"
+          }
+        ],
+        "placementConstraints": [],
+        "compatibilities": [
+          "EC2",
+          "MANAGED_INSTANCES",
+          "FARGATE"
+        ],
+        "runtimePlatform": {
+          "cpuArchitecture": "X86_64",
+          "operatingSystemFamily": "LINUX"
+        },
+        "requiresCompatibilities": [
+          "FARGATE"
+        ],
+        "cpu": "256",
+        "memory": "512",
+        "registeredAt": "2026-10-26T21:24:25.124000+00:00",
+        "registeredBy": "arn:aws:iam::429100831877:root"
+      }
+    },
+    "api_calls": [
+      {
+        "service": "ecs",
+        "operation": "DescribeTaskDefinition",
+        "status": "success",
+        "n_items": {
+          "tags": 0
+        }
+      },
+      {
+        "service": "ecs",
+        "operation": "RegisterTaskDefinition",
+        "status": "success",
+        "n_items": {
+          "tags": 2
+        }
+      }
+    ]
+  },
+  "execucao": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "tasks": [
+        {
+          "attachments": [
+            {
+              "id": "b36d9482-346b-4228-a4d7-6fd14c9c61d1",
+              "type": "ElasticNetworkInterface",
+              "status": "PRECREATED",
+              "details": [
+                {
+                  "name": "subnetId",
+                  "value": "subnet-05d4324f091ba6877"
+                }
+              ]
+            }
+          ],
+          "attributes": [
+            {
+              "name": "ecs.cpu-architecture",
+              "value": "x86_64"
+            }
+          ],
+          "availabilityZone": "us-east-1b",
+          "clusterArn": "arn:aws:ecs:us-east-1:429100831877:cluster/g1-achados",
+          "containers": [
+            {
+              "containerArn": "arn:aws:ecs:us-east-1:429100831877:container/g1-achados/1abd7ba195554a258992825ffe5d3e0d/3430b042-a308-4deb-81b7-8a89b54f7cd6",
+              "taskArn": "arn:aws:ecs:us-east-1:429100831877:task/g1-achados/1abd7ba195554a258992825ffe5d3e0d",
+              "name": "web",
+              "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-web:aws-v1",
+              "lastStatus": "PENDING",
+              "networkInterfaces": [],
+              "cpu": "0"
+            }
+          ],
+          "cpu": "256",
+          "createdAt": "2026-10-26T21:24:46.769000+00:00",
+          "desiredStatus": "RUNNING",
+          "enableExecuteCommand": false,
+          "group": "family:achados-init",
+          "lastStatus": "PROVISIONING",
+          "launchType": "FARGATE",
+          "memory": "512",
+          "overrides": {
+            "containerOverrides": [
+              {
+                "name": "web",
+                "command": [
+                  "python",
+                  "-c",
+                  "import base64, os\nimport psycopg\nfrom app import DB_URL\nsql = base64.b64decode(os.environ['INIT_SQL_B64']).decode('utf-8-sig')\nwith psycopg.connect(DB_URL) as c:\n    if c.execute(\"SELECT to_regclass('public.itens')\").fetchone()[0] is not None:\n        raise RuntimeError('Tabela itens ja existe; inicializacao interrompida para evitar duplicar os exemplos.')\n    c.execute(sql, prepare=False)\n    total=c.execute('SELECT COUNT(*) FROM itens').fetchone()[0]\n    ssl=c.execute('SELECT ssl FROM pg_stat_ssl WHERE pid=pg_backend_pid()').fetchone()[0]\nprint('Inicializacao concluida; itens:', total, 'TLS:', ssl)"
+                ],
+                "environment": [
+                  {
+                    "name": "INIT_SQL_B64",
+                    "value": "Q1JFQVRFIFRBQkxFIElGIE5PVCBFWElTVFMgaXRlbnMgKA0KICAgIGlkICAgICAgICAgU0VSSUFMIFBSSU1BUlkgS0VZLA0KICAgIGRlc2NyaWNhbyAgVkFSQ0hBUigyMDApIE5PVCBOVUxMLA0KICAgIGxvY2FsICAgICAgVkFSQ0hBUigxMDApIE5PVCBOVUxMLA0KICAgIGZvdG8gICAgICAgVkFSQ0hBUigxMDApLA0KICAgIGNyaWFkb19lbSAgVElNRVNUQU1QIE5PVCBOVUxMIERFRkFVTFQgTk9XKCkNCik7DQpJTlNFUlQgSU5UTyBpdGVucyAoZGVzY3JpY2FvLCBsb2NhbCkgVkFMVUVTDQogICAgKCdHYXJyYWZhIHRlcm1pY2EgYXp1bCcsICdCaWJsaW90ZWNhJyksDQogICAgKCdDYXJyZWdhZG9yIGRlIG5vdGVib29rIFVTQi1DJywgJ0xhYm9yYXRvcmlvIDMnKSwNCiAgICAoJ0Nhc2FjbyBwcmV0byBjb20gY2FwdXonLCAnQ2FudGluYScpOw=="
+                  }
+                ]
+              }
+            ],
+            "inferenceAcceleratorOverrides": []
+          },
+          "platformVersion": "1.4.0",
+          "platformFamily": "Linux",
+          "startedBy": "g1-init-20261026",
+          "tags": [
+            {
+              "key": "Project",
+              "value": "achados-perdidos"
+            }
+          ],
+          "taskArn": "arn:aws:ecs:us-east-1:429100831877:task/g1-achados/1abd7ba195554a258992825ffe5d3e0d",
+          "taskDefinitionArn": "arn:aws:ecs:us-east-1:429100831877:task-definition/achados-init:1",
+          "version": 1,
+          "ephemeralStorage": {
+            "sizeInGiB": 20
+          },
+          "fargateEphemeralStorage": {
+            "sizeInGiB": 20
+          }
+        }
+      ],
+      "failures": []
+    },
+    "api_calls": [
+      {
+        "service": "ecs",
+        "operation": "RunTask",
+        "status": "success",
+        "n_items": {
+          "tasks": 1,
+          "failures": 0
+        }
+      }
+    ]
+  },
+  "resultado": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "DescribeTasks": {
+        "tasks": [
+          {
+            "attachments": [
+              {
+                "id": "b36d9482-346b-4228-a4d7-6fd14c9c61d1",
+                "type": "ElasticNetworkInterface",
+                "status": "DELETED",
+                "details": [
+                  {
+                    "name": "subnetId",
+                    "value": "subnet-05d4324f091ba6877"
+                  },
+                  {
+                    "name": "networkInterfaceId",
+                    "value": "eni-0258ef2bb494be532"
+                  },
+                  {
+                    "name": "macAddress",
+                    "value": "0a:ff:e6:6d:5a:9f"
+                  },
+                  {
+                    "name": "privateDnsName",
+                    "value": "ip-172-31-18-145.ec2.internal"
+                  },
+                  {
+                    "name": "privateIPv4Address",
+                    "value": "172.31.18.145"
+                  }
+                ]
+              }
+            ],
+            "attributes": [
+              {
+                "name": "ecs.cpu-architecture",
+                "value": "x86_64"
+              }
+            ],
+            "availabilityZone": "us-east-1b",
+            "clusterArn": "arn:aws:ecs:us-east-1:429100831877:cluster/g1-achados",
+            "connectivity": "CONNECTED",
+            "connectivityAt": "2026-10-26T21:24:49.546000+00:00",
+            "containers": [
+              {
+                "containerArn": "arn:aws:ecs:us-east-1:429100831877:container/g1-achados/1abd7ba195554a258992825ffe5d3e0d/3430b042-a308-4deb-81b7-8a89b54f7cd6",
+                "taskArn": "arn:aws:ecs:us-east-1:429100831877:task/g1-achados/1abd7ba195554a258992825ffe5d3e0d",
+                "name": "web",
+                "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-web:aws-v1",
+                "imageDigest": "sha256:974595484c975b0427a78d42fba7bee02ded70ce191d6a4cd5c98b85d8164cbd",
+                "runtimeId": "1abd7ba195554a258992825ffe5d3e0d-0265927825",
+                "lastStatus": "STOPPED",
+                "exitCode": 0,
+                "networkBindings": [],
+                "networkInterfaces": [
+                  {
+                    "attachmentId": "b36d9482-346b-4228-a4d7-6fd14c9c61d1",
+                    "privateIpv4Address": "172.31.18.145"
+                  }
+                ],
+                "healthStatus": "UNKNOWN",
+                "cpu": "0"
+              }
+            ],
+            "cpu": "256",
+            "createdAt": "2026-10-26T21:24:46.769000+00:00",
+            "desiredStatus": "STOPPED",
+            "enableExecuteCommand": false,
+            "executionStoppedAt": "2026-10-26T21:25:11.714000+00:00",
+            "group": "family:achados-init",
+            "healthStatus": "UNKNOWN",
+            "lastStatus": "STOPPED",
+            "launchType": "FARGATE",
+            "memory": "512",
+            "overrides": {
+              "containerOverrides": [
+                {
+                  "name": "web",
+                  "command": [
+                    "python",
+                    "-c",
+                    "import base64, os\nimport psycopg\nfrom app import DB_URL\nsql = base64.b64decode(os.environ['INIT_SQL_B64']).decode('utf-8-sig')\nwith psycopg.connect(DB_URL) as c:\n    if c.execute(\"SELECT to_regclass('public.itens')\").fetchone()[0] is not None:\n        raise RuntimeError('Tabela itens ja existe; inicializacao interrompida para evitar duplicar os exemplos.')\n    c.execute(sql, prepare=False)\n    total=c.execute('SELECT COUNT(*) FROM itens').fetchone()[0]\n    ssl=c.execute('SELECT ssl FROM pg_stat_ssl WHERE pid=pg_backend_pid()').fetchone()[0]\nprint('Inicializacao concluida; itens:', total, 'TLS:', ssl)"
+                  ],
+                  "environment": [
+                    {
+                      "name": "INIT_SQL_B64",
+                      "value": "Q1JFQVRFIFRBQkxFIElGIE5PVCBFWElTVFMgaXRlbnMgKA0KICAgIGlkICAgICAgICAgU0VSSUFMIFBSSU1BUlkgS0VZLA0KICAgIGRlc2NyaWNhbyAgVkFSQ0hBUigyMDApIE5PVCBOVUxMLA0KICAgIGxvY2FsICAgICAgVkFSQ0hBUigxMDApIE5PVCBOVUxMLA0KICAgIGZvdG8gICAgICAgVkFSQ0hBUigxMDApLA0KICAgIGNyaWFkb19lbSAgVElNRVNUQU1QIE5PVCBOVUxMIERFRkFVTFQgTk9XKCkNCik7DQpJTlNFUlQgSU5UTyBpdGVucyAoZGVzY3JpY2FvLCBsb2NhbCkgVkFMVUVTDQogICAgKCdHYXJyYWZhIHRlcm1pY2EgYXp1bCcsICdCaWJsaW90ZWNhJyksDQogICAgKCdDYXJyZWdhZG9yIGRlIG5vdGVib29rIFVTQi1DJywgJ0xhYm9yYXRvcmlvIDMnKSwNCiAgICAoJ0Nhc2FjbyBwcmV0byBjb20gY2FwdXonLCAnQ2FudGluYScpOw=="
+                    }
+                  ]
+                }
+              ],
+              "inferenceAcceleratorOverrides": []
+            },
+            "platformVersion": "1.4.0",
+            "platformFamily": "Linux",
+            "pullStartedAt": "2026-10-26T21:24:59.144000+00:00",
+            "pullStoppedAt": "2026-10-26T21:25:07.879000+00:00",
+            "startedAt": "2026-10-26T21:25:07.868000+00:00",
+            "startedBy": "g1-init-20261026",
+            "stopCode": "EssentialContainerExited",
+            "stoppedAt": "2026-10-26T21:25:37.493000+00:00",
+            "stoppedReason": "Essential container in task exited",
+            "stoppingAt": "2026-10-26T21:25:21.801000+00:00",
+            "tags": [],
+            "taskArn": "arn:aws:ecs:us-east-1:429100831877:task/g1-achados/1abd7ba195554a258992825ffe5d3e0d",
+            "taskDefinitionArn": "arn:aws:ecs:us-east-1:429100831877:task-definition/achados-init:1",
+            "version": 5,
+            "ephemeralStorage": {
+              "sizeInGiB": 20
+            },
+            "fargateEphemeralStorage": {
+              "sizeInGiB": 20
+            }
+          }
+        ],
+        "failures": []
+      },
+      "GetLogEvents": {
+        "events": [
+          {
+            "timestamp": 1793049911432,
+            "message": "Inicializacao concluida; itens: 3 TLS: True",
+            "ingestionTime": 1793049912693
+          }
+        ],
+        "nextForwardToken": "f/39986349203092933082638053584549066360848004425383804928/s",
+        "nextBackwardToken": "b/39986349203092933082638053584549066360848004425383804928/s"
+      }
+    },
+    "api_calls": [
+      {
+        "service": "ecs",
+        "operation": "DescribeTasks",
+        "status": "success",
+        "n_items": {
+          "tasks": 1,
+          "failures": 0
+        }
+      },
+      {
+        "service": "logs",
+        "operation": "GetLogEvents",
+        "status": "success",
+        "n_items": {
+          "events": 1
+        }
+      }
+    ]
+  }
+}

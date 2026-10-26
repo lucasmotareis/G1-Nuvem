@@ -1,0 +1,10 @@
+*
+!index.html
+!styles.css
+!app.js
+!routing.conf
+!nginx.conf
+!internal-health.conf
+!40-access-password.sh
+!Dockerfile
+!.dockerignore

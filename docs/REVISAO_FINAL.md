@@ -1,5 +1,16 @@
 # Conferência final com o enunciado
 
+**Nota de versão (26/10/2026):** esta conferência registra a entrega anterior ao
+frontend. A branch `codex/frontend-achados-perdidos` acrescenta uma interface
+separada, preservando os arquivos fornecidos; seus testes estão nas
+[evidências 29 a 33](evidencias/README.md#estado-da-branch-com-frontend).
+O Mermaid e os roteiros local/AWS foram atualizados na branch do frontend.
+A implantação AWS foi posteriormente executada;
+o [registro da apresentação](AWS-APRESENTACAO.md) contém a configuração e as
+evidências atuais, sem substituir esta conferência histórica da entrega local.
+A proteção por senha foi acrescentada em seguida, também sem alterar a aplicação
+fornecida. Os testes 34 a 38 e [ACESSO.md](ACESSO.md) documentam essa etapa.
+
 Revisão de `G1-CN-2N.pdf`, seções 2 a 7 e Apêndice A, em 19/10/2026.
 A implementação local atende aos requisitos obrigatórios conferidos abaixo.
 A versão foi publicada no GitHub, com repositório público e clone real conferido

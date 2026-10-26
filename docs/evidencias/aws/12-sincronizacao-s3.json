@@ -1,0 +1,186 @@
+{
+  "legenda": "Fotos gravadas pela API/Chromium e exportadas por S3 Files ao bucket privado. As duas imagens usam o mesmo PNG ficticio de teste.",
+  "capturadoEmUtc": "2026-10-26T21:46:39.614Z",
+  "objects": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "0_ListObjectsV2": {
+        "Contents": [
+          {
+            "Key": "uploads/",
+            "LastModified": "2026-10-26T21:31:31+00:00",
+            "ETag": "\"d41d8cd98f00b204e9800998ecf8427e\"",
+            "ChecksumAlgorithm": [
+              "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 0,
+            "StorageClass": "STANDARD"
+          },
+          {
+            "Key": "uploads/143bc554bb1d4584aa16ff6d0810667f.png",
+            "LastModified": "2026-10-26T21:44:43+00:00",
+            "ETag": "\"46343fa4c595eb93987a414453559d20\"",
+            "ChecksumAlgorithm": [
+              "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 179,
+            "StorageClass": "STANDARD"
+          },
+          {
+            "Key": "uploads/89594ce917da44a5aae6b999696eacb7.png",
+            "LastModified": "2026-10-26T21:44:03+00:00",
+            "ETag": "\"46343fa4c595eb93987a414453559d20\"",
+            "ChecksumAlgorithm": [
+              "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 179,
+            "StorageClass": "STANDARD"
+          }
+        ],
+        "Prefix": "uploads/"
+      },
+      "1_HeadObject": {
+        "AcceptRanges": "bytes",
+        "LastModified": "2026-10-26T21:44:03+00:00",
+        "ContentLength": 179,
+        "ETag": "\"46343fa4c595eb93987a414453559d20\"",
+        "VersionId": "5eFMJSDD6Ljua5g25isuo9BbIsC0MjNT",
+        "ContentType": "image/png",
+        "ServerSideEncryption": "AES256",
+        "Metadata": {
+          "fs-id": "fs-03cc16c6148b70bad:17246934398178246247:2",
+          "user-agent": "aws-s3-files",
+          "file-btime": "1793050977632000000ns",
+          "file-atime": "1793050977638000000ns",
+          "file-owner": "1000",
+          "file-permissions": "0100644",
+          "file-group": "1000",
+          "file-mtime": "1793050977638000000ns"
+        }
+      },
+      "2_HeadObject": {
+        "AcceptRanges": "bytes",
+        "LastModified": "2026-10-26T21:44:43+00:00",
+        "ContentLength": 179,
+        "ETag": "\"46343fa4c595eb93987a414453559d20\"",
+        "VersionId": "IJF5d1H9_7dwv2uxWmKPl1LK.Z.KCvWy",
+        "ContentType": "image/png",
+        "ServerSideEncryption": "AES256",
+        "Metadata": {
+          "fs-id": "fs-03cc16c6148b70bad:16227373998748695796:2",
+          "user-agent": "aws-s3-files",
+          "file-btime": "1793051017748000000ns",
+          "file-atime": "1793051017754000000ns",
+          "file-owner": "1000",
+          "file-permissions": "0100644",
+          "file-group": "1000",
+          "file-mtime": "1793051017754000000ns"
+        }
+      },
+      "3_ListObjectsV2": {
+        "Contents": [
+          {
+            "Key": "AWSLogs/429100831877/CloudFront/E3TRUXI3LTMDAF.2026-10-26-21.56d6a336.gz",
+            "LastModified": "2026-10-26T21:45:02+00:00",
+            "ETag": "\"3c48aac5ea19b114022f947d0d1e6c94\"",
+            "ChecksumAlgorithm": [
+              "CRC64NVME"
+            ],
+            "ChecksumType": "FULL_OBJECT",
+            "Size": 1249,
+            "StorageClass": "STANDARD"
+          }
+        ],
+        "Prefix": "AWSLogs/"
+      }
+    },
+    "api_calls": [
+      {
+        "service": "s3",
+        "operation": "ListObjectsV2",
+        "status": "success",
+        "n_items": {
+          "Contents": 3
+        }
+      },
+      {
+        "service": "s3",
+        "operation": "HeadObject",
+        "status": "success"
+      },
+      {
+        "service": "s3",
+        "operation": "HeadObject",
+        "status": "success"
+      },
+      {
+        "service": "s3",
+        "operation": "ListObjectsV2",
+        "status": "success",
+        "n_items": {
+          "Contents": 1
+        }
+      }
+    ]
+  },
+  "arquivoOriginal": {
+    "path": "docs/evidencias/foto-teste-1.png",
+    "bytes": 179,
+    "md5": "46343fa4c595eb93987a414453559d20",
+    "sha256": "0698c7891947ed01ef63cfd51f754ad636f436898b5dfdc59268f8bfda819ebf"
+  },
+  "metrics": {
+    "status": "success",
+    "stdout": "",
+    "return_value": {
+      "MetricDataResults": [
+        {
+          "Id": "pending",
+          "Label": "PendingExports",
+          "Timestamps": [
+            "2026-10-26T21:42:00+00:00",
+            "2026-10-26T21:27:00+00:00"
+          ],
+          "Values": [
+            0,
+            0
+          ],
+          "StatusCode": "Complete"
+        },
+        {
+          "Id": "exportfail",
+          "Label": "ExportFailures",
+          "Timestamps": [],
+          "Values": [],
+          "StatusCode": "Complete"
+        },
+        {
+          "Id": "importfail",
+          "Label": "ImportFailures",
+          "Timestamps": [],
+          "Values": [],
+          "StatusCode": "Complete"
+        }
+      ],
+      "Messages": []
+    },
+    "api_calls": [
+      {
+        "service": "cloudwatch",
+        "operation": "GetMetricData",
+        "status": "success",
+        "n_items": {
+          "MetricDataResults": 3,
+          "Messages": 0
+        }
+      }
+    ]
+  },
+  "limits": [
+    "Ausencia de amostras de ExportFailures/ImportFailures nao comprova valor zero. Os objetos e metadados aws-s3-files comprovam as duas exportacoes observadas."
+  ]
+}

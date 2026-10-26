@@ -6,15 +6,19 @@ bônus de infraestrutura. As mudanças em relação à arquitetura básica estã
 
 ## Proxy reverso Nginx
 
-O serviço `nginx`, com a imagem oficial `nginx:1.30-alpine`, publica `8080:80`.
-Ele encaminha todas as rotas para `web:5000`; `web` e `db` não publicam porta
+O serviço `nginx`, construído de `./frontend` sobre a imagem oficial
+`nginx:1.30-alpine`, publica `127.0.0.1:8080:80`. Ele exige a senha de entrada
+para a interface e API; veja [ACESSO.md](ACESSO.md). Serve a interface e seus arquivos
+estáticos; as demais rotas seguem para `web:5000`. `web` e `db` não publicam porta
 no host. A configuração [nginx/default.conf](../nginx/default.conf) é montada
 somente para leitura em `/etc/nginx/conf.d/default.conf`.
+As regras compartilhadas ficam em [frontend/routing.conf](../frontend/routing.conf).
+Veja também o [roteiro da interface](FRONTEND.md).
 
 ```sh
 docker compose up -d --build
 docker compose exec nginx nginx -t
-curl -i http://localhost:8080/health
+curl --user visitante -i http://localhost:8080/health
 ```
 
 O Nginx aguarda o healthcheck de `web`, que faz uma chamada HTTP interna a

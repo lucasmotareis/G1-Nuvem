@@ -1,0 +1,1589 @@
+{
+  "legenda": "26/10/2026: criação do grupo de logs e cluster Fargate, registro de achados-web:1 e leitura posterior com 33 verificações de configuração aprovadas. Inclui a falha inicial de CreateCluster e a repetição bem-sucedida após consultar a role vinculada ao serviço. Nenhuma task/service foi iniciado.",
+  "region": "us-east-1",
+  "account": "429100831877",
+  "records": {
+    "preflight": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:44:16.161469+00:00",
+        "identity": {
+          "UserId": "429100831877",
+          "Account": "429100831877",
+          "Arn": "arn:aws:iam::429100831877:root"
+        },
+        "cluster": {
+          "clusters": [],
+          "failures": [
+            {
+              "arn": "arn:aws:ecs:us-east-1:429100831877:cluster/g1-achados",
+              "reason": "MISSING"
+            }
+          ]
+        },
+        "task_definitions": {
+          "taskDefinitionArns": []
+        },
+        "log_groups": {
+          "logGroups": []
+        },
+        "database": {
+          "DBInstances": [
+            {
+              "DBInstanceIdentifier": "g1-achados-db",
+              "DBInstanceClass": "db.t4g.micro",
+              "Engine": "postgres",
+              "DBInstanceStatus": "available",
+              "MasterUsername": "achados_admin",
+              "DBName": "achados",
+              "Endpoint": {
+                "Address": "g1-achados-db.cwzoegmiwx9c.us-east-1.rds.amazonaws.com",
+                "Port": 5432,
+                "HostedZoneId": "Z2R2ITUGPM61AM"
+              },
+              "AllocatedStorage": 20,
+              "InstanceCreateTime": "2026-10-26T19:42:36.274000+00:00",
+              "PreferredBackupWindow": "05:40-06:10",
+              "BackupRetentionPeriod": 7,
+              "DBSecurityGroups": [],
+              "VpcSecurityGroups": [
+                {
+                  "VpcSecurityGroupId": "sg-077c23028b341c028",
+                  "Status": "active"
+                }
+              ],
+              "DBParameterGroups": [
+                {
+                  "DBParameterGroupName": "default.postgres16",
+                  "ParameterApplyStatus": "in-sync"
+                }
+              ],
+              "AvailabilityZone": "us-east-1a",
+              "DBSubnetGroup": {
+                "DBSubnetGroupName": "g1-achados-db-subnets",
+                "DBSubnetGroupDescription": "Duas zonas da VPC do laboratorio Achados e Perdidos",
+                "VpcId": "vpc-0de41f84c70ccf93b",
+                "SubnetGroupStatus": "Complete",
+                "Subnets": [
+                  {
+                    "SubnetIdentifier": "subnet-0eab04bf2964fdeb7",
+                    "SubnetAvailabilityZone": {
+                      "Name": "us-east-1a"
+                    },
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                  },
+                  {
+                    "SubnetIdentifier": "subnet-05d4324f091ba6877",
+                    "SubnetAvailabilityZone": {
+                      "Name": "us-east-1b"
+                    },
+                    "SubnetOutpost": {},
+                    "SubnetStatus": "Active"
+                  }
+                ]
+              },
+              "PreferredMaintenanceWindow": "fri:09:21-fri:09:51",
+              "UpgradeRolloutOrder": "second",
+              "PendingModifiedValues": {},
+              "LatestRestorableTime": "2026-10-26T20:36:53+00:00",
+              "MultiAZ": false,
+              "EngineVersion": "16.15",
+              "AutoMinorVersionUpgrade": true,
+              "ReadReplicaDBInstanceIdentifiers": [],
+              "LicenseModel": "postgresql-license",
+              "Iops": 3000,
+              "StorageThroughput": 125,
+              "OptionGroupMemberships": [
+                {
+                  "OptionGroupName": "default:postgres-16",
+                  "Status": "in-sync"
+                }
+              ],
+              "PubliclyAccessible": false,
+              "StorageType": "gp3",
+              "DbInstancePort": 0,
+              "StorageEncrypted": true,
+              "KmsKeyId": "arn:aws:kms:us-east-1:429100831877:key/96e0be21-11a5-4f75-9e40-9af73b4dc629",
+              "DbiResourceId": "db-Y7HIPSTHMMWACZVFDFXAQFGM6E",
+              "CACertificateIdentifier": "rds-ca-rsa2048-g1",
+              "DomainMemberships": [],
+              "CopyTagsToSnapshot": true,
+              "MonitoringInterval": 0,
+              "DBInstanceArn": "arn:aws:rds:us-east-1:429100831877:db:g1-achados-db",
+              "IAMDatabaseAuthenticationEnabled": false,
+              "DatabaseInsightsMode": "standard",
+              "PerformanceInsightsEnabled": true,
+              "PerformanceInsightsKMSKeyId": "arn:aws:kms:us-east-1:429100831877:key/96e0be21-11a5-4f75-9e40-9af73b4dc629",
+              "PerformanceInsightsRetentionPeriod": 7,
+              "DeletionProtection": true,
+              "AssociatedRoles": [],
+              "TagList": [
+                {
+                  "Key": "Project",
+                  "Value": "achados-perdidos"
+                },
+                {
+                  "Key": "Environment",
+                  "Value": "laboratorio"
+                },
+                {
+                  "Key": "generation_model",
+                  "Value": "unspecified"
+                },
+                {
+                  "Key": "created_by",
+                  "Value": "rds-oss-skill"
+                },
+                {
+                  "Key": "Name",
+                  "Value": "g1-achados-db"
+                }
+              ],
+              "CustomerOwnedIpEnabled": false,
+              "NetworkType": "IPV4",
+              "ActivityStreamStatus": "stopped",
+              "BackupTarget": "region",
+              "CertificateDetails": {
+                "CAIdentifier": "rds-ca-rsa2048-g1",
+                "ValidTill": "2027-10-26T19:41:17+00:00"
+              },
+              "DedicatedLogVolume": false,
+              "IsStorageConfigUpgradeAvailable": false,
+              "EngineLifecycleSupport": "open-source-rds-extended-support-disabled"
+            }
+          ]
+        },
+        "execution_role": {
+          "Role": {
+            "Path": "/",
+            "RoleName": "g1-ecs-execution-role",
+            "RoleId": "AROAWH2DHCSCYU3ZIOU7B",
+            "Arn": "arn:aws:iam::429100831877:role/g1-ecs-execution-role",
+            "CreateDate": "2026-10-26T20:33:38+00:00",
+            "AssumeRolePolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Sid": "AllowECSTasksInAccount",
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": "ecs-tasks.amazonaws.com"
+                  },
+                  "Action": "sts:AssumeRole",
+                  "Condition": {
+                    "StringEquals": {
+                      "aws:SourceAccount": "429100831877"
+                    },
+                    "ArnLike": {
+                      "aws:SourceArn": "arn:aws:ecs:us-east-1:429100831877:*"
+                    }
+                  }
+                }
+              ]
+            },
+            "Description": "ECS runtime: imagens ECR, logs e segredos exclusivos do laboratorio G1",
+            "MaxSessionDuration": 3600,
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "achados-perdidos"
+              },
+              {
+                "Key": "Environment",
+                "Value": "laboratorio"
+              }
+            ],
+            "RoleLastUsed": {}
+          }
+        },
+        "task_role": {
+          "Role": {
+            "Path": "/",
+            "RoleName": "g1-ecs-task-role",
+            "RoleId": "AROAWH2DHCSC347EFP5US",
+            "Arn": "arn:aws:iam::429100831877:role/g1-ecs-task-role",
+            "CreateDate": "2026-10-26T20:33:39+00:00",
+            "AssumeRolePolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Sid": "AllowECSTasksInAccount",
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": "ecs-tasks.amazonaws.com"
+                  },
+                  "Action": "sts:AssumeRole",
+                  "Condition": {
+                    "StringEquals": {
+                      "aws:SourceAccount": "429100831877"
+                    },
+                    "ArnLike": {
+                      "aws:SourceArn": "arn:aws:ecs:us-east-1:429100831877:*"
+                    }
+                  }
+                }
+              ]
+            },
+            "Description": "ECS task: montagem e acesso as fotos do laboratorio G1",
+            "MaxSessionDuration": 3600,
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "achados-perdidos"
+              },
+              {
+                "Key": "Environment",
+                "Value": "laboratorio"
+              }
+            ],
+            "RoleLastUsed": {}
+          }
+        },
+        "database_secret": {
+          "ARN": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y",
+          "Name": "g1/achados/db",
+          "Description": "Credenciais PostgreSQL do laboratorio Achados e Perdidos",
+          "LastChangedDate": "2026-10-26T19:38:09.112000+00:00",
+          "LastAccessedDate": "2026-10-26T00:00:00+00:00",
+          "Tags": [
+            {
+              "Key": "Project",
+              "Value": "achados-perdidos"
+            },
+            {
+              "Key": "Environment",
+              "Value": "laboratorio"
+            }
+          ],
+          "VersionIdsToStages": {
+            "13b55b8a-1763-4fcf-a7c2-c8edafbc3bd4": [
+              "AWSCURRENT"
+            ]
+          },
+          "CreatedDate": "2026-10-26T19:38:08.877000+00:00"
+        },
+        "access_secret": {
+          "ARN": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/acesso-TR13WW",
+          "Name": "g1/achados/acesso",
+          "Description": "Senha compartilhada de entrada do frontend Achados e Perdidos",
+          "LastChangedDate": "2026-10-26T19:38:31.795000+00:00",
+          "LastAccessedDate": "2026-10-26T00:00:00+00:00",
+          "Tags": [
+            {
+              "Key": "Project",
+              "Value": "achados-perdidos"
+            },
+            {
+              "Key": "Environment",
+              "Value": "laboratorio"
+            }
+          ],
+          "VersionIdsToStages": {
+            "4c6538d8-80cc-4233-8d70-2993add1b5d7": [
+              "AWSCURRENT"
+            ]
+          },
+          "CreatedDate": "2026-10-26T19:38:31.762000+00:00"
+        },
+        "filesystem": {
+          "creationTime": "2026-10-26T19:57:56+00:00",
+          "fileSystemArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+          "fileSystemId": "fs-03cc16c6148b70bad",
+          "bucket": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026",
+          "prefix": "",
+          "clientToken": "g1-achados-fotos-20261026-v1",
+          "status": "available",
+          "roleArn": "arn:aws:iam::429100831877:role/g1-s3files-sync-role",
+          "ownerId": "429100831877",
+          "tags": [
+            {
+              "key": "Environment",
+              "value": "laboratorio"
+            },
+            {
+              "key": "Name",
+              "value": "g1-achados-fotos"
+            },
+            {
+              "key": "Project",
+              "value": "achados-perdidos"
+            }
+          ],
+          "name": "g1-achados-fotos"
+        },
+        "access_point": {
+          "accessPointArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137",
+          "accessPointId": "fsap-02894e11d3d7d7137",
+          "clientToken": "g1-achados-uploads-20261026-v1",
+          "fileSystemId": "fs-03cc16c6148b70bad",
+          "status": "available",
+          "ownerId": "429100831877",
+          "posixUser": {
+            "uid": 1000,
+            "gid": 1000
+          },
+          "rootDirectory": {
+            "path": "/uploads",
+            "creationPermissions": {
+              "ownerUid": 1000,
+              "ownerGid": 1000,
+              "permissions": "750"
+            }
+          },
+          "tags": [
+            {
+              "key": "Environment",
+              "value": "laboratorio"
+            },
+            {
+              "key": "Name",
+              "value": "g1-achados-uploads"
+            },
+            {
+              "key": "Project",
+              "value": "achados-perdidos"
+            }
+          ],
+          "name": "g1-achados-uploads"
+        },
+        "mount_targets": {
+          "mountTargets": [
+            {
+              "availabilityZoneId": "use1-az2",
+              "fileSystemId": "fs-03cc16c6148b70bad",
+              "ipv4Address": "172.31.83.176",
+              "status": "available",
+              "mountTargetId": "fsmt-0d7e6123c5bd2fca3",
+              "networkInterfaceId": "eni-001ef10023357e365",
+              "ownerId": "429100831877",
+              "subnetId": "subnet-0eab04bf2964fdeb7",
+              "vpcId": "vpc-0de41f84c70ccf93b"
+            },
+            {
+              "availabilityZoneId": "use1-az4",
+              "fileSystemId": "fs-03cc16c6148b70bad",
+              "ipv4Address": "172.31.26.73",
+              "status": "available",
+              "mountTargetId": "fsmt-0225d5e0f36a518f1",
+              "networkInterfaceId": "eni-07b2e889ffc1d9867",
+              "ownerId": "429100831877",
+              "subnetId": "subnet-05d4324f091ba6877",
+              "vpcId": "vpc-0de41f84c70ccf93b"
+            }
+          ]
+        },
+        "web_image": {
+          "imageDetails": [
+            {
+              "registryId": "429100831877",
+              "repositoryName": "achados-web",
+              "imageDigest": "sha256:974595484c975b0427a78d42fba7bee02ded70ce191d6a4cd5c98b85d8164cbd",
+              "imageTags": [
+                "aws-v1"
+              ],
+              "imageSizeInBytes": 50365919,
+              "imagePushedAt": "2026-10-26T20:14:06.685000+00:00",
+              "imageManifestMediaType": "application/vnd.oci.image.index.v1+json",
+              "lastRecordedPullTime": "2026-10-26T20:15:22.324000+00:00",
+              "imageStatus": "ACTIVE"
+            }
+          ]
+        },
+        "frontend_image": {
+          "imageDetails": [
+            {
+              "registryId": "429100831877",
+              "repositoryName": "achados-frontend",
+              "imageDigest": "sha256:1da2228ea0f9e466d31b05e6f599e7f7065e79e167ef1bf5fc551ca2a6c3d1a0",
+              "imageTags": [
+                "aws-v2"
+              ],
+              "imageSizeInBytes": 27360659,
+              "imagePushedAt": "2026-10-26T20:20:42.924000+00:00",
+              "imageManifestMediaType": "application/vnd.oci.image.index.v1+json",
+              "lastRecordedPullTime": "2026-10-26T20:21:42.222000+00:00",
+              "imageStatus": "ACTIVE"
+            }
+          ]
+        }
+      },
+      "api_calls": [
+        {
+          "service": "sts",
+          "operation": "GetCallerIdentity",
+          "status": "success"
+        },
+        {
+          "service": "ecs",
+          "operation": "DescribeClusters",
+          "status": "success",
+          "n_items": {
+            "clusters": 0,
+            "failures": 1
+          }
+        },
+        {
+          "service": "ecs",
+          "operation": "ListTaskDefinitions",
+          "status": "success",
+          "n_items": {
+            "taskDefinitionArns": 0
+          }
+        },
+        {
+          "service": "logs",
+          "operation": "DescribeLogGroups",
+          "status": "success",
+          "n_items": {
+            "logGroups": 0
+          }
+        },
+        {
+          "service": "rds",
+          "operation": "DescribeDBInstances",
+          "status": "success",
+          "n_items": {
+            "DBInstances": 1
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "GetRole",
+          "status": "success"
+        },
+        {
+          "service": "iam",
+          "operation": "GetRole",
+          "status": "success"
+        },
+        {
+          "service": "secretsmanager",
+          "operation": "DescribeSecret",
+          "status": "success",
+          "n_items": {
+            "Tags": 2
+          }
+        },
+        {
+          "service": "secretsmanager",
+          "operation": "DescribeSecret",
+          "status": "success",
+          "n_items": {
+            "Tags": 2
+          }
+        },
+        {
+          "service": "s3files",
+          "operation": "GetFileSystem",
+          "status": "success",
+          "n_items": {
+            "tags": 3
+          }
+        },
+        {
+          "service": "s3files",
+          "operation": "GetAccessPoint",
+          "status": "success",
+          "n_items": {
+            "tags": 3
+          }
+        },
+        {
+          "service": "s3files",
+          "operation": "ListMountTargets",
+          "status": "success",
+          "n_items": {
+            "mountTargets": 2
+          }
+        },
+        {
+          "service": "ecr",
+          "operation": "DescribeImages",
+          "status": "success",
+          "n_items": {
+            "imageDetails": 1
+          }
+        },
+        {
+          "service": "ecr",
+          "operation": "DescribeImages",
+          "status": "success",
+          "n_items": {
+            "imageDetails": 1
+          }
+        }
+      ]
+    },
+    "initial_creation_attempt": {
+      "status": "error",
+      "error": "ClientError: An error occurred (InvalidParameterException) when calling the CreateCluster operation: Unable to assume the service linked role. Please verify that the ECS service linked role exists.",
+      "stdout": "",
+      "stderr": "Error calling function call_boto3 with arguments {'service_name': 'ecs', 'operation_name': 'CreateCluster', 'region_name': 'us-east-1', 'params': {'clusterName': 'g1-achados', 'capacityProviders': ['FARGATE'], 'defaultCapacityProviderStrategy': [{'capacityProvider': 'FARGATE', 'weight': 1, 'base': 0}], 'settings': [{'name': 'containerInsights', 'value': 'disabled'}], 'tags': [{'key': 'Project', 'value': 'achados-perdidos'}, {'key': 'Environment', 'value': 'laboratorio'}]}}: An error occurred (InvalidParameterException) when calling the CreateCluster operation: Unable to assume the service linked role. Please verify that the ECS service linked role exists.\n",
+      "api_calls": [
+        {
+          "service": "sts",
+          "operation": "GetCallerIdentity",
+          "status": "success"
+        },
+        {
+          "service": "logs",
+          "operation": "CreateLogGroup",
+          "status": "success"
+        },
+        {
+          "service": "logs",
+          "operation": "PutRetentionPolicy",
+          "status": "success"
+        },
+        {
+          "service": "ecs",
+          "operation": "CreateCluster",
+          "status": "error",
+          "error": "InvalidParameterException: An error occurred (InvalidParameterException) when calling the CreateCluster operation: Unable to assume the service linked role. Please verify that the ECS service linked role exists."
+        }
+      ]
+    },
+    "service_linked_role_diagnosis": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:46:13.951168+00:00",
+        "ecs_service_linked_role": {
+          "Role": {
+            "Path": "/aws-service-role/ecs.amazonaws.com/",
+            "RoleName": "AWSServiceRoleForECS",
+            "RoleId": "AROAWH2DHCSC7OCY7JTK4",
+            "Arn": "arn:aws:iam::429100831877:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
+            "CreateDate": "2026-10-26T20:45:43+00:00",
+            "AssumeRolePolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": "ecs.amazonaws.com"
+                  },
+                  "Action": "sts:AssumeRole"
+                }
+              ]
+            },
+            "Description": "Policy to enable Amazon ECS to manage your EC2 instances and related resources.",
+            "MaxSessionDuration": 3600,
+            "RoleLastUsed": {}
+          }
+        },
+        "cluster": {
+          "clusters": [],
+          "failures": [
+            {
+              "arn": "arn:aws:ecs:us-east-1:429100831877:cluster/g1-achados",
+              "reason": "MISSING"
+            }
+          ]
+        },
+        "log_group": {
+          "logGroups": [
+            {
+              "logGroupName": "/ecs/achados-web",
+              "creationTime": 1793047542567,
+              "retentionInDays": 7,
+              "metricFilterCount": 0,
+              "arn": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:*",
+              "storedBytes": 0,
+              "logGroupClass": "STANDARD",
+              "logGroupArn": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web",
+              "deletionProtectionEnabled": false,
+              "bearerTokenAuthenticationEnabled": false
+            }
+          ]
+        },
+        "fargate_quota": {
+          "Quota": {
+            "ServiceCode": "fargate",
+            "ServiceName": "AWS Fargate",
+            "QuotaArn": "arn:aws:servicequotas:us-east-1:429100831877:fargate/L-3032A538",
+            "QuotaCode": "L-3032A538",
+            "QuotaName": "Fargate On-Demand vCPU resource count",
+            "Value": 30,
+            "Unit": "None",
+            "Adjustable": true,
+            "GlobalQuota": false,
+            "UsageMetric": {
+              "MetricNamespace": "AWS/Usage",
+              "MetricName": "ResourceCount",
+              "MetricDimensions": {
+                "Class": "Standard/OnDemand",
+                "Resource": "vCPU",
+                "Service": "Fargate",
+                "Type": "Resource"
+              },
+              "MetricStatisticRecommendation": "Maximum"
+            },
+            "QuotaAppliedAtLevel": "ACCOUNT",
+            "Description": "The number of Fargate vCPUs running concurrently as Fargate On-Demand in this account in the current Region."
+          }
+        }
+      },
+      "api_calls": [
+        {
+          "service": "iam",
+          "operation": "GetRole",
+          "status": "success"
+        },
+        {
+          "service": "ecs",
+          "operation": "DescribeClusters",
+          "status": "success",
+          "n_items": {
+            "clusters": 0,
+            "failures": 1
+          }
+        },
+        {
+          "service": "logs",
+          "operation": "DescribeLogGroups",
+          "status": "success",
+          "n_items": {
+            "logGroups": 1
+          }
+        },
+        {
+          "service": "service-quotas",
+          "operation": "GetServiceQuota",
+          "status": "success"
+        }
+      ]
+    },
+    "cluster_creation_retry": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:46:39.639729+00:00",
+        "cluster": {
+          "cluster": {
+            "clusterArn": "arn:aws:ecs:us-east-1:429100831877:cluster/g1-achados",
+            "clusterName": "g1-achados",
+            "status": "ACTIVE",
+            "registeredContainerInstancesCount": 0,
+            "runningTasksCount": 0,
+            "pendingTasksCount": 0,
+            "activeServicesCount": 0,
+            "statistics": [],
+            "tags": [
+              {
+                "key": "Project",
+                "value": "achados-perdidos"
+              },
+              {
+                "key": "Environment",
+                "value": "laboratorio"
+              }
+            ],
+            "settings": [
+              {
+                "name": "containerInsights",
+                "value": "disabled"
+              }
+            ],
+            "capacityProviders": [
+              "FARGATE"
+            ],
+            "defaultCapacityProviderStrategy": [
+              {
+                "capacityProvider": "FARGATE",
+                "weight": 1,
+                "base": 0
+              }
+            ]
+          }
+        }
+      },
+      "api_calls": [
+        {
+          "service": "ecs",
+          "operation": "CreateCluster",
+          "status": "success"
+        }
+      ]
+    },
+    "task_registration": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:47:05.773635+00:00",
+        "registered": {
+          "taskDefinition": {
+            "taskDefinitionArn": "arn:aws:ecs:us-east-1:429100831877:task-definition/achados-web:1",
+            "containerDefinitions": [
+              {
+                "name": "web",
+                "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-web:aws-v1",
+                "cpu": 0,
+                "portMappings": [
+                  {
+                    "containerPort": 5000,
+                    "hostPort": 5000,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                  }
+                ],
+                "essential": true,
+                "environment": [
+                  {
+                    "name": "PGSSLMODE",
+                    "value": "require"
+                  },
+                  {
+                    "name": "DB_NAME",
+                    "value": "achados"
+                  },
+                  {
+                    "name": "DB_HOST",
+                    "value": "g1-achados-db.cwzoegmiwx9c.us-east-1.rds.amazonaws.com"
+                  },
+                  {
+                    "name": "DB_PORT",
+                    "value": "5432"
+                  },
+                  {
+                    "name": "UPLOAD_DIR",
+                    "value": "/app/uploads"
+                  }
+                ],
+                "mountPoints": [
+                  {
+                    "sourceVolume": "fotos",
+                    "containerPath": "/app/uploads",
+                    "readOnly": false
+                  }
+                ],
+                "volumesFrom": [],
+                "secrets": [
+                  {
+                    "name": "DB_USER",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y:username::"
+                  },
+                  {
+                    "name": "DB_PASSWORD",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y:password::"
+                  }
+                ],
+                "logConfiguration": {
+                  "logDriver": "awslogs",
+                  "options": {
+                    "awslogs-group": "/ecs/achados-web",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "web"
+                  }
+                },
+                "healthCheck": {
+                  "command": [
+                    "CMD",
+                    "python",
+                    "-c",
+                    "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=2)"
+                  ],
+                  "interval": 30,
+                  "timeout": 5,
+                  "retries": 3,
+                  "startPeriod": 60
+                },
+                "systemControls": []
+              },
+              {
+                "name": "frontend",
+                "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-frontend:aws-v2",
+                "cpu": 0,
+                "portMappings": [
+                  {
+                    "containerPort": 80,
+                    "hostPort": 80,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                  },
+                  {
+                    "containerPort": 8082,
+                    "hostPort": 8082,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                  }
+                ],
+                "essential": true,
+                "environment": [
+                  {
+                    "name": "ACCESS_USER",
+                    "value": "visitante"
+                  }
+                ],
+                "mountPoints": [],
+                "volumesFrom": [],
+                "secrets": [
+                  {
+                    "name": "ACCESS_PASSWORD",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/acesso-TR13WW:password::"
+                  }
+                ],
+                "dependsOn": [
+                  {
+                    "containerName": "web",
+                    "condition": "HEALTHY"
+                  }
+                ],
+                "logConfiguration": {
+                  "logDriver": "awslogs",
+                  "options": {
+                    "awslogs-group": "/ecs/achados-web",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "frontend"
+                  }
+                },
+                "healthCheck": {
+                  "command": [
+                    "CMD",
+                    "wget",
+                    "-q",
+                    "-O",
+                    "/dev/null",
+                    "http://127.0.0.1:8082/healthz"
+                  ],
+                  "interval": 30,
+                  "timeout": 5,
+                  "retries": 3,
+                  "startPeriod": 60
+                },
+                "systemControls": []
+              }
+            ],
+            "family": "achados-web",
+            "taskRoleArn": "arn:aws:iam::429100831877:role/g1-ecs-task-role",
+            "executionRoleArn": "arn:aws:iam::429100831877:role/g1-ecs-execution-role",
+            "networkMode": "awsvpc",
+            "revision": 1,
+            "volumes": [
+              {
+                "name": "fotos",
+                "s3filesVolumeConfiguration": {
+                  "fileSystemArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+                  "rootDirectory": "/",
+                  "transitEncryptionPort": 2049,
+                  "accessPointArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137"
+                }
+              }
+            ],
+            "status": "ACTIVE",
+            "requiresAttributes": [
+              {
+                "name": "ecs.capability.execution-role-awslogs"
+              },
+              {
+                "name": "com.amazonaws.ecs.capability.ecr-auth"
+              },
+              {
+                "name": "com.amazonaws.ecs.capability.task-iam-role"
+              },
+              {
+                "name": "ecs.capability.container-health-check"
+              },
+              {
+                "name": "ecs.capability.execution-role-ecr-pull"
+              },
+              {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+              },
+              {
+                "name": "ecs.capability.task-eni"
+              },
+              {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+              },
+              {
+                "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+              },
+              {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+              },
+              {
+                "name": "ecs.capability.secrets.asm.environment-variables"
+              },
+              {
+                "name": "ecs.capability.container-ordering"
+              }
+            ],
+            "placementConstraints": [],
+            "compatibilities": [
+              "EC2",
+              "MANAGED_INSTANCES",
+              "FARGATE"
+            ],
+            "runtimePlatform": {
+              "cpuArchitecture": "X86_64",
+              "operatingSystemFamily": "LINUX"
+            },
+            "requiresCompatibilities": [
+              "FARGATE"
+            ],
+            "cpu": "256",
+            "memory": "512",
+            "registeredAt": "2026-10-26T20:47:05.663000+00:00",
+            "registeredBy": "arn:aws:iam::429100831877:root"
+          },
+          "tags": [
+            {
+              "key": "Project",
+              "value": "achados-perdidos"
+            },
+            {
+              "key": "Environment",
+              "value": "laboratorio"
+            }
+          ]
+        }
+      },
+      "api_calls": [
+        {
+          "service": "ecs",
+          "operation": "RegisterTaskDefinition",
+          "status": "success",
+          "n_items": {
+            "tags": 2
+          }
+        }
+      ]
+    },
+    "final_readback": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:48:25.097047+00:00",
+        "cluster": {
+          "clusters": [
+            {
+              "clusterArn": "arn:aws:ecs:us-east-1:429100831877:cluster/g1-achados",
+              "clusterName": "g1-achados",
+              "status": "ACTIVE",
+              "registeredContainerInstancesCount": 0,
+              "runningTasksCount": 0,
+              "pendingTasksCount": 0,
+              "activeServicesCount": 0,
+              "statistics": [],
+              "tags": [
+                {
+                  "key": "Project",
+                  "value": "achados-perdidos"
+                },
+                {
+                  "key": "Environment",
+                  "value": "laboratorio"
+                }
+              ],
+              "settings": [
+                {
+                  "name": "containerInsights",
+                  "value": "disabled"
+                }
+              ],
+              "capacityProviders": [
+                "FARGATE"
+              ],
+              "defaultCapacityProviderStrategy": [
+                {
+                  "capacityProvider": "FARGATE",
+                  "weight": 1,
+                  "base": 0
+                }
+              ]
+            }
+          ],
+          "failures": []
+        },
+        "task_definition": {
+          "taskDefinition": {
+            "taskDefinitionArn": "arn:aws:ecs:us-east-1:429100831877:task-definition/achados-web:1",
+            "containerDefinitions": [
+              {
+                "name": "web",
+                "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-web:aws-v1",
+                "cpu": 0,
+                "portMappings": [
+                  {
+                    "containerPort": 5000,
+                    "hostPort": 5000,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                  }
+                ],
+                "essential": true,
+                "environment": [
+                  {
+                    "name": "PGSSLMODE",
+                    "value": "require"
+                  },
+                  {
+                    "name": "DB_NAME",
+                    "value": "achados"
+                  },
+                  {
+                    "name": "DB_HOST",
+                    "value": "g1-achados-db.cwzoegmiwx9c.us-east-1.rds.amazonaws.com"
+                  },
+                  {
+                    "name": "DB_PORT",
+                    "value": "5432"
+                  },
+                  {
+                    "name": "UPLOAD_DIR",
+                    "value": "/app/uploads"
+                  }
+                ],
+                "mountPoints": [
+                  {
+                    "sourceVolume": "fotos",
+                    "containerPath": "/app/uploads",
+                    "readOnly": false
+                  }
+                ],
+                "volumesFrom": [],
+                "secrets": [
+                  {
+                    "name": "DB_USER",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y:username::"
+                  },
+                  {
+                    "name": "DB_PASSWORD",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y:password::"
+                  }
+                ],
+                "logConfiguration": {
+                  "logDriver": "awslogs",
+                  "options": {
+                    "awslogs-group": "/ecs/achados-web",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "web"
+                  }
+                },
+                "healthCheck": {
+                  "command": [
+                    "CMD",
+                    "python",
+                    "-c",
+                    "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=2)"
+                  ],
+                  "interval": 30,
+                  "timeout": 5,
+                  "retries": 3,
+                  "startPeriod": 60
+                },
+                "systemControls": []
+              },
+              {
+                "name": "frontend",
+                "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-frontend:aws-v2",
+                "cpu": 0,
+                "portMappings": [
+                  {
+                    "containerPort": 80,
+                    "hostPort": 80,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                  },
+                  {
+                    "containerPort": 8082,
+                    "hostPort": 8082,
+                    "protocol": "tcp",
+                    "appProtocol": "http"
+                  }
+                ],
+                "essential": true,
+                "environment": [
+                  {
+                    "name": "ACCESS_USER",
+                    "value": "visitante"
+                  }
+                ],
+                "mountPoints": [],
+                "volumesFrom": [],
+                "secrets": [
+                  {
+                    "name": "ACCESS_PASSWORD",
+                    "valueFrom": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/acesso-TR13WW:password::"
+                  }
+                ],
+                "dependsOn": [
+                  {
+                    "containerName": "web",
+                    "condition": "HEALTHY"
+                  }
+                ],
+                "logConfiguration": {
+                  "logDriver": "awslogs",
+                  "options": {
+                    "awslogs-group": "/ecs/achados-web",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "frontend"
+                  }
+                },
+                "healthCheck": {
+                  "command": [
+                    "CMD",
+                    "wget",
+                    "-q",
+                    "-O",
+                    "/dev/null",
+                    "http://127.0.0.1:8082/healthz"
+                  ],
+                  "interval": 30,
+                  "timeout": 5,
+                  "retries": 3,
+                  "startPeriod": 60
+                },
+                "systemControls": []
+              }
+            ],
+            "family": "achados-web",
+            "taskRoleArn": "arn:aws:iam::429100831877:role/g1-ecs-task-role",
+            "executionRoleArn": "arn:aws:iam::429100831877:role/g1-ecs-execution-role",
+            "networkMode": "awsvpc",
+            "revision": 1,
+            "volumes": [
+              {
+                "name": "fotos",
+                "s3filesVolumeConfiguration": {
+                  "fileSystemArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+                  "rootDirectory": "/",
+                  "transitEncryptionPort": 2049,
+                  "accessPointArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137"
+                }
+              }
+            ],
+            "status": "ACTIVE",
+            "requiresAttributes": [
+              {
+                "name": "ecs.capability.execution-role-awslogs"
+              },
+              {
+                "name": "com.amazonaws.ecs.capability.ecr-auth"
+              },
+              {
+                "name": "com.amazonaws.ecs.capability.task-iam-role"
+              },
+              {
+                "name": "ecs.capability.container-health-check"
+              },
+              {
+                "name": "ecs.capability.execution-role-ecr-pull"
+              },
+              {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+              },
+              {
+                "name": "ecs.capability.task-eni"
+              },
+              {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+              },
+              {
+                "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+              },
+              {
+                "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+              },
+              {
+                "name": "ecs.capability.secrets.asm.environment-variables"
+              },
+              {
+                "name": "ecs.capability.container-ordering"
+              }
+            ],
+            "placementConstraints": [],
+            "compatibilities": [
+              "EC2",
+              "MANAGED_INSTANCES",
+              "FARGATE"
+            ],
+            "runtimePlatform": {
+              "cpuArchitecture": "X86_64",
+              "operatingSystemFamily": "LINUX"
+            },
+            "requiresCompatibilities": [
+              "FARGATE"
+            ],
+            "cpu": "256",
+            "memory": "512",
+            "registeredAt": "2026-10-26T20:47:05.663000+00:00",
+            "registeredBy": "arn:aws:iam::429100831877:root"
+          },
+          "tags": [
+            {
+              "key": "Project",
+              "value": "achados-perdidos"
+            },
+            {
+              "key": "Environment",
+              "value": "laboratorio"
+            }
+          ]
+        },
+        "log_group": {
+          "logGroups": [
+            {
+              "logGroupName": "/ecs/achados-web",
+              "creationTime": 1793047542567,
+              "retentionInDays": 7,
+              "metricFilterCount": 0,
+              "arn": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:*",
+              "storedBytes": 0,
+              "logGroupClass": "STANDARD",
+              "logGroupArn": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web",
+              "deletionProtectionEnabled": false,
+              "bearerTokenAuthenticationEnabled": false
+            }
+          ]
+        },
+        "log_tags": {
+          "tags": {
+            "Project": "achados-perdidos",
+            "Environment": "laboratorio"
+          }
+        },
+        "active_tasks": {
+          "taskArns": []
+        },
+        "services": {
+          "serviceArns": []
+        },
+        "ecs_service_linked_role": {
+          "Role": {
+            "Path": "/aws-service-role/ecs.amazonaws.com/",
+            "RoleName": "AWSServiceRoleForECS",
+            "RoleId": "AROAWH2DHCSC7OCY7JTK4",
+            "Arn": "arn:aws:iam::429100831877:role/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
+            "CreateDate": "2026-10-26T20:45:43+00:00",
+            "AssumeRolePolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": "ecs.amazonaws.com"
+                  },
+                  "Action": "sts:AssumeRole"
+                }
+              ]
+            },
+            "Description": "Policy to enable Amazon ECS to manage your EC2 instances and related resources.",
+            "MaxSessionDuration": 3600,
+            "RoleLastUsed": {}
+          }
+        },
+        "log_policy_simulation": {
+          "EvaluationResults": [
+            {
+              "EvalActionName": "logs:CreateLogStream",
+              "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao-etapa8",
+              "EvalDecision": "implicitDeny",
+              "MatchedStatements": [],
+              "MissingContextValues": [],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao-etapa8",
+                  "EvalResourceDecision": "implicitDeny"
+                }
+              ]
+            },
+            {
+              "EvalActionName": "logs:PutLogEvents",
+              "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao-etapa8",
+              "EvalDecision": "implicitDeny",
+              "MatchedStatements": [],
+              "MissingContextValues": [],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao-etapa8",
+                  "EvalResourceDecision": "implicitDeny"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "api_calls": [
+        {
+          "service": "ecs",
+          "operation": "DescribeClusters",
+          "status": "success",
+          "n_items": {
+            "clusters": 1,
+            "failures": 0
+          }
+        },
+        {
+          "service": "ecs",
+          "operation": "DescribeTaskDefinition",
+          "status": "success",
+          "n_items": {
+            "tags": 2
+          }
+        },
+        {
+          "service": "logs",
+          "operation": "DescribeLogGroups",
+          "status": "success",
+          "n_items": {
+            "logGroups": 1
+          }
+        },
+        {
+          "service": "logs",
+          "operation": "ListTagsForResource",
+          "status": "success"
+        },
+        {
+          "service": "ecs",
+          "operation": "ListTasks",
+          "status": "success",
+          "n_items": {
+            "taskArns": 0
+          }
+        },
+        {
+          "service": "ecs",
+          "operation": "ListServices",
+          "status": "success",
+          "n_items": {
+            "serviceArns": 0
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "GetRole",
+          "status": "success"
+        },
+        {
+          "service": "iam",
+          "operation": "SimulatePrincipalPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 2
+          }
+        }
+      ]
+    }
+  },
+  "registered_input": {
+    "family": "achados-web",
+    "networkMode": "awsvpc",
+    "requiresCompatibilities": [
+      "FARGATE"
+    ],
+    "cpu": "256",
+    "memory": "512",
+    "runtimePlatform": {
+      "cpuArchitecture": "X86_64",
+      "operatingSystemFamily": "LINUX"
+    },
+    "executionRoleArn": "arn:aws:iam::429100831877:role/g1-ecs-execution-role",
+    "taskRoleArn": "arn:aws:iam::429100831877:role/g1-ecs-task-role",
+    "containerDefinitions": [
+      {
+        "name": "web",
+        "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-web:aws-v1",
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 5000,
+            "protocol": "tcp",
+            "appProtocol": "http"
+          }
+        ],
+        "environment": [
+          {
+            "name": "DB_HOST",
+            "value": "g1-achados-db.cwzoegmiwx9c.us-east-1.rds.amazonaws.com"
+          },
+          {
+            "name": "DB_PORT",
+            "value": "5432"
+          },
+          {
+            "name": "DB_NAME",
+            "value": "achados"
+          },
+          {
+            "name": "UPLOAD_DIR",
+            "value": "/app/uploads"
+          },
+          {
+            "name": "PGSSLMODE",
+            "value": "require"
+          }
+        ],
+        "secrets": [
+          {
+            "name": "DB_USER",
+            "valueFrom": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y:username::"
+          },
+          {
+            "name": "DB_PASSWORD",
+            "valueFrom": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y:password::"
+          }
+        ],
+        "mountPoints": [
+          {
+            "sourceVolume": "fotos",
+            "containerPath": "/app/uploads",
+            "readOnly": false
+          }
+        ],
+        "healthCheck": {
+          "command": [
+            "CMD",
+            "python",
+            "-c",
+            "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=2)"
+          ],
+          "interval": 30,
+          "timeout": 5,
+          "retries": 3,
+          "startPeriod": 60
+        },
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/achados-web",
+            "awslogs-region": "us-east-1",
+            "awslogs-stream-prefix": "web"
+          }
+        }
+      },
+      {
+        "name": "frontend",
+        "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-frontend:aws-v2",
+        "essential": true,
+        "dependsOn": [
+          {
+            "containerName": "web",
+            "condition": "HEALTHY"
+          }
+        ],
+        "environment": [
+          {
+            "name": "ACCESS_USER",
+            "value": "visitante"
+          }
+        ],
+        "secrets": [
+          {
+            "name": "ACCESS_PASSWORD",
+            "valueFrom": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/acesso-TR13WW:password::"
+          }
+        ],
+        "portMappings": [
+          {
+            "containerPort": 80,
+            "protocol": "tcp",
+            "appProtocol": "http"
+          },
+          {
+            "containerPort": 8082,
+            "protocol": "tcp",
+            "appProtocol": "http"
+          }
+        ],
+        "healthCheck": {
+          "command": [
+            "CMD",
+            "wget",
+            "-q",
+            "-O",
+            "/dev/null",
+            "http://127.0.0.1:8082/healthz"
+          ],
+          "interval": 30,
+          "timeout": 5,
+          "retries": 3,
+          "startPeriod": 60
+        },
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/achados-web",
+            "awslogs-region": "us-east-1",
+            "awslogs-stream-prefix": "frontend"
+          }
+        }
+      }
+    ],
+    "volumes": [
+      {
+        "name": "fotos",
+        "s3filesVolumeConfiguration": {
+          "fileSystemArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+          "rootDirectory": "/",
+          "transitEncryptionPort": 2049,
+          "accessPointArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137"
+        }
+      }
+    ],
+    "tags": [
+      {
+        "key": "Project",
+        "value": "achados-perdidos"
+      },
+      {
+        "key": "Environment",
+        "value": "laboratorio"
+      }
+    ]
+  },
+  "configuration_checks": {
+    "cluster_active": true,
+    "only_fargate_capacity": true,
+    "default_fargate_strategy": true,
+    "container_insights_disabled": true,
+    "no_ec2_container_instances": true,
+    "no_running_or_pending_tasks": true,
+    "no_services_started": true,
+    "task_definition_active": true,
+    "expected_family_revision": true,
+    "fargate_required": true,
+    "awsvpc_network": true,
+    "linux_x86_64": true,
+    "expected_cpu_memory": true,
+    "expected_execution_role": true,
+    "expected_task_role": true,
+    "exactly_two_essential_containers": true,
+    "expected_web_image": true,
+    "corrected_frontend_image": true,
+    "rds_endpoint_and_port": true,
+    "database_name_and_tls": true,
+    "uploads_path": true,
+    "database_secret_json_refs": true,
+    "frontend_access_secret_ref": true,
+    "no_plaintext_credentials": true,
+    "expected_s3files_volume": true,
+    "only_web_writable_photo_mount": true,
+    "frontend_waits_for_web_health": true,
+    "both_healthchecks_preserved": true,
+    "both_awslogs_configurations": true,
+    "seven_day_log_retention": true,
+    "log_group_tags": true,
+    "no_entrypoint_or_command_overrides": true,
+    "ecs_service_linked_role_exists": true
+  },
+  "limits": {
+    "task_started": false,
+    "service_created": false,
+    "secret_values_read": false,
+    "sql_connection_tested": false,
+    "init_sql_applied": false,
+    "s3files_mount_tested": false,
+    "photo_upload_tested": false,
+    "logs_role_runtime_tested": false,
+    "log_policy_simulation_inconclusive": true,
+    "notes": "Registro e leituras de configuração não substituem a execução integrada. Logs continuam pendentes de teste pela execution role. Os valores de senha não foram consultados."
+  }
+}

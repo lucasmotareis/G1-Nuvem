@@ -1,0 +1,12 @@
+{
+  "name": "achados-perdidos-verificacao",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:frontend": "node tests/frontend.mjs",
+    "test:access": "node tests/access.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}

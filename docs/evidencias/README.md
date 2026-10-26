@@ -1,10 +1,17 @@
 # Índice de evidências
 
+**AWS real:** a [pasta aws/](aws/README.md) registra a preparação da rede da
+etapa 3, executada em 26/10/2026. As simulações locais anteriores continuam
+separadas e não representam a publicação da aplicação na nuvem.
+
 Verificações realizadas em 19/10/2026 nas etapas de configuração e testes.
 Os arquivos abaixo registram somente comandos executados e seus resultados.
 Os horários UTC/GMT originais das saídas foram preservados; as legendas usam a
 data local de 19/10/2026. Os arquivos 01 a 17 correspondem à arquitetura básica;
-os arquivos a partir de 18 correspondem à implementação dos bônus.
+os arquivos 18 a 28 correspondem à implementação dos bônus. Os registros 29 a
+33, de 26/10/2026, verificam o frontend desta branch em um projeto Docker isolado.
+Os registros 34 a 38 verificam a proteção por senha acrescentada em seguida;
+nenhum deles contém a senha real.
 
 | Arquivo | Legenda e critério verificado |
 | --- | --- |
@@ -44,6 +51,24 @@ os arquivos a partir de 18 correspondem à implementação dos bônus.
 | [26-conferencia-final.txt](26-conferencia-final.txt) | Conferência final contra o PDF: integridade dos arquivos operacionais, imagem original incluída, documentação, exclusão de segredos e verificação atual do ambiente; publicação remota não realizada. |
 | [27-auditoria-criterios-eliminacao.txt](27-auditoria-criterios-eliminacao.txt) | Auditoria anterior ao push: índice, commits, objetos locais e referências do GitHub sem indício de segredo real; naquele momento, a publicação funcional ainda estava pendente. |
 | [28-publicacao-github.txt](28-publicacao-github.txt) | Push confirmado, repositório público, clone real com os nove arquivos operacionais testados, `.env` ausente do histórico e imagem presente no HTML do README renderizado pelo GitHub. |
+| [29-frontend-subida.txt](29-frontend-subida.txt) | Build real das duas imagens e subida do projeto isolado `g1-frontend-validacao`, com `.env.example`, volumes novos e porta local 18080. |
+| [30-frontend-testes.txt](30-frontend-testes.txt) | Onze verificações no Chromium: API real, filtro, cadastro com/sem foto, diálogo e layout móvel; respostas simuladas de falha/HTML são explicitamente identificadas. |
+| [30-frontend-testes.json](30-frontend-testes.json) | Resultado estruturado do navegador: três itens/zero fotos antes, cinco itens/uma foto depois, IDs criados e ausência de erros JavaScript. |
+| [30-frontend-desktop.png](30-frontend-desktop.png) | Captura real da interface em 1440px, após os dois cadastros de navegador; cinco itens e uma foto. |
+| [30-frontend-mobile.png](30-frontend-mobile.png) | Captura real da interface em 390px, com formulário acessível e sem rolagem horizontal. |
+| [31-frontend-rede-compartilhada.txt](31-frontend-rede-compartilhada.txt) | Imagem AWS testada localmente com `--network container:...`: Nginx acessa Flask por localhost e entrega interface/saúde/estatísticas; não comprova provisionamento AWS. |
+| [32-frontend-api-persistencia.txt](32-frontend-api-persistencia.txt) | Segundo cadastro com foto por curl, seis itens/duas fotos preservados após `down/up`, igualdade dos registros e hashes, Nginx válido, usuário `app` e ausência de portas publicadas em web/db. |
+| [32-frontend-recriacao-navegador.json](32-frontend-recriacao-navegador.json) | Nova sessão Chromium depois da recriação: lista, filtro, duas fotos carregadas e ausência de erros JavaScript. |
+| [32-frontend-apos-recriacao.png](32-frontend-apos-recriacao.png) | Interface real após a recriação dos contêineres, com seis itens e duas fotos. |
+| [33-manifesto-frontend.json](33-manifesto-frontend.json) | Branch, commit de base e hashes dos arquivos operacionais da versão com frontend; arquivos fornecidos comparados ao Git, sem alterações. |
+| [34-autenticacao-subida.txt](34-autenticacao-subida.txt) | Build e atualização reais do Nginx com geração de hash em runtime; os volumes existentes foram preservados. |
+| [35-autenticacao-testes.txt](35-autenticacao-testes.txt) | Sem credenciais ou com senha incorreta: 401 em interface/API/fotos/POST; senha válida libera acesso, sem expor arquivos secretos. |
+| [35-autenticacao-testes.json](35-autenticacao-testes.json) | Resultado estruturado do teste de entrada por senha; seis itens e duas fotos preservados após a atualização do Nginx. |
+| [35-acesso-autenticado.png](35-acesso-autenticado.png) | Interface real carregada no navegador autenticado; a senha não aparece na captura. |
+| [36-frontend-autenticado.txt](36-frontend-autenticado.txt) | Onze verificações funcionais repetidas com autenticação: cadastros com/sem foto, filtro, diálogo, estados de erro e tela móvel. |
+| [36-frontend-autenticado.json](36-frontend-autenticado.json) | Antes/depois da regressão autenticada: seis itens/duas fotos para oito itens/três fotos; credenciais omitidas. |
+| [37-autenticacao-rede-compartilhada.txt](37-autenticacao-rede-compartilhada.txt) | Ensaio local da imagem AWS: 426 sem indicação HTTPS, 401 sem senha, 200 autenticado; listener 8082 só oferece saúde e a imagem não inicia sem segredo. |
+| [38-manifesto-acesso.json](38-manifesto-acesso.json) | Hashes da versão protegida, arquivos fornecidos preservados e conferência de ausência do segredo no Git e nas evidências. |
 
 As imagens enviadas são [foto-teste-1.png](foto-teste-1.png) e
 [foto-teste-2.png](foto-teste-2.png), dois PNGs 64 × 64 de cor uniforme.
@@ -82,3 +107,27 @@ As menções a publicação pendente nos registros 26 e 27 retratam o período a
 ao push; essa pendência foi resolvida em 28. As menções a pacote no registro 25 e
 no manifesto 23 pertencem ao planejamento anterior e foram preservadas como
 histórico. O `.env` e os backups locais permanecem excluídos da entrega.
+
+## Estado da branch com frontend
+
+Os ensaios de 26/10 usaram o projeto isolado `g1-frontend-validacao` e os volumes
+`g1-frontend-validacao_dados_banco` e `g1-frontend-validacao_fotos`. Nenhum volume
+de outro projeto foi removido. O acesso de demonstração é
+http://127.0.0.1:18080; a publicação normal do Compose continua sendo 8080.
+No registro 32, esse ambiente tinha seis itens e duas fotos, com IDs e
+hashes documentados. As capturas 30 são anteriores ao último cadastro via curl;
+por isso exibem cinco itens e uma foto. A captura 32 mostra o estado posterior.
+
+O registro 31 verifica somente o upstream local da imagem usada no roteiro AWS.
+Não foram criados ECS, RDS, S3 Files ou outros recursos na conta. A publicação
+remota registrada em 28 refere-se à versão anterior ao frontend; esta branch
+não foi enviada ao GitHub nesta etapa.
+
+Depois da inclusão da senha, a execução 35 confirmou os mesmos seis itens e
+duas fotos. A regressão funcional 36 cadastrou mais dois objetos, um com foto,
+chegando a oito itens e três fotos no projeto isolado. O navegador agora pede
+usuário `visitante` e a senha configurada localmente. O `.env` real permanece
+ignorado e não integra as evidências; o exemplo contém apenas uma senha fictícia.
+As portas de prontidão não são publicadas no host. Na AWS, os ensaios 37 são
+simulação local de rede compartilhada, não prova de TLS, ALB ou Secrets Manager
+implantados. Essa implantação continua pendente.

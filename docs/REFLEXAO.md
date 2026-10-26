@@ -51,7 +51,8 @@ Fotos de RG ou carteira estudantil podem identificar pessoas e conter dados pess
 O art. 46 exige medidas de proteção; restringir a porta do banco é apenas uma parte dessa proteção.
 Proponho (1) autenticação e autorização para limitar quem pode cadastrar itens e consultar fotos;
 e (2) HTTPS para proteger as requisições e o transporte das imagens.
-São medidas futuras: o protótipo atual usa HTTP e suas rotas não implementam controle de acesso.
+Na etapa de 19/10, eram medidas futuras e as rotas não tinham controle de acesso.
+Em 26/10, esta branch acrescentou [senha compartilhada no Nginx](ACESSO.md) e [HTTPS na AWS](AWS-APRESENTACAO.md); contas individuais permanecem uma evolução futura.
 
 ## Q7 — Réplicas
 
@@ -66,8 +67,20 @@ Ao final, o ambiente voltou a uma réplica, com seis itens e duas fotos; não fo
 ## 5.1 — Do ambiente local para a nuvem
 
 Esta tabela apresenta **propostas de equivalência funcional**, com os serviços
-conferidos nas fontes oficiais vinculadas em cada célula. Nenhum recurso de nuvem
-foi provisionado por este projeto.
+conferidos nas fontes oficiais vinculadas em cada célula. Em 26/10/2026, a
+[etapa 3 da AWS](AWS-ETAPA-03.md) preparou a rede e os grupos de segurança reais;
+a [etapa 4](AWS-ETAPA-04.md) criou os segredos e o RDS, confirmado como disponível.
+A [etapa 5](AWS-ETAPA-05.md) criou o bucket e o sistema S3 Files para as fotos;
+a montagem e os testes de integração foram posteriormente executados no
+[ambiente da apresentação](AWS-APRESENTACAO.md), com upload e recuperação de fotos.
+Na [etapa 6](AWS-ETAPA-06.md), as duas imagens foram publicadas no ECR, com
+correção de segurança no frontend e os alertas remanescentes documentados.
+Na [etapa 7](AWS-ETAPA-07.md), foram criadas as roles com referências aos segredos
+e ao armazenamento; a [etapa 9](AWS-ETAPA-09.md) confirmou injeção dos segredos,
+conexão SQL com TLS e gravação real dos logs.
+Na [etapa 8](AWS-ETAPA-08.md), cluster, grupo de logs e definição da task foram
+criados. Em seguida, `achados-web:2` passou a executar como service Fargate,
+com frontend `aws-v3`, CloudFront e ALB interno; os resultados estão no registro final.
 
 | Peça do ambiente local | Microsoft Azure | AWS | Google Cloud |
 | --- | --- | --- | --- |
@@ -96,3 +109,16 @@ precisam ser configuradas. Os gerenciadores de segredos substituem o arquivo
 local como fonte de segredos, com acesso por identidade e permissões definidas.
 Os registries armazenam e distribuem a imagem construída; eles não executam o
 build automaticamente apenas por serem escolhidos na tabela.
+
+### Roteiro prático AWS
+
+O [guia de implantação AWS](GUIA_AWS.md), preparado em 26/10/2026, desenvolve essa
+proposta por etapas. A análise de fotos acima considera o uso direto das APIs de
+objetos. O guia apresenta também a alternativa **S3 Files integrado ao ECS**, que
+fornece uma montagem de arquivos para preservar o código do protótipo, conforme
+a [documentação da AWS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/s3files-volumes.html).
+As etapas de rede, banco/segredos e criação do armazenamento foram executadas
+na conta AWS, assim como o envio das imagens ao ECR na etapa 6.
+A execução posterior no ECS confirmou a montagem e o envio das fotos ao bucket
+privado, preservando os arquivos originais. Os testes de API, navegador e
+autenticação estão vinculados no [registro da apresentação](AWS-APRESENTACAO.md).

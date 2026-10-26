@@ -1,0 +1,15 @@
+{
+  "legenda": "Testes reais de autenticacao HTTP Basic no Nginx; credenciais omitidas.",
+  "executadoEmUtc": "2026-10-26T21:44:11.460Z",
+  "baseURL": "https://di54x57cfrcxq.cloudfront.net",
+  "checks": [
+    "Sem credenciais: interface, arquivos estaticos, API, fotos e POST retornam 401",
+    "Senha incorreta retorna 401",
+    "Credencial valida libera API/fotos; arquivos secretos nao sao servidos",
+    "Navegador autenticado carrega a interface; senha ausente do HTML/JavaScript"
+  ],
+  "stats": {
+    "fotos_no_volume": 2,
+    "itens_no_banco": 6
+  }
+}

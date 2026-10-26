@@ -1,0 +1,35 @@
+{
+  "legenda": "Testes reais do frontend no Chromium contra o Compose isolado; cenários simulados estão identificados individualmente.",
+  "executadoEm": "2026-10-26T18:42:42.035Z",
+  "baseURL": "http://127.0.0.1:18080",
+  "checks": [
+    "Página inicial, lista real e estatísticas da API",
+    "Filtro por local, resultado vazio e limpeza do filtro",
+    "Interface rejeita arquivo que não é JPG/PNG",
+    "Cadastro multipart com foto retorna 201, atualiza a lista e abre foto real no diálogo",
+    "Cadastro sem foto e incremento real das contagens",
+    "Resposta simulada: descrições e locais são texto, sem injetar HTML",
+    "Resposta simulada: falha de consulta e recuperação pelo filtro",
+    "Resposta simulada: falha de cadastro preserva os campos para conferência",
+    "Resposta simulada: indicador offline, contagens indisponíveis e retomada",
+    "API mantém 404 e arquivos estáticos são servidos pelo Nginx",
+    "Layout móvel em 390px sem rolagem horizontal e sem erros JavaScript"
+  ],
+  "before": {
+    "fotos_no_volume": 2,
+    "itens_no_banco": 6
+  },
+  "after": {
+    "fotos_no_volume": 3,
+    "itens_no_banco": 8
+  },
+  "created": {
+    "foto": "42edbbf93bca40da9a0b3a1ecc466d53.png",
+    "id": 7
+  },
+  "noPhoto": {
+    "foto": null,
+    "id": 8
+  },
+  "pageErrors": []
+}

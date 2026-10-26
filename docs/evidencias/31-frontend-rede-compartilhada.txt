@@ -1,0 +1,10 @@
+Legenda: ensaio local da imagem AWS, com Nginx e Flask compartilhando localhost. Nao e implantacao em ECS/RDS/S3 Files.
+Comando: docker run -d --name g1-frontend-validacao-sidecar --network container:g1-frontend-validacao-web-1 g1-frontend-validacao-nginx:latest
+a00ddf5f7dfb076e1ca1de3c843c63f84b80a79453f550a11223e63b7de6a645
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+{"banco":"conectado","container":"95002c88a0ef","status":"ok"}
+{"fotos_no_volume":1,"itens_no_banco":5}
+HTTP 200 interface presente: True
+g1-frontend-validacao-sidecar
+g1-frontend-validacao-sidecar

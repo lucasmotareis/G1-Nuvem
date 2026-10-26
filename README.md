@@ -1,9 +1,14 @@
 # Achados & Perdidos — G1 de Computação em Nuvem
 
-Ambiente da API Flask com Gunicorn, PostgreSQL e armazenamento persistente das
-fotos. A aplicação é fornecida pelo enunciado; a infraestrutura usa Docker Compose.
+Ambiente da API Flask com Gunicorn, PostgreSQL, armazenamento persistente das
+fotos e uma interface web servida pelo Nginx. A aplicação é fornecida pelo enunciado;
+a infraestrutura usa Docker Compose.
 O objetivo é permitir que outra equipe execute o protótipo e compreenda as
 configurações antes de planejar sua migração para a nuvem.
+
+O [ambiente AWS para a apresentação](docs/AWS-APRESENTACAO.md) reúne o endereço
+HTTPS, o roteiro de demonstração, o diagrama dos serviços e as evidências da
+implantação. A execução local continua usando Docker Compose.
 
 ## Estrutura e documentação
 
@@ -18,6 +23,8 @@ G1-Nuvem/
 │   └── .dockerignore
 ├── db/
 │   └── init.sql
+├── frontend/             # interface HTML/CSS/JavaScript e imagem Nginx
+├── infra/aws/            # modelo ECS com web e frontend na mesma task
 ├── docs/
 │   ├── ARQUITETURA.md
 │   ├── arquitetura.png
@@ -25,6 +32,8 @@ G1-Nuvem/
 │   ├── RELATORIO.md
 │   ├── REFLEXAO.md
 │   ├── BONUS.md
+│   ├── FRONTEND.md
+│   ├── GUIA_AWS.md
 │   └── evidencias/
 ├── nginx/
 │   └── default.conf
@@ -46,14 +55,24 @@ estrutura apresentada como `achados-perdidos` no enunciado. Os arquivos
 | [A3 — Relatório técnico](docs/RELATORIO.md) | Dockerfile, Compose, caminho do POST e ciclo de vida dos volumes. |
 | [A4 — Evidências](docs/evidencias/README.md) | Índice com legendas, saídas reais e imagens dos ensaios. |
 | [A5 — Reflexão](docs/REFLEXAO.md) | Sete respostas e tabela de equivalência Azure, AWS e Google Cloud. |
+| [Guia AWS](docs/GUIA_AWS.md) | Roteiro com ECS/Fargate, RDS, S3 Files, VPC, Secrets Manager, ECR e entrada HTTPS CloudFront/ALB interno. |
+| [Apresentação na AWS](docs/AWS-APRESENTACAO.md) | Endereço, demonstração, configuração implantada, testes e encerramento do laboratório. |
+| [Preparação de rede AWS](docs/AWS-ETAPA-03.md) | VPC, sub-redes e grupos de segurança reais criados/conferidos para continuar o roteiro. |
+| [Banco e segredos AWS](docs/AWS-ETAPA-04.md) | Configuração real do RDS privado, dois segredos, custos consultados e acompanhamento no console. |
+| [Fotos na AWS](docs/AWS-ETAPA-05.md) | Bucket privado, S3 Files, access point, rede, permissões e custos por uso do laboratório. |
+| [Imagens no ECR](docs/AWS-ETAPA-06.md) | URIs/digests publicados, frontend corrigido, verificações locais e pendências da varredura do backend. |
+| [Roles do ECS](docs/AWS-ETAPA-07.md) | Execution role, task role, políticas restritas, simulações e distinção do usuário IAM administrador. |
+| [Definição da tarefa ECS](docs/AWS-ETAPA-08.md) | Cluster ativo, grupo de logs, JSON preenchido e `achados-web:1` registrada; sem tasks iniciadas. |
+| [Inicialização do banco AWS](docs/AWS-ETAPA-09.md) | Tarefa avulsa aplicou o SQL original, confirmou três registros, TLS e gravação real dos logs. |
+| [Frontend](docs/FRONTEND.md) | Interface, integração com a API, roteiro para demonstração e testes de navegador. |
+| [Acesso por senha](docs/ACESSO.md) | Entrada compartilhada no Nginx, segredo local/AWS, curl autenticado e HTTPS. |
 | [Bônus](docs/BONUS.md) | Proxy reverso, backup com restauração e Adminer no perfil `debug`. |
 
 ## Arquitetura
 
-![Arquitetura com Nginx, aplicação Flask, PostgreSQL, volumes e Adminer opcional](docs/arquitetura.png)
-
-A imagem também pode ser [aberta em resolução original](docs/arquitetura.png).
-O [fonte Mermaid e a explicação do diagrama](docs/ARQUITETURA.md) permanecem disponíveis para edição.
+O [diagrama atual em Mermaid](docs/ARQUITETURA.md#fonte-editável-em-mermaid) mostra
+o Nginx com a interface, a API, o banco e as montagens. A [imagem anterior](docs/arquitetura.png)
+foi preservada como histórico da versão com proxy, anterior ao frontend.
 
 ## Pré-requisitos
 
@@ -86,42 +105,63 @@ O exemplo contém valores fictícios suficientes para o teste inicial. Substitua
 antes de usar fora do exercício. O `.env` é ignorado pelo Git e não deve ser
 incluído na entrega. O Compose lê as três variáveis `POSTGRES_*` e repassa os mesmos
 valores ao banco e às variáveis `DB_NAME`, `DB_USER` e `DB_PASSWORD` da aplicação.
+O Nginx recebe `ACCESS_USER` e `ACCESS_PASSWORD` do mesmo arquivo e exige essa
+credencial para a interface, API e fotos. O exemplo usa credenciais fictícias;
+o valor real deve ficar somente no `.env` ou no Secrets Manager.
 Evite salvar a saída de `docker compose config` sem `--quiet`, pois ela pode revelar
 os valores resolvidos, incluindo a senha.
 
-A API fica em `http://localhost:8080`. Na versão com bônus, `nginx` publica
-`8080:80` e encaminha para `web:5000`. `web` e `db` não publicam porta no host.
+A interface fica em **`http://localhost:8080`**. O serviço `nginx`, construído a
+partir de `./frontend` sobre a imagem oficial Nginx, publica `8080:80` e serve
+HTML/CSS/JavaScript. As rotas da API seguem por proxy para `web:5000`, no mesmo
+endereço. A publicação HTTP local fica restrita a `127.0.0.1`.
+`web` e `db` não publicam porta no host.
 A aplicação se conecta a `db:5432` pela bridge `rede_interna`. O Compose aguarda
 o banco saudável (`pg_isready`) antes de iniciar `web`, e aguarda o healthcheck
 HTTP de `web` antes de iniciar o Nginx. Os serviços usam `restart: unless-stopped`.
-O endereço `/` não possui página inicial: utilize as rotas da tabela abaixo.
+Não é necessário instalar Node.js ou Django para executar a interface.
 
 O volume `dados_banco` guarda o PostgreSQL em `/var/lib/postgresql/data` e o volume
 `fotos` guarda os arquivos em `/app/uploads`. O Dockerfile prepara esse diretório
 para o usuário `app`, que executa o Gunicorn. O script `db/init.sql` é montado
 somente para leitura e executado na inicialização de um banco vazio.
 
+## Demonstrar pelo navegador
+
+Abra `http://localhost:8080`, informe o usuário **`visitante`** e a senha
+configurada no `.env`, e confira a lista e as estatísticas. Busque pelo
+local `biblio`, limpe o filtro e cadastre um objeto com descrição, local e uma
+foto PNG/JPG de teste. Clique na miniatura para ampliar a imagem. O formulário
+também aceita cadastro sem foto.
+
+A interface usa as rotas existentes e mantém `app/app.py`, `app/requirements.txt`
+e `db/init.sql` intactos. O [roteiro do frontend](docs/FRONTEND.md) explica a
+integração e a demonstração de persistência. Os testes por `curl` abaixo
+continuam fazendo parte das evidências da avaliação.
+
 ## Testar a API
 
 ```sh
-curl -i http://localhost:8080/health
-curl -i http://localhost:8080/itens
-curl -i 'http://localhost:8080/itens?local=biblio'
-curl -i http://localhost:8080/estatisticas
+curl --user visitante -i http://localhost:8080/health
+curl --user visitante -i http://localhost:8080/itens
+curl --user visitante -i 'http://localhost:8080/itens?local=biblio'
+curl --user visitante -i http://localhost:8080/estatisticas
 ```
 
-Com o banco acessível, `/health` deve retornar HTTP 200 com `status: "ok"` e
+O curl pede a senha sem incluí-la no comando. Sem credenciais ou com senha
+incorreta, as rotas públicas retornam 401. Veja [acesso por senha](docs/ACESSO.md).
+Com credencial válida e banco acessível, `/health` deve retornar HTTP 200 com `status: "ok"` e
 `banco: "conectado"`. Um banco novo deve conter os três itens de `db/init.sql`.
 Para cadastrar um item, você pode usar a imagem de teste sem dados pessoais
 incluída no repositório:
 
 ```sh
-curl -i -X POST http://localhost:8080/itens \
+curl --user visitante -i -X POST http://localhost:8080/itens \
   -F 'descricao=Objeto de teste' \
   -F 'local=Biblioteca' \
   -F 'foto=@docs/evidencias/foto-teste-1.png'
-curl -i http://localhost:8080/itens
-curl -i http://localhost:8080/estatisticas
+curl --user visitante -i http://localhost:8080/itens
+curl --user visitante -i http://localhost:8080/estatisticas
 docker compose exec web whoami
 docker compose logs web --tail 20
 ```
@@ -133,6 +173,7 @@ O cadastro sem foto também é aceito: basta omitir o argumento `-F 'foto=@...'`
 
 | Método | Rota | Função |
 | --- | --- | --- |
+| GET | `/` | Interface web servida pelo Nginx. |
 | GET | `/health` | Verifica a conexão com o banco. |
 | GET | `/itens` | Lista os itens cadastrados. |
 | GET | `/itens?local=texto` | Filtra os itens por trecho do local. |
@@ -191,6 +232,19 @@ somente fotos; o banco exige uma estratégia de backup própria.
 
 ## Evidências e entrega
 
+**Acesso compartilhado:** os registros 34 em diante verificam o bloqueio com
+senha no Nginx. As rotas e capturas anteriores continuam como histórico.
+Na AWS, use HTTPS pelo ALB; o segredo real nunca deve ser versionado.
+
+**Atualização do frontend (26/10/2026):** a interface e a nova imagem Nginx são
+posteriores à publicação registrada em 28. Os testes desta branch estão nos
+registros 29 a 32 do [índice](docs/evidencias/README.md). As referências ao clone
+e à publicação abaixo correspondem à versão anterior; esta branch ainda não
+foi publicada. A aplicação continua sem implantação na AWS; a rede da etapa 3
+e o provisionamento do banco/segredos da etapa 4 foram feitos posteriormente,
+conforme os registros de [rede](docs/AWS-ETAPA-03.md) e
+[banco e segredos](docs/AWS-ETAPA-04.md).
+
 As saídas reais estão no [índice de evidências](docs/evidencias/README.md).
 Os registros 01 a 17 documentam a arquitetura básica. Os registros a partir de
 18 documentam a versão com bônus; os resultados antigos não devem ser confundidos
@@ -206,8 +260,13 @@ Envie esse link no ambiente virtual ao professor.
 O `.env` e os backups locais continuam ignorados; `.env.example` faz parte da entrega.
 
 A [revisão final contra o PDF](docs/REVISAO_FINAL.md) relaciona os requisitos aos
-arquivos e testes. As equivalências em nuvem são propostas: nenhum recurso de
-nuvem foi provisionado.
+arquivos e testes. As equivalências em nuvem orientam a migração; a etapa 3 da
+AWS já tem [rede preparada e evidências reais](docs/AWS-ETAPA-03.md), e a etapa 4
+registra o [provisionamento do banco e dos segredos](docs/AWS-ETAPA-04.md).
+A etapa 5 registra a [criação do armazenamento de fotos](docs/AWS-ETAPA-05.md).
+A etapa 6 registra as [imagens publicadas no ECR](docs/AWS-ETAPA-06.md), incluindo
+a atualização dos pacotes de segurança da imagem do frontend.
+A aplicação e os testes de integração com esses serviços continuam pendentes.
 
 ## Checklist de entrega verificado
 

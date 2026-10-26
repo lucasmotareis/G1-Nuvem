@@ -1,0 +1,166 @@
+{
+  "family": "achados-web",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "executionRoleArn": "arn:aws:iam::429100831877:role/g1-ecs-execution-role",
+  "taskRoleArn": "arn:aws:iam::429100831877:role/g1-ecs-task-role",
+  "containerDefinitions": [
+    {
+      "name": "web",
+      "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-web:aws-v1",
+      "essential": true,
+      "portMappings": [
+        {
+          "containerPort": 5000,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "environment": [
+        {
+          "name": "DB_HOST",
+          "value": "g1-achados-db.cwzoegmiwx9c.us-east-1.rds.amazonaws.com"
+        },
+        {
+          "name": "DB_PORT",
+          "value": "5432"
+        },
+        {
+          "name": "DB_NAME",
+          "value": "achados"
+        },
+        {
+          "name": "UPLOAD_DIR",
+          "value": "/app/uploads"
+        },
+        {
+          "name": "PGSSLMODE",
+          "value": "require"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "DB_USER",
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y:username::"
+        },
+        {
+          "name": "DB_PASSWORD",
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y:password::"
+        }
+      ],
+      "mountPoints": [
+        {
+          "sourceVolume": "fotos",
+          "containerPath": "/app/uploads",
+          "readOnly": false
+        }
+      ],
+      "healthCheck": {
+        "command": [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=2)"
+        ],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 60
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/achados-web",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "web"
+        }
+      }
+    },
+    {
+      "name": "frontend",
+      "image": "429100831877.dkr.ecr.us-east-1.amazonaws.com/achados-frontend:aws-v3",
+      "essential": true,
+      "dependsOn": [
+        {
+          "containerName": "web",
+          "condition": "HEALTHY"
+        }
+      ],
+      "environment": [
+        {
+          "name": "ACCESS_USER",
+          "value": "visitante"
+        }
+      ],
+      "secrets": [
+        {
+          "name": "ACCESS_PASSWORD",
+          "valueFrom": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/acesso-TR13WW:password::"
+        }
+      ],
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        },
+        {
+          "containerPort": 8082,
+          "protocol": "tcp",
+          "appProtocol": "http"
+        }
+      ],
+      "healthCheck": {
+        "command": [
+          "CMD",
+          "wget",
+          "-q",
+          "-O",
+          "/dev/null",
+          "http://127.0.0.1:8082/healthz"
+        ],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 60
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/achados-web",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "frontend"
+        }
+      }
+    }
+  ],
+  "volumes": [
+    {
+      "name": "fotos",
+      "s3filesVolumeConfiguration": {
+        "fileSystemArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+        "rootDirectory": "/",
+        "transitEncryptionPort": 2049,
+        "accessPointArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137"
+      }
+    }
+  ],
+  "tags": [
+    {
+      "key": "Project",
+      "value": "achados-perdidos"
+    },
+    {
+      "key": "Environment",
+      "value": "laboratorio"
+    }
+  ]
+}

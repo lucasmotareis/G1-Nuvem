@@ -1,0 +1,92 @@
+{
+  "family": "achados-web",
+  "networkMode": "awsvpc",
+  "requiresCompatibilities": ["FARGATE"],
+  "cpu": "256",
+  "memory": "512",
+  "runtimePlatform": {
+    "cpuArchitecture": "X86_64",
+    "operatingSystemFamily": "LINUX"
+  },
+  "executionRoleArn": "SUBSTITUA_ARN_EXECUTION_ROLE",
+  "taskRoleArn": "SUBSTITUA_ARN_TASK_ROLE",
+  "containerDefinitions": [
+    {
+      "name": "web",
+      "image": "SUBSTITUA_URI_ECR_WEB_COM_TAG",
+      "essential": true,
+      "portMappings": [
+        {"containerPort": 5000, "protocol": "tcp", "appProtocol": "http"}
+      ],
+      "environment": [
+        {"name": "DB_HOST", "value": "SUBSTITUA_ENDPOINT_RDS"},
+        {"name": "DB_PORT", "value": "5432"},
+        {"name": "DB_NAME", "value": "achados"},
+        {"name": "UPLOAD_DIR", "value": "/app/uploads"},
+        {"name": "PGSSLMODE", "value": "require"}
+      ],
+      "secrets": [
+        {"name": "DB_USER", "valueFrom": "SUBSTITUA_ARN_SEGREDO:username::"},
+        {"name": "DB_PASSWORD", "valueFrom": "SUBSTITUA_ARN_SEGREDO:password::"}
+      ],
+      "mountPoints": [
+        {"sourceVolume": "fotos", "containerPath": "/app/uploads", "readOnly": false}
+      ],
+      "healthCheck": {
+        "command": [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=2)"
+        ],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 60
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/achados-web",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "web"
+        }
+      }
+    },
+    {
+      "name": "frontend",
+      "image": "SUBSTITUA_URI_ECR_FRONTEND_COM_TAG",
+      "essential": true,
+      "dependsOn": [{"containerName": "web", "condition": "HEALTHY"}],
+      "portMappings": [
+        {"containerPort": 80, "protocol": "tcp", "appProtocol": "http"}
+      ],
+      "healthCheck": {
+        "command": ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/health"],
+        "interval": 30,
+        "timeout": 5,
+        "retries": 3,
+        "startPeriod": 60
+      },
+      "logConfiguration": {
+        "logDriver": "awslogs",
+        "options": {
+          "awslogs-group": "/ecs/achados-web",
+          "awslogs-region": "us-east-1",
+          "awslogs-stream-prefix": "frontend"
+        }
+      }
+    }
+  ],
+  "volumes": [
+    {
+      "name": "fotos",
+      "s3filesVolumeConfiguration": {
+        "fileSystemArn": "SUBSTITUA_ARN_S3_FILES",
+        "rootDirectory": "/",
+        "transitEncryptionPort": 2049,
+        "accessPointArn": "SUBSTITUA_ARN_ACCESS_POINT"
+      }
+    }
+  ]
+}

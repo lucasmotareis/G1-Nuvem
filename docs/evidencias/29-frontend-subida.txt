@@ -1,0 +1,395 @@
+Legenda: build e subida reais do frontend em projeto isolado g1-frontend-validacao, porta local 18080 e credenciais ficticias de .env.example.
+ Image g1-frontend-validacao-nginx Building
+ Image g1-frontend-validacao-web Building
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.10kB 0.0s done
+#1 DONE 0.0s
+
+#2 [nginx internal] load build definition from Dockerfile
+#2 transferring dockerfile:
+#2 transferring dockerfile: 385B 0.0s done
+#2 DONE 0.2s
+
+#3 [web internal] load build definition from Dockerfile
+#3 transferring dockerfile: 656B 0.0s done
+#3 DONE 0.2s
+
+#4 [web internal] load metadata for docker.io/library/python:3.12-slim
+#4 ...
+
+#5 [auth] library/nginx:pull token for registry-1.docker.io
+#5 DONE 0.0s
+
+#6 [auth] library/python:pull token for registry-1.docker.io
+#6 DONE 0.0s
+
+#7 [nginx internal] load metadata for docker.io/library/nginx:1.30-alpine
+#7 ...
+
+#4 [web internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 4.2s
+
+#7 [nginx internal] load metadata for docker.io/library/nginx:1.30-alpine
+#7 DONE 4.2s
+
+#8 [nginx internal] load .dockerignore
+#8 transferring context: 127B done
+#8 DONE 0.1s
+
+#9 [web internal] load .dockerignore
+#9 transferring context: 103B done
+#9 DONE 0.1s
+
+#10 [web internal] load build context
+#10 DONE 0.0s
+
+#11 [nginx internal] load build context
+#11 transferring context: 38.08kB 0.0s done
+#11 DONE 0.0s
+
+#10 [web internal] load build context
+#10 transferring context: 2.55kB done
+#10 DONE 0.1s
+
+#12 [web 1/6] FROM docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704
+#12 resolve docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704 0.0s done
+#12 DONE 0.2s
+
+#13 [nginx 1/4] FROM docker.io/library/nginx:1.30-alpine@sha256:47928bf67eb62a1863cb08d9ecb52d3e704304ba614eaee17884204677702951
+#13 resolve docker.io/library/nginx:1.30-alpine@sha256:47928bf67eb62a1863cb08d9ecb52d3e704304ba614eaee17884204677702951 0.0s done
+#13 DONE 0.3s
+
+#12 [web 1/6] FROM docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704
+#12 sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034 0B / 29.84MB 0.2s
+#12 sha256:be6443c06d3c9914acdca3ffb368adad23d4f282b55e71e730878ad3e3c3f75c 0B / 1.29MB 0.2s
+#12 sha256:5c397e4307db7bd392eff1d36de88b04da2a137a4b906b7e0e4657bada560645 0B / 249B 0.2s
+#12 sha256:b524bb3aba7394d85233f3a0a742b8f1b56179e8f61492f73d42a1ff118623b7 0B / 12.12MB 0.2s
+#12 sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034 2.10MB / 29.84MB 0.6s
+#12 sha256:5c397e4307db7bd392eff1d36de88b04da2a137a4b906b7e0e4657bada560645 249B / 249B 0.5s done
+#12 sha256:be6443c06d3c9914acdca3ffb368adad23d4f282b55e71e730878ad3e3c3f75c 1.29MB / 1.29MB 0.6s done
+#12 sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034 4.19MB / 29.84MB 0.9s
+#12 sha256:b524bb3aba7394d85233f3a0a742b8f1b56179e8f61492f73d42a1ff118623b7 1.05MB / 12.12MB 0.8s
+#12 sha256:b524bb3aba7394d85233f3a0a742b8f1b56179e8f61492f73d42a1ff118623b7 2.10MB / 12.12MB 0.9s
+#12 sha256:b524bb3aba7394d85233f3a0a742b8f1b56179e8f61492f73d42a1ff118623b7 3.15MB / 12.12MB 1.1s
+#12 sha256:b524bb3aba7394d85233f3a0a742b8f1b56179e8f61492f73d42a1ff118623b7 4.19MB / 12.12MB 1.2s
+#12 sha256:b524bb3aba7394d85233f3a0a742b8f1b56179e8f61492f73d42a1ff118623b7 5.24MB / 12.12MB 1.4s
+#12 sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034 7.34MB / 29.84MB 1.7s
+#12 sha256:b524bb3aba7394d85233f3a0a742b8f1b56179e8f61492f73d42a1ff118623b7 6.29MB / 12.12MB 1.5s
+#12 sha256:b524bb3aba7394d85233f3a0a742b8f1b56179e8f61492f73d42a1ff118623b7 7.34MB / 12.12MB 1.7s
+#12 sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034 9.44MB / 29.84MB 1.8s
+#12 sha256:b524bb3aba7394d85233f3a0a742b8f1b56179e8f61492f73d42a1ff118623b7 8.39MB / 12.12MB 2.1s
+#12 sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034 11.53MB / 29.84MB 2.4s
+#12 sha256:b524bb3aba7394d85233f3a0a742b8f1b56179e8f61492f73d42a1ff118623b7 9.44MB / 12.12MB 2.4s
+#12 sha256:b524bb3aba7394d85233f3a0a742b8f1b56179e8f61492f73d42a1ff118623b7 10.49MB / 12.12MB 2.6s
+#12 sha256:b524bb3aba7394d85233f3a0a742b8f1b56179e8f61492f73d42a1ff118623b7 12.12MB / 12.12MB 2.8s done
+#12 sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034 15.73MB / 29.84MB 3.0s
+#12 sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034 17.83MB / 29.84MB 3.5s
+#12 sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034 19.92MB / 29.84MB 3.6s
+#12 sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034 24.12MB / 29.84MB 3.9s
+#12 sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034 26.21MB / 29.84MB 4.1s
+#12 ...
+
+#13 [nginx 1/4] FROM docker.io/library/nginx:1.30-alpine@sha256:47928bf67eb62a1863cb08d9ecb52d3e704304ba614eaee17884204677702951
+#13 sha256:5b8cb54cfa408030aaa43d7bffa9141e0ae6f8a479df13c7aa152100cca358fb 20.31MB / 20.31MB 3.3s done
+#13 sha256:bb658a2541968d2b90a8ee165ad08b7f71055c7f7832bdff98e2de2d8b90cf14 1.40kB / 1.40kB 0.3s done
+#13 sha256:81b64ae234ef95f3cfc19b7f6c45a511eccbefa6148889ee33ed43c6c3f39939 1.21kB / 1.21kB 0.2s done
+#13 sha256:e125989d16f03d1e00b60afdd9abe46ed1437ed63b73926d036a5537f6be770a 403B / 403B 0.2s done
+#13 sha256:885725a63a7cf1d4d5aac105944b35ece2b69a8c2cc6f7040f04727b7b8a63d2 964B / 964B 0.2s done
+#13 sha256:f19a2d3b695178ba0e57d473535f74f5d934f45e191de8334e730f83d2c62704 0B / 627B 0.2s
+#13 sha256:9f0afb44f10e826253b342c0265e188067c2f0a30c782a52e329928a763adc60 1.88MB / 1.88MB 0.6s done
+#13 sha256:7b229517ed222597277036d94892173207d01a731ab3a88eeb1de2e963a2c788 3.85MB / 3.85MB 0.8s done
+#13 extracting sha256:7b229517ed222597277036d94892173207d01a731ab3a88eeb1de2e963a2c788 0.5s done
+#13 extracting sha256:9f0afb44f10e826253b342c0265e188067c2f0a30c782a52e329928a763adc60 0.5s done
+#13 extracting sha256:f19a2d3b695178ba0e57d473535f74f5d934f45e191de8334e730f83d2c62704 0.0s done
+#13 extracting sha256:885725a63a7cf1d4d5aac105944b35ece2b69a8c2cc6f7040f04727b7b8a63d2 0.0s done
+#13 extracting sha256:e125989d16f03d1e00b60afdd9abe46ed1437ed63b73926d036a5537f6be770a 0.0s done
+#13 extracting sha256:81b64ae234ef95f3cfc19b7f6c45a511eccbefa6148889ee33ed43c6c3f39939 0.0s done
+#13 extracting sha256:bb658a2541968d2b90a8ee165ad08b7f71055c7f7832bdff98e2de2d8b90cf14 0.0s done
+#13 extracting sha256:5b8cb54cfa408030aaa43d7bffa9141e0ae6f8a479df13c7aa152100cca358fb
+#13 extracting sha256:5b8cb54cfa408030aaa43d7bffa9141e0ae6f8a479df13c7aa152100cca358fb 1.3s done
+#13 DONE 5.9s
+
+#12 [web 1/6] FROM docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704
+#12 sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034 29.84MB / 29.84MB 4.4s done
+#12 extracting sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034
+#12 ...
+
+#14 [nginx 2/4] COPY index.html styles.css app.js /usr/share/nginx/html/
+#14 DONE 0.2s
+
+#15 [nginx 3/4] COPY routing.conf /etc/nginx/snippets/achados-routing.conf
+#15 DONE 0.0s
+
+#16 [nginx 4/4] COPY nginx.conf /etc/nginx/conf.d/default.conf
+#16 DONE 0.1s
+
+#12 [web 1/6] FROM docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704
+#12 ...
+
+#17 [nginx] exporting to image
+#17 exporting layers 0.2s done
+#17 exporting manifest sha256:1890fb214d978ae4141f185daf67b5b3aa702afc8f2663b3f939f4033133f1bd 0.0s done
+#17 exporting config sha256:46749986a1cd622f3188d68962265f92bf2a13be09a44bc42cfcc549d550055d 0.0s done
+#17 exporting attestation manifest sha256:f7077d87df05dea6a1741c5cb6a0366b01516004b6978da15715db9a315b3f21 0.0s done
+#17 exporting manifest list sha256:de93049cb310f687542729546cf594a3b955daf90af62f73540e46f5e283b581 0.0s done
+#17 naming to docker.io/library/g1-frontend-validacao-nginx:latest done
+#17 unpacking to docker.io/library/g1-frontend-validacao-nginx:latest 0.1s done
+#17 DONE 0.8s
+
+#12 [web 1/6] FROM docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704
+#12 ...
+
+#18 [nginx] resolving provenance for metadata file
+#18 DONE 0.1s
+
+#12 [web 1/6] FROM docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704
+#12 extracting sha256:f2be67225471500c788ce88c597eb5ea8336e912ad1ca4815650e0281afe2034 3.3s done
+#12 DONE 7.9s
+
+#12 [web 1/6] FROM docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704
+#12 extracting sha256:be6443c06d3c9914acdca3ffb368adad23d4f282b55e71e730878ad3e3c3f75c
+#12 extracting sha256:be6443c06d3c9914acdca3ffb368adad23d4f282b55e71e730878ad3e3c3f75c 0.4s done
+#12 DONE 8.3s
+
+#12 [web 1/6] FROM docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704
+#12 extracting sha256:b524bb3aba7394d85233f3a0a742b8f1b56179e8f61492f73d42a1ff118623b7
+#12 extracting sha256:b524bb3aba7394d85233f3a0a742b8f1b56179e8f61492f73d42a1ff118623b7 1.2s done
+#12 DONE 9.5s
+
+#12 [web 1/6] FROM docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704
+#12 extracting sha256:5c397e4307db7bd392eff1d36de88b04da2a137a4b906b7e0e4657bada560645 0.0s done
+#12 DONE 9.5s
+
+#19 [web 2/6] WORKDIR /app
+#19 DONE 0.2s
+
+#20 [web 3/6] COPY requirements.txt .
+#20 DONE 0.0s
+
+#21 [web 4/6] RUN pip install --no-cache-dir -r requirements.txt
+#21 4.670 Collecting flask==3.0.3 (from -r requirements.txt (line 1))
+#21 5.282   Downloading flask-3.0.3-py3-none-any.whl.metadata (3.2 kB)
+#21 5.314 Collecting psycopg==3.2.3 (from psycopg[binary]==3.2.3->-r requirements.txt (line 2))
+#21 5.331   Downloading psycopg-3.2.3-py3-none-any.whl.metadata (4.3 kB)
+#21 5.372 Collecting gunicorn==23.0.0 (from -r requirements.txt (line 3))
+#21 5.388   Downloading gunicorn-23.0.0-py3-none-any.whl.metadata (4.4 kB)
+#21 5.437 Collecting Werkzeug>=3.0.0 (from flask==3.0.3->-r requirements.txt (line 1))
+#21 5.457   Downloading werkzeug-3.1.9-py3-none-any.whl.metadata (4.1 kB)
+#21 5.488 Collecting Jinja2>=3.1.2 (from flask==3.0.3->-r requirements.txt (line 1))
+#21 5.504   Downloading jinja2-3.1.6-py3-none-any.whl.metadata (2.9 kB)
+#21 5.532 Collecting itsdangerous>=2.1.2 (from flask==3.0.3->-r requirements.txt (line 1))
+#21 5.548   Downloading itsdangerous-2.2.0-py3-none-any.whl.metadata (1.9 kB)
+#21 5.584 Collecting click>=8.1.3 (from flask==3.0.3->-r requirements.txt (line 1))
+#21 5.603   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+#21 5.631 Collecting blinker>=1.6.2 (from flask==3.0.3->-r requirements.txt (line 1))
+#21 5.649   Downloading blinker-1.9.0-py3-none-any.whl.metadata (1.6 kB)
+#21 5.706 Collecting typing-extensions>=4.6 (from psycopg==3.2.3->psycopg[binary]==3.2.3->-r requirements.txt (line 2))
+#21 5.764   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#21 5.830 Collecting packaging (from gunicorn==23.0.0->-r requirements.txt (line 3))
+#21 5.866   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+#21 6.167 Collecting psycopg-binary==3.2.3 (from psycopg[binary]==3.2.3->-r requirements.txt (line 2))
+#21 6.187   Downloading psycopg_binary-3.2.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (2.8 kB)
+#21 6.246 Collecting MarkupSafe>=2.0 (from Jinja2>=3.1.2->flask==3.0.3->-r requirements.txt (line 1))
+#21 6.261   Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.7 kB)
+#21 6.283 Downloading flask-3.0.3-py3-none-any.whl (101 kB)
+#21 6.330 Downloading psycopg-3.2.3-py3-none-any.whl (197 kB)
+#21 6.366 Downloading gunicorn-23.0.0-py3-none-any.whl (85 kB)
+#21 6.393 Downloading psycopg_binary-3.2.3-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (4.2 MB)
+#21 6.740    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.2/4.2 MB 12.3 MB/s eta 0:00:00
+#21 6.757 Downloading blinker-1.9.0-py3-none-any.whl (8.5 kB)
+#21 6.776 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+#21 6.796 Downloading itsdangerous-2.2.0-py3-none-any.whl (16 kB)
+#21 6.814 Downloading jinja2-3.1.6-py3-none-any.whl (134 kB)
+#21 6.836 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+#21 6.853 Downloading werkzeug-3.1.9-py3-none-any.whl (228 kB)
+#21 6.884 Downloading packaging-26.3-py3-none-any.whl (129 kB)
+#21 6.954 Downloading markupsafe-3.0.4-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (22 kB)
+#21 6.987 Installing collected packages: typing-extensions, psycopg-binary, packaging, MarkupSafe, itsdangerous, click, blinker, Werkzeug, psycopg, Jinja2, gunicorn, flask
+#21 8.252 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#21 8.255 Successfully installed Jinja2-3.1.6 MarkupSafe-3.0.4 Werkzeug-3.1.9 blinker-1.9.0 click-8.5.0 flask-3.0.3 gunicorn-23.0.0 itsdangerous-2.2.0 packaging-26.3 psycopg-3.2.3 psycopg-binary-3.2.3 typing-extensions-4.16.0
+#21 8.392
+#21 8.392 [notice] A new release of pip is available: 25.0.1 -> 26.2.2
+#21 8.392 [notice] To update, run: pip install --upgrade pip
+#21 DONE 8.5s
+
+#22 [web 5/6] COPY app.py .
+#22 DONE 0.0s
+
+#23 [web 6/6] RUN groupadd --system app     && useradd --system --gid app --no-create-home --shell /usr/sbin/nologin app     && mkdir -p /app/uploads     && chown app:app /app/uploads
+#23 DONE 0.4s
+
+#24 [web] exporting to image
+#24 exporting layers
+#24 exporting layers 1.1s done
+#24 exporting manifest sha256:909e4e1cc05562b9f5c3dfd959caa4fe24a186fcd66adf12d323d11186c97643 0.0s done
+#24 exporting config sha256:2a3756797f81294233e3bdecdea5e3819d6d91e95069a897dd7c6b40f56d5aff 0.0s done
+#24 exporting attestation manifest sha256:4a1e4cc4122f4e97058022981f72c3287873ba39eebf6a4771609e36a8a1165f 0.0s done
+#24 exporting manifest list sha256:1583888cc13a1455afe70855ce30b36eaceac011217fbc4ef86e3df72c35d8e8 0.0s done
+#24 naming to docker.io/library/g1-frontend-validacao-web:latest done
+#24 unpacking to docker.io/library/g1-frontend-validacao-web:latest
+#24 unpacking to docker.io/library/g1-frontend-validacao-web:latest 0.4s done
+#24 DONE 1.5s
+
+#25 [web] resolving provenance for metadata file
+#25 DONE 0.0s
+ Image g1-frontend-validacao-web Built
+ Image g1-frontend-validacao-nginx Built
+ Network g1-frontend-validacao_rede_interna Creating
+ Volume g1-frontend-validacao_dados_banco Creating
+ Volume g1-frontend-validacao_fotos Creating
+ Volume g1-frontend-validacao_fotos Creating
+ Network g1-frontend-validacao_rede_interna Creating
+ Volume g1-frontend-validacao_dados_banco Creating
+ Volume g1-frontend-validacao_dados_banco Created
+ Volume g1-frontend-validacao_dados_banco Created
+ Volume g1-frontend-validacao_fotos Created
+ Volume g1-frontend-validacao_fotos Created
+ Network g1-frontend-validacao_rede_interna Created
+ Network g1-frontend-validacao_rede_interna Created
+ Container g1-frontend-validacao-db-1 Creating
+ Container g1-frontend-validacao-db-1 Created
+ Container g1-frontend-validacao-web-1 Creating
+ Container g1-frontend-validacao-web-1 Created
+ Container g1-frontend-validacao-nginx-1 Creating
+ Container g1-frontend-validacao-nginx-1 Created
+ Container g1-frontend-validacao-db-1 Starting
+ Container g1-frontend-validacao-db-1 Started
+ Container g1-frontend-validacao-db-1 Waiting
+ Container g1-frontend-validacao-db-1 Healthy
+ Container g1-frontend-validacao-web-1 Starting
+ Container g1-frontend-validacao-web-1 Started
+ Container g1-frontend-validacao-web-1 Waiting
+ Container g1-frontend-validacao-web-1 Healthy
+ Container g1-frontend-validacao-nginx-1 Starting
+ Container g1-frontend-validacao-nginx-1 Started
+ Image g1-frontend-validacao-web Building
+ Image g1-frontend-validacao-nginx Building
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.10kB 0.1s done
+#1 DONE 0.1s
+
+#2 [nginx internal] load build definition from Dockerfile
+#2 transferring dockerfile:
+#2 transferring dockerfile: 385B 0.2s done
+#2 ...
+
+#3 [web internal] load build definition from Dockerfile
+#3 transferring dockerfile: 656B 0.1s done
+#3 DONE 0.5s
+
+#2 [nginx internal] load build definition from Dockerfile
+#2 DONE 0.5s
+
+#4 [nginx internal] load metadata for docker.io/library/nginx:1.30-alpine
+#4 ...
+
+#5 [auth] library/python:pull token for registry-1.docker.io
+#5 DONE 0.0s
+
+#6 [auth] library/nginx:pull token for registry-1.docker.io
+#6 DONE 0.0s
+
+#7 [web internal] load metadata for docker.io/library/python:3.12-slim
+#7 ...
+
+#4 [nginx internal] load metadata for docker.io/library/nginx:1.30-alpine
+#4 DONE 3.4s
+
+#7 [web internal] load metadata for docker.io/library/python:3.12-slim
+#7 DONE 3.5s
+
+#8 [nginx internal] load .dockerignore
+#8 transferring context: 127B done
+#8 DONE 0.0s
+
+#9 [web internal] load .dockerignore
+#9 transferring context: 103B done
+#9 DONE 0.0s
+
+#10 [web internal] load build context
+#10 DONE 0.0s
+
+#11 [nginx internal] load build context
+#11 transferring context: 21.03kB done
+#11 DONE 0.0s
+
+#12 [nginx 1/4] FROM docker.io/library/nginx:1.30-alpine@sha256:47928bf67eb62a1863cb08d9ecb52d3e704304ba614eaee17884204677702951
+#12 resolve docker.io/library/nginx:1.30-alpine@sha256:47928bf67eb62a1863cb08d9ecb52d3e704304ba614eaee17884204677702951 0.1s done
+#12 CACHED
+
+#13 [web 1/6] FROM docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704
+#13 resolve docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704 0.1s done
+#13 DONE 0.1s
+
+#10 [web internal] load build context
+#10 transferring context: 63B done
+#10 DONE 0.0s
+
+#14 [web 4/6] RUN pip install --no-cache-dir -r requirements.txt
+#14 CACHED
+
+#15 [web 5/6] COPY app.py .
+#15 CACHED
+
+#16 [web 3/6] COPY requirements.txt .
+#16 CACHED
+
+#17 [web 2/6] WORKDIR /app
+#17 CACHED
+
+#18 [web 6/6] RUN groupadd --system app     && useradd --system --gid app --no-create-home --shell /usr/sbin/nologin app     && mkdir -p /app/uploads     && chown app:app /app/uploads
+#18 CACHED
+
+#19 [nginx 2/4] COPY index.html styles.css app.js /usr/share/nginx/html/
+#19 DONE 0.1s
+
+#20 [web] exporting to image
+#20 exporting layers done
+#20 exporting manifest sha256:909e4e1cc05562b9f5c3dfd959caa4fe24a186fcd66adf12d323d11186c97643 done
+#20 exporting config sha256:2a3756797f81294233e3bdecdea5e3819d6d91e95069a897dd7c6b40f56d5aff done
+#20 exporting attestation manifest sha256:0c2b12d59e1893241b5f9e2a5f432e3be7c3505a720df034e5ae9c01c8051e77 0.1s done
+#20 exporting manifest list sha256:e24111999586259b0cb00716f6bcafae7dc89d257bf3b5a6b27e735555c0f98e 0.0s done
+#20 naming to docker.io/library/g1-frontend-validacao-web:latest
+#20 naming to docker.io/library/g1-frontend-validacao-web:latest 0.0s done
+#20 unpacking to docker.io/library/g1-frontend-validacao-web:latest 0.0s done
+#20 DONE 0.3s
+
+#21 [nginx 3/4] COPY routing.conf /etc/nginx/snippets/achados-routing.conf
+#21 DONE 0.1s
+
+#22 [nginx 4/4] COPY nginx.conf /etc/nginx/conf.d/default.conf
+#22 DONE 0.2s
+
+#23 [nginx] exporting to image
+#23 ...
+
+#24 [web] resolving provenance for metadata file
+#24 DONE 0.0s
+
+#23 [nginx] exporting to image
+#23 exporting layers 0.5s done
+#23 exporting manifest sha256:90dca068c5e2ab79efeff6a804c991f3dbedfbe79b86d1f6faa43b5c71625643
+#23 exporting manifest sha256:90dca068c5e2ab79efeff6a804c991f3dbedfbe79b86d1f6faa43b5c71625643 0.3s done
+#23 exporting config sha256:b562863543bca8b9d919378944735766a05f4bb5330ff2a5663d96130c4062bb
+#23 exporting config sha256:b562863543bca8b9d919378944735766a05f4bb5330ff2a5663d96130c4062bb 0.1s done
+#23 exporting attestation manifest sha256:2441c187b60a6cc5aaf6d915ee6a8a0a0f6af7f9818a9b593af552f228af4e77 0.0s done
+#23 exporting manifest list sha256:0e7d2b2f89437c21b60ebaf386f44d59228ca19005d0e8b701a13c826f095dbf
+#23 exporting manifest list sha256:0e7d2b2f89437c21b60ebaf386f44d59228ca19005d0e8b701a13c826f095dbf 0.0s done
+#23 naming to docker.io/library/g1-frontend-validacao-nginx:latest done
+#23 unpacking to docker.io/library/g1-frontend-validacao-nginx:latest 0.1s done
+#23 DONE 1.2s
+
+#25 [nginx] resolving provenance for metadata file
+#25 DONE 0.0s
+ Image g1-frontend-validacao-web Built
+ Image g1-frontend-validacao-nginx Built
+ Container g1-frontend-validacao-db-1 Running
+ Container g1-frontend-validacao-web-1 Running
+ Container g1-frontend-validacao-nginx-1 Recreate
+ Container g1-frontend-validacao-nginx-1 Recreated
+ Container g1-frontend-validacao-db-1 Waiting
+ Container g1-frontend-validacao-db-1 Healthy
+ Container g1-frontend-validacao-web-1 Waiting
+ Container g1-frontend-validacao-web-1 Healthy
+ Container g1-frontend-validacao-nginx-1 Starting
+ Container g1-frontend-validacao-nginx-1 Started

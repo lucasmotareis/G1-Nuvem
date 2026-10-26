@@ -4,7 +4,8 @@ Verificações realizadas em 19/10/2026 nas etapas de configuração e testes.
 Os arquivos abaixo registram somente comandos executados e seus resultados.
 Os horários UTC/GMT originais das saídas foram preservados; as legendas usam a
 data local de 19/10/2026. Os arquivos 01 a 17 correspondem à arquitetura básica;
-os arquivos a partir de 18 correspondem à implementação dos bônus.
+os arquivos 18 a 28 correspondem à implementação dos bônus. Os registros 29 a
+33, de 26/10/2026, verificam o frontend desta branch em um projeto Docker isolado.
 
 | Arquivo | Legenda e critério verificado |
 | --- | --- |
@@ -44,6 +45,16 @@ os arquivos a partir de 18 correspondem à implementação dos bônus.
 | [26-conferencia-final.txt](26-conferencia-final.txt) | Conferência final contra o PDF: integridade dos arquivos operacionais, imagem original incluída, documentação, exclusão de segredos e verificação atual do ambiente; publicação remota não realizada. |
 | [27-auditoria-criterios-eliminacao.txt](27-auditoria-criterios-eliminacao.txt) | Auditoria anterior ao push: índice, commits, objetos locais e referências do GitHub sem indício de segredo real; naquele momento, a publicação funcional ainda estava pendente. |
 | [28-publicacao-github.txt](28-publicacao-github.txt) | Push confirmado, repositório público, clone real com os nove arquivos operacionais testados, `.env` ausente do histórico e imagem presente no HTML do README renderizado pelo GitHub. |
+| [29-frontend-subida.txt](29-frontend-subida.txt) | Build real das duas imagens e subida do projeto isolado `g1-frontend-validacao`, com `.env.example`, volumes novos e porta local 18080. |
+| [30-frontend-testes.txt](30-frontend-testes.txt) | Onze verificações no Chromium: API real, filtro, cadastro com/sem foto, diálogo e layout móvel; respostas simuladas de falha/HTML são explicitamente identificadas. |
+| [30-frontend-testes.json](30-frontend-testes.json) | Resultado estruturado do navegador: três itens/zero fotos antes, cinco itens/uma foto depois, IDs criados e ausência de erros JavaScript. |
+| [30-frontend-desktop.png](30-frontend-desktop.png) | Captura real da interface em 1440px, após os dois cadastros de navegador; cinco itens e uma foto. |
+| [30-frontend-mobile.png](30-frontend-mobile.png) | Captura real da interface em 390px, com formulário acessível e sem rolagem horizontal. |
+| [31-frontend-rede-compartilhada.txt](31-frontend-rede-compartilhada.txt) | Imagem AWS testada localmente com `--network container:...`: Nginx acessa Flask por localhost e entrega interface/saúde/estatísticas; não comprova provisionamento AWS. |
+| [32-frontend-api-persistencia.txt](32-frontend-api-persistencia.txt) | Segundo cadastro com foto por curl, seis itens/duas fotos preservados após `down/up`, igualdade dos registros e hashes, Nginx válido, usuário `app` e ausência de portas publicadas em web/db. |
+| [32-frontend-recriacao-navegador.json](32-frontend-recriacao-navegador.json) | Nova sessão Chromium depois da recriação: lista, filtro, duas fotos carregadas e ausência de erros JavaScript. |
+| [32-frontend-apos-recriacao.png](32-frontend-apos-recriacao.png) | Interface real após a recriação dos contêineres, com seis itens e duas fotos. |
+| [33-manifesto-frontend.json](33-manifesto-frontend.json) | Branch, commit de base e hashes dos arquivos operacionais da versão com frontend; arquivos fornecidos comparados ao Git, sem alterações. |
 
 As imagens enviadas são [foto-teste-1.png](foto-teste-1.png) e
 [foto-teste-2.png](foto-teste-2.png), dois PNGs 64 × 64 de cor uniforme.
@@ -82,3 +93,18 @@ As menções a publicação pendente nos registros 26 e 27 retratam o período a
 ao push; essa pendência foi resolvida em 28. As menções a pacote no registro 25 e
 no manifesto 23 pertencem ao planejamento anterior e foram preservadas como
 histórico. O `.env` e os backups locais permanecem excluídos da entrega.
+
+## Estado da branch com frontend
+
+Os ensaios de 26/10 usaram o projeto isolado `g1-frontend-validacao` e os volumes
+`g1-frontend-validacao_dados_banco` e `g1-frontend-validacao_fotos`. Nenhum volume
+de outro projeto foi removido. O acesso de demonstração é
+http://127.0.0.1:18080; a publicação normal do Compose continua sendo 8080.
+Depois do registro 32, esse ambiente tem seis itens e duas fotos, com IDs e
+hashes documentados. As capturas 30 são anteriores ao último cadastro via curl;
+por isso exibem cinco itens e uma foto. A captura 32 mostra o estado posterior.
+
+O registro 31 verifica somente o upstream local da imagem usada no roteiro AWS.
+Não foram criados ECS, RDS, S3 Files ou outros recursos na conta. A publicação
+remota registrada em 28 refere-se à versão anterior ao frontend; esta branch
+não foi enviada ao GitHub nesta etapa.

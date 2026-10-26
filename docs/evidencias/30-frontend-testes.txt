@@ -1,0 +1,12 @@
+APROVADO: Página inicial, lista real e estatísticas da API
+APROVADO: Filtro por local, resultado vazio e limpeza do filtro
+APROVADO: Interface rejeita arquivo que não é JPG/PNG
+APROVADO: Cadastro multipart com foto retorna 201, atualiza a lista e abre foto real no diálogo
+APROVADO: Cadastro sem foto e incremento real das contagens
+APROVADO: Resposta simulada: descrições e locais são texto, sem injetar HTML
+APROVADO: Resposta simulada: falha de consulta e recuperação pelo filtro
+APROVADO: Resposta simulada: falha de cadastro preserva os campos para conferência
+APROVADO: Resposta simulada: indicador offline, contagens indisponíveis e retomada
+APROVADO: API mantém 404 e arquivos estáticos são servidos pelo Nginx
+APROVADO: Layout móvel em 390px sem rolagem horizontal e sem erros JavaScript
+{"before":{"fotos_no_volume":0,"itens_no_banco":3},"after":{"fotos_no_volume":1,"itens_no_banco":5},"created":{"foto":"48c64d2e041f4b02a74976a3d904530a.png","id":4},"noPhoto":{"foto":null,"id":5}}

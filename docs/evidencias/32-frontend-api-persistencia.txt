@@ -1,0 +1,80 @@
+Legenda: chamadas curl reais, dois objetos com foto e recriacao sem remover volumes do projeto isolado g1-frontend-validacao.
+Comando: curl.exe -i -F descricao=Oculos... -F local=Bloco-B -F foto=@docs/evidencias/foto-teste-2.png http://127.0.0.1:18080/itens
+HTTP/1.1 201 CREATED
+Server: nginx
+Date: Mon, 26 Oct 2026 18:10:49 GMT
+Content-Type: application/json
+Content-Length: 55
+Connection: keep-alive
+X-Content-Type-Options: nosniff
+
+{"foto":"4ce70cc2d4184860bad98c115bedda49.png","id":6}
+GET /health
+{"banco":"conectado","container":"95002c88a0ef","status":"ok"}
+GET /itens?local=biblio
+[{"criado_em":"2026-10-26T18:05:35.219781","descricao":"Garrafa encontrada no campus 1793037934897","foto":"/fotos/48c64d2e041f4b02a74976a3d904530a.png","id":4,"local":"Biblioteca"},{"criado_em":"2026-10-26T18:03:05.270613","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"}]
+ANTES /estatisticas
+{"fotos_no_volume":2,"itens_no_banco":6}
+ANTES /itens
+[{"criado_em":"2026-10-26T18:10:49.098329","descricao":"Oculos de teste do frontend","foto":"/fotos/4ce70cc2d4184860bad98c115bedda49.png","id":6,"local":"Bloco B"},{"criado_em":"2026-10-26T18:05:35.570609","descricao":"Chaveiro encontrado 1793037935391","foto":null,"id":5,"local":"Recep\u00e7\u00e3o"},{"criado_em":"2026-10-26T18:05:35.219781","descricao":"Garrafa encontrada no campus 1793037934897","foto":"/fotos/48c64d2e041f4b02a74976a3d904530a.png","id":4,"local":"Biblioteca"},{"criado_em":"2026-10-26T18:03:05.270613","descricao":"Garrafa termica azul","foto":null,"id":1,"local":"Biblioteca"},{"criado_em":"2026-10-26T18:03:05.270613","descricao":"Carregador de notebook USB-C","foto":null,"id":2,"local":"Laboratorio 3"},{"criado_em":"2026-10-26T18:03:05.270613","descricao":"Casaco preto com capuz","foto":null,"id":3,"local":"Cantina"}]
+Comando: docker compose ... down (SEM -v)
+ Container g1-frontend-validacao-nginx-1 Stopping
+ Container g1-frontend-validacao-nginx-1 Stopped
+ Container g1-frontend-validacao-nginx-1 Removing
+ Container g1-frontend-validacao-nginx-1 Removed
+ Container g1-frontend-validacao-web-1 Stopping
+ Container g1-frontend-validacao-web-1 Stopped
+ Container g1-frontend-validacao-web-1 Removing
+ Container g1-frontend-validacao-web-1 Removed
+ Container g1-frontend-validacao-db-1 Stopping
+ Container g1-frontend-validacao-db-1 Stopped
+ Container g1-frontend-validacao-db-1 Removing
+ Container g1-frontend-validacao-db-1 Removed
+ Network g1-frontend-validacao_rede_interna Removing
+ Network g1-frontend-validacao_rede_interna Removed
+Comando: docker compose ... up -d --wait
+ Network g1-frontend-validacao_rede_interna Creating
+ Network g1-frontend-validacao_rede_interna Creating
+ Network g1-frontend-validacao_rede_interna Created
+ Network g1-frontend-validacao_rede_interna Created
+ Container g1-frontend-validacao-db-1 Creating
+ Container g1-frontend-validacao-db-1 Created
+ Container g1-frontend-validacao-web-1 Creating
+ Container g1-frontend-validacao-web-1 Created
+ Container g1-frontend-validacao-nginx-1 Creating
+ Container g1-frontend-validacao-nginx-1 Created
+ Container g1-frontend-validacao-db-1 Starting
+ Container g1-frontend-validacao-db-1 Started
+ Container g1-frontend-validacao-db-1 Waiting
+ Container g1-frontend-validacao-db-1 Healthy
+ Container g1-frontend-validacao-web-1 Starting
+ Container g1-frontend-validacao-web-1 Started
+ Container g1-frontend-validacao-web-1 Waiting
+ Container g1-frontend-validacao-web-1 Healthy
+ Container g1-frontend-validacao-nginx-1 Starting
+ Container g1-frontend-validacao-nginx-1 Started
+ Container g1-frontend-validacao-nginx-1 Waiting
+ Container g1-frontend-validacao-db-1 Waiting
+ Container g1-frontend-validacao-web-1 Waiting
+ Container g1-frontend-validacao-web-1 Healthy
+ Container g1-frontend-validacao-db-1 Healthy
+ Container g1-frontend-validacao-nginx-1 Healthy
+DEPOIS /estatisticas
+{"fotos_no_volume":2,"itens_no_banco":6}
+APROVADO: mesmas contagens e mesmos registros completos, IDs, nomes de fotos e datas apos down/up.
+APROVADO foto: /fotos/4ce70cc2d4184860bad98c115bedda49.png SHA256=160A3A7B504DA82FC1EB67C103741C0DF78A56E7B6D033086E3B876FC2A2B562
+APROVADO foto: /fotos/48c64d2e041f4b02a74976a3d904530a.png SHA256=0698C7891947ED01EF63CFD51F754AD636F436898B5DFDC59268F8BFDA819EBF
+Comandos: ps; exec nginx nginx -t; exec web whoami; inspect de portas sem variaveis de ambiente
+NAME                            IMAGE                         COMMAND                  SERVICE   CREATED          STATUS                    PORTS
+g1-frontend-validacao-db-1      postgres:16-alpine            "docker-entrypoint.s…"   db        15 seconds ago   Up 13 seconds (healthy)   5432/tcp
+g1-frontend-validacao-nginx-1   g1-frontend-validacao-nginx   "/docker-entrypoint.…"   nginx     14 seconds ago   Up 1 second               127.0.0.1:18080->80/tcp
+g1-frontend-validacao-web-1     g1-frontend-validacao-web     "gunicorn --bind 0.0…"   web       15 seconds ago   Up 7 seconds (healthy)    5000/tcp
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+app
+{"5432/tcp":null}
+{"5000/tcp":null}
+web-1  | [2026-10-26 18:11:04 +0000] [1] [INFO] Starting gunicorn 23.0.0
+web-1  | [2026-10-26 18:11:04 +0000] [1] [INFO] Listening at: http://0.0.0.0:5000 (1)
+web-1  | [2026-10-26 18:11:04 +0000] [1] [INFO] Using worker: sync
+web-1  | [2026-10-26 18:11:04 +0000] [7] [INFO] Booting worker with pid: 7

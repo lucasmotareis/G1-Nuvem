@@ -5,7 +5,9 @@ e [app/Dockerfile](../app/Dockerfile), incluindo os bônus descritos em
 [BONUS.md](BONUS.md). Os três arquivos fornecidos pelo enunciado
 foram preservados; a comparação com o Apêndice A está na
 [evidência 11](evidencias/11-arquivos-fornecidos.txt). Os testes foram executados
-em 19/10/2026. A [arquitetura](ARQUITETURA.md) mostra os componentes e suas relações.
+em 19/10/2026 para a versão com bônus. A interface foi acrescentada em
+26/10/2026, com seus próprios ensaios 29 a 32 no [índice](evidencias/README.md).
+A [arquitetura](ARQUITETURA.md) mostra os componentes e suas relações.
 
 ## (a) Dockerfile: instruções e ordem
 
@@ -50,7 +52,7 @@ comprovam que esse usuário consegue gravar no volume montado em `/app/uploads`.
 | `services.web.volumes` | Monta o volume nomeado `fotos` em `/app/uploads`, para os arquivos sobreviverem à remoção do contêiner. |
 | `services.web.depends_on` | A condição `service_healthy` aguarda o healthcheck de `db` antes de iniciar `web`. |
 | `services.web.healthcheck` | Usa o Python já disponível na imagem para consultar `/health` na porta interna 5000. O Nginx depende dessa prontidão; não há nova dependência de aplicação. |
-| `services.nginx` | Usa `nginx:1.30-alpine`, publica somente `8080:80`, aguarda `web` saudável e monta `nginx/default.conf` somente para leitura. O upstream encaminha para `web:5000`, com atualização dos endereços pelo DNS do Docker. |
+| `services.nginx` | Constrói `./frontend` sobre `nginx:1.30-alpine`, publica somente `8080:80`, aguarda `web` saudável e monta `nginx/default.conf` somente para leitura. Serve a interface; as rotas da API seguem para `web:5000`, com atualização dos endereços pelo DNS do Docker. |
 | `services.adminer` | Usa `adminer:6` com `profiles: ["debug"]`. Publica `127.0.0.1:8081:8080` somente quando ativado, sugere `db` como servidor e aguarda o banco saudável. Não recebe senha na configuração. |
 | `services.db.image` | Usa a imagem oficial `postgres:16-alpine`. O banco não possui bloco `ports`, portanto não publica porta no host. |
 | `services.db.environment` | Recebe `POSTGRES_DB`, `POSTGRES_USER` e `POSTGRES_PASSWORD` do `.env`, para a inicialização do banco. |
@@ -77,6 +79,10 @@ disco** e **50,5 MB de tamanho do conteúdo**, nas colunas exibidas por esta ver
 do Docker. A imagem e o cache são recursos distintos dos volumes de dados.
 
 ## (c) Caminho completo de um `POST /itens` com foto
+
+O formulário da [interface](FRONTEND.md) executa o mesmo fluxo abaixo usando
+`fetch` e `FormData`; somente a origem da requisição muda de curl para navegador.
+HTML, CSS e JavaScript são entregues pelo Nginx, sem executar código Flask.
 
 1. O cliente executa `curl -X POST http://localhost:8080/itens` com os campos
    multipart `descricao`, `local` e `foto=@arquivo.png`. O exemplo completo está

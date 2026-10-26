@@ -96,3 +96,12 @@ precisam ser configuradas. Os gerenciadores de segredos substituem o arquivo
 local como fonte de segredos, com acesso por identidade e permissões definidas.
 Os registries armazenam e distribuem a imagem construída; eles não executam o
 build automaticamente apenas por serem escolhidos na tabela.
+
+### Roteiro prático AWS
+
+O [guia de implantação AWS](GUIA_AWS.md), preparado em 26/10/2026, desenvolve essa
+proposta por etapas. A análise de fotos acima considera o uso direto das APIs de
+objetos. O guia apresenta também a alternativa **S3 Files integrado ao ECS**, que
+fornece uma montagem de arquivos para preservar o código do protótipo, conforme
+a [documentação da AWS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/s3files-volumes.html).
+O roteiro e seu modelo de task definition ainda não foram executados na conta AWS.

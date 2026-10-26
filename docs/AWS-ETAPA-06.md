@@ -144,3 +144,4 @@ locais, resultados dos envios, digests remotos, varreduras e cálculo de custo.
 As imagens estão publicadas. A aplicação ainda não executa no ECS, e esta etapa
 não testa conexão ao RDS ou montagem do S3 Files. A próxima etapa é a **7: roles
 IAM de execução e de acesso da task**.
+Essa preparação foi executada e está no [registro da etapa 7](AWS-ETAPA-07.md).

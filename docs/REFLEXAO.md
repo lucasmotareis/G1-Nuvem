@@ -74,6 +74,8 @@ A [etapa 5](AWS-ETAPA-05.md) criou o bucket e o sistema S3 Files para as fotos;
 a montagem no ECS e os testes de integração da aplicação permanecem pendentes.
 Na [etapa 6](AWS-ETAPA-06.md), as duas imagens foram publicadas no ECR, com
 correção de segurança no frontend e os alertas remanescentes documentados.
+Na [etapa 7](AWS-ETAPA-07.md), foram criadas as roles com referências aos segredos
+e ao armazenamento; a validação em execução continua pendente.
 
 | Peça do ambiente local | Microsoft Azure | AWS | Google Cloud |
 | --- | --- | --- | --- |

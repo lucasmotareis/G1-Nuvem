@@ -9,6 +9,8 @@ A etapa 5 criou o bucket e o S3 Files, com os dois mount targets **Available**,
 conforme o [registro do armazenamento](AWS-ETAPA-05.md). A aplicação ainda não
 foi implantada no ECS. A etapa 6 publicou as imagens no ECR e corrigiu os
 pacotes do frontend, conforme o [registro das imagens](AWS-ETAPA-06.md).
+A etapa 7 criou as [duas roles IAM do ECS](AWS-ETAPA-07.md), com políticas
+restritas e validadas. O teste real de gravação dos logs continua pendente.
 
 ## 1. O caminho recomendado para começar
 
@@ -347,72 +349,54 @@ em [frontend/routing.conf](../frontend/routing.conf).
 
 ## 7. IAM: dar as permissões ao ECS
 
-Crie duas roles em **IAM → Roles → Create role → AWS service → Elastic Container
-Service → Elastic Container Service Task**. Ambas confiam em
-`ecs-tasks.amazonaws.com`.
+**Etapa executada:** `g1-ecs-execution-role` e `g1-ecs-task-role` criadas,
+com documentos lidos novamente e validados. Os ARNs e as simulações estão em
+[AWS-ETAPA-07.md](AWS-ETAPA-07.md). Use essas roles na etapa 8. A simulação de
+logs foi inconclusiva, inclusive no controle; confirmar a gravação real no ECS.
+
+Para reproduzir pelo console, crie duas roles em **IAM → Roles → Create role →
+AWS service → Elastic Container Service → Elastic Container Service Task**.
+Aplique a [trust policy completa](../infra/aws/iam/ecs-trust-policy.json) nas duas.
+Ela confia em `ecs-tasks.amazonaws.com` e restringe `aws:SourceAccount` e
+`aws:SourceArn` à conta/região. Conforme a AWS, essa condição de ECS não admite
+restringir um cluster específico.
 
 ### 7.1. `g1-ecs-execution-role`
 
-Anexe `AmazonECSTaskExecutionRolePolicy` para baixar a imagem e enviar logs.
-Adicione esta política inline, substituindo os ARNs pelos dois segredos do passo 4:
+Adicione a política inline `g1-ecs-execution-access`, usando o
+[JSON completo da execução](../infra/aws/iam/ecs-execution-policy.json).
+Ela permite obter o token ECR, baixar somente dos dois repositórios do projeto,
+escrever nos streams de `/ecs/achados-web` e ler os dois segredos do passo 4.
+O token ECR exige `Resource: "*"`; as demais declarações usam ARNs específicos.
 
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": "secretsmanager:GetSecretValue",
-      "Resource": [
-        "SUBSTITUA_ARN_COMPLETO_DO_SEGREDO_BANCO",
-        "SUBSTITUA_ARN_COMPLETO_DO_SEGREDO_ACESSO"
-      ]
-    }
-  ]
-}
-```
+Esta execução usa permissões inline restritas, em vez de anexar também a política
+genérica `AmazonECSTaskExecutionRolePolicy` do roteiro inicial. Essa política
+gerenciada foi consultada como referência e não está anexada à role criada.
+O grupo de logs precisa ser criado na etapa 8; a role não tem `CreateLogGroup`.
 
 Esta é a role de infraestrutura usada ao iniciar a tarefa. Com uma chave KMS
-própria, seria necessária também permissão `kms:Decrypt` nessa chave.
+própria para os segredos, seria necessária também permissão `kms:Decrypt` nessa chave.
 Fonte: [execution role](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html).
 
 ### 7.2. `g1-ecs-task-role`
 
-Adicione a política inline abaixo, preenchendo os ARNs e o bucket. Essa role
-autoriza o acesso ao sistema de arquivos e a leitura dos objetos pelo cliente.
+Adicione a política inline `g1-ecs-photo-access`, usando o
+[JSON completo da execução](../infra/aws/iam/ecs-task-policy.json). Ela permite
+`ClientMount`/`ClientWrite` no sistema de arquivos com o access point esperado,
+leitura de objetos/versões em `uploads/*` e listagem do bucket de fotos.
+Não concede leitura de segredos nem escrita direta por `s3:PutObject`.
 
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": ["s3files:ClientMount", "s3files:ClientWrite"],
-      "Resource": "SUBSTITUA_ARN_S3_FILES",
-      "Condition": {
-        "ArnEquals": {"s3files:AccessPointArn": "SUBSTITUA_ARN_ACCESS_POINT"}
-      }
-    },
-    {
-      "Effect": "Allow",
-      "Action": ["s3:GetObject", "s3:GetObjectVersion"],
-      "Resource": "arn:aws:s3:::SUBSTITUA_BUCKET/uploads/*"
-    },
-    {
-      "Effect": "Allow",
-      "Action": "s3:ListBucket",
-      "Resource": "arn:aws:s3:::SUBSTITUA_BUCKET"
-    }
-  ]
-}
-```
+Ela é diferente da role de sincronização `g1-s3files-sync-role` criada na etapa 5.
+Esta última escreve no bucket em nome do serviço. A política do sistema de
+arquivos também precisa permitir a identidade e o access point da task, como
+foi conferido na leitura posterior. Não são necessárias access keys no contêiner.
+Fonte: [S3 Files e IAM](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-files-prereq-policies.html).
 
-Ela é diferente da role de sincronização criada pelo S3 Files. Esta última
-escreve no bucket em nome do serviço e deve permanecer com as permissões
-configuradas na etapa 5 (geradas pelo assistente do console ou criadas pelo MCP).
-A política do sistema de arquivos também precisa permitir a identidade e o
-access point usados pela task. Não são necessárias access keys dentro do contêiner.
-Fonte: [acesso IAM ao S3 Files](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-files-security-iam.html).
+Os JSONs contêm os ARNs reais, sem senhas; para outra conta/região, substitua
+esses identificadores antes de aplicar. O usuário IAM administrador e as roles
+dos contêineres são identidades diferentes. Criar o usuário não muda a identidade
+já autenticada no MCP. Quem executar o deploy também precisa ter `iam:PassRole`
+para as duas roles; nenhuma permissão do novo usuário foi alterada nesta etapa.
 
 ## 8. ECS: registrar a receita de execução
 
@@ -709,6 +693,8 @@ CloudFormation ou Terraform, depois de confirmar as escolhas e os custos.
 ## 14. O que precisa ser comprovado ao executar
 
 - [x] Duas imagens enviadas ao ECR e contêiner `web` executando sem root: [evidência da etapa 6](evidencias/aws/04-imagens-ecr.json).
+- [x] Duas roles ECS criadas com trust/políticas conferidas e validadas: [evidência da etapa 7](evidencias/aws/05-roles-ecs.json).
+- [ ] Gravação real de logs no grupo do projeto confirmada no ECS; simulação inconclusiva na etapa 7.
 - [x] RDS **Available**, sem acesso público e regra 5432 somente do grupo web: [evidência da etapa 4](evidencias/aws/02-banco-segredos.json).
 - [ ] Conexão SQL a partir da task confirmada na etapa 9.
 - [x] Bucket privado/versionado, S3 Files, access point e dois mount targets disponíveis: [evidência da etapa 5](evidencias/aws/03-fotos-s3files.json).

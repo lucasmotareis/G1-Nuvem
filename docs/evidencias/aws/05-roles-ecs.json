@@ -1,0 +1,2269 @@
+{
+  "legenda": "26/10/2026: criação real das duas roles ECS, políticas restritas, leituras posteriores, validação e simulações. Quatorze de quinze cenários corresponderam ao esperado; a simulação de logs foi inconclusiva inclusive no controle e exige teste no ECS.",
+  "region": "us-east-1",
+  "account": "429100831877",
+  "records": {
+    "preflight": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:29:17.310715+00:00",
+        "identity": {
+          "UserId": "429100831877",
+          "Account": "429100831877",
+          "Arn": "arn:aws:iam::429100831877:root"
+        },
+        "roles": [
+          {
+            "Path": "/",
+            "RoleName": "g1-s3files-sync-role",
+            "RoleId": "AROAWH2DHCSCVG3ICXX4K",
+            "Arn": "arn:aws:iam::429100831877:role/g1-s3files-sync-role",
+            "CreateDate": "2026-10-26T19:57:30+00:00",
+            "AssumeRolePolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Sid": "AllowS3FilesAssumeRole",
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": "elasticfilesystem.amazonaws.com"
+                  },
+                  "Action": "sts:AssumeRole",
+                  "Condition": {
+                    "StringEquals": {
+                      "aws:SourceAccount": "429100831877"
+                    },
+                    "ArnLike": {
+                      "aws:SourceArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad"
+                    }
+                  }
+                }
+              ]
+            },
+            "Description": "Sincronizacao S3 Files exclusiva do bucket de fotos do laboratorio G1",
+            "MaxSessionDuration": 3600
+          }
+        ],
+        "database_secret": {
+          "ARN": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y",
+          "Name": "g1/achados/db",
+          "Description": "Credenciais PostgreSQL do laboratorio Achados e Perdidos",
+          "LastChangedDate": "2026-10-26T19:38:09.112000+00:00",
+          "LastAccessedDate": "2026-10-26T00:00:00+00:00",
+          "Tags": [
+            {
+              "Key": "Project",
+              "Value": "achados-perdidos"
+            },
+            {
+              "Key": "Environment",
+              "Value": "laboratorio"
+            }
+          ],
+          "VersionIdsToStages": {
+            "13b55b8a-1763-4fcf-a7c2-c8edafbc3bd4": [
+              "AWSCURRENT"
+            ]
+          },
+          "CreatedDate": "2026-10-26T19:38:08.877000+00:00"
+        },
+        "access_secret": {
+          "ARN": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/acesso-TR13WW",
+          "Name": "g1/achados/acesso",
+          "Description": "Senha compartilhada de entrada do frontend Achados e Perdidos",
+          "LastChangedDate": "2026-10-26T19:38:31.795000+00:00",
+          "LastAccessedDate": "2026-10-26T00:00:00+00:00",
+          "Tags": [
+            {
+              "Key": "Project",
+              "Value": "achados-perdidos"
+            },
+            {
+              "Key": "Environment",
+              "Value": "laboratorio"
+            }
+          ],
+          "VersionIdsToStages": {
+            "4c6538d8-80cc-4233-8d70-2993add1b5d7": [
+              "AWSCURRENT"
+            ]
+          },
+          "CreatedDate": "2026-10-26T19:38:31.762000+00:00"
+        },
+        "filesystem": {
+          "creationTime": "2026-10-26T19:57:56+00:00",
+          "fileSystemArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+          "fileSystemId": "fs-03cc16c6148b70bad",
+          "bucket": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026",
+          "prefix": "",
+          "clientToken": "g1-achados-fotos-20261026-v1",
+          "status": "available",
+          "roleArn": "arn:aws:iam::429100831877:role/g1-s3files-sync-role",
+          "ownerId": "429100831877",
+          "tags": [
+            {
+              "key": "Environment",
+              "value": "laboratorio"
+            },
+            {
+              "key": "Name",
+              "value": "g1-achados-fotos"
+            },
+            {
+              "key": "Project",
+              "value": "achados-perdidos"
+            }
+          ],
+          "name": "g1-achados-fotos"
+        },
+        "filesystem_policy": {
+          "fileSystemId": "fs-03cc16c6148b70bad",
+          "policy": "{\n  \"Version\" : \"2012-10-17\",\n  \"Statement\" : [ {\n    \"Sid\" : \"DenyOtherClientPrincipals\",\n    \"Effect\" : \"Deny\",\n    \"Principal\" : \"*\",\n    \"Action\" : \"s3files:Client*\",\n    \"Resource\" : \"arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad\",\n    \"Condition\" : {\n      \"ArnNotEquals\" : {\n        \"aws:PrincipalArn\" : \"arn:aws:iam::429100831877:role/g1-ecs-task-role\"\n      }\n    }\n  }, {\n    \"Sid\" : \"DenyOtherAccessPoints\",\n    \"Effect\" : \"Deny\",\n    \"Principal\" : \"*\",\n    \"Action\" : \"s3files:Client*\",\n    \"Resource\" : \"arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad\",\n    \"Condition\" : {\n      \"ArnNotEquals\" : {\n        \"s3files:AccessPointArn\" : \"arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137\"\n      }\n    }\n  } ]\n}"
+        },
+        "bucket_policy": {
+          "Policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"DenyNonTLSRequests\",\"Effect\":\"Deny\",\"Principal\":\"*\",\"Action\":\"s3:*\",\"Resource\":[\"arn:aws:s3:::g1-achados-fotos-429100831877-20261026\",\"arn:aws:s3:::g1-achados-fotos-429100831877-20261026/*\"],\"Condition\":{\"Bool\":{\"aws:SecureTransport\":\"false\",\"aws:PrincipalIsAWSService\":\"false\"}}}]}"
+        },
+        "execution_managed_policy": {
+          "Policy": {
+            "PolicyName": "AmazonECSTaskExecutionRolePolicy",
+            "PolicyId": "ANPAJG4T4G4PV56DE72PY",
+            "Arn": "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
+            "Path": "/service-role/",
+            "DefaultVersionId": "v1",
+            "AttachmentCount": 0,
+            "PermissionsBoundaryUsageCount": 0,
+            "IsAttachable": true,
+            "Description": "Provides access to other AWS service resources that are required to run Amazon ECS tasks",
+            "CreateDate": "2017-11-16T18:48:22+00:00",
+            "UpdateDate": "2017-11-16T18:48:22+00:00",
+            "Tags": []
+          }
+        }
+      },
+      "api_calls": [
+        {
+          "service": "sts",
+          "operation": "GetCallerIdentity",
+          "status": "success"
+        },
+        {
+          "service": "iam",
+          "operation": "ListRoles",
+          "status": "success",
+          "n_items": {
+            "Roles": 6
+          }
+        },
+        {
+          "service": "secretsmanager",
+          "operation": "DescribeSecret",
+          "status": "success",
+          "n_items": {
+            "Tags": 2
+          }
+        },
+        {
+          "service": "secretsmanager",
+          "operation": "DescribeSecret",
+          "status": "success",
+          "n_items": {
+            "Tags": 2
+          }
+        },
+        {
+          "service": "s3files",
+          "operation": "GetFileSystem",
+          "status": "success",
+          "n_items": {
+            "tags": 3
+          }
+        },
+        {
+          "service": "s3files",
+          "operation": "GetFileSystemPolicy",
+          "status": "success"
+        },
+        {
+          "service": "s3",
+          "operation": "GetBucketPolicy",
+          "status": "success"
+        },
+        {
+          "service": "iam",
+          "operation": "GetPolicy",
+          "status": "success"
+        }
+      ]
+    },
+    "managed_execution_policy_reference": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "execution_managed_policy_version": {
+          "PolicyVersion": {
+            "Document": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "ecr:GetAuthorizationToken",
+                    "ecr:BatchCheckLayerAvailability",
+                    "ecr:GetDownloadUrlForLayer",
+                    "ecr:BatchGetImage",
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            },
+            "VersionId": "v1",
+            "IsDefaultVersion": true,
+            "CreateDate": "2017-11-16T18:48:22+00:00"
+          }
+        }
+      },
+      "api_calls": [
+        {
+          "service": "iam",
+          "operation": "GetPolicyVersion",
+          "status": "success"
+        }
+      ]
+    },
+    "policy_validation": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:31:52.270641+00:00",
+        "execution": {
+          "findings": []
+        },
+        "task": {
+          "findings": []
+        }
+      },
+      "api_calls": [
+        {
+          "service": "accessanalyzer",
+          "operation": "ValidatePolicy",
+          "status": "success",
+          "n_items": {
+            "findings": 0
+          }
+        },
+        {
+          "service": "accessanalyzer",
+          "operation": "ValidatePolicy",
+          "status": "success",
+          "n_items": {
+            "findings": 0
+          }
+        }
+      ]
+    },
+    "roles_created": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:33:38.454483+00:00",
+        "identity": {
+          "UserId": "429100831877",
+          "Account": "429100831877",
+          "Arn": "arn:aws:iam::429100831877:root"
+        },
+        "execution_role": {
+          "Role": {
+            "Path": "/",
+            "RoleName": "g1-ecs-execution-role",
+            "RoleId": "AROAWH2DHCSCYU3ZIOU7B",
+            "Arn": "arn:aws:iam::429100831877:role/g1-ecs-execution-role",
+            "CreateDate": "2026-10-26T20:33:38+00:00",
+            "AssumeRolePolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Sid": "AllowECSTasksInAccount",
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": "ecs-tasks.amazonaws.com"
+                  },
+                  "Action": "sts:AssumeRole",
+                  "Condition": {
+                    "StringEquals": {
+                      "aws:SourceAccount": "429100831877"
+                    },
+                    "ArnLike": {
+                      "aws:SourceArn": "arn:aws:ecs:us-east-1:429100831877:*"
+                    }
+                  }
+                }
+              ]
+            },
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "achados-perdidos"
+              },
+              {
+                "Key": "Environment",
+                "Value": "laboratorio"
+              }
+            ]
+          }
+        },
+        "execution_policy": {},
+        "task_role": {
+          "Role": {
+            "Path": "/",
+            "RoleName": "g1-ecs-task-role",
+            "RoleId": "AROAWH2DHCSC347EFP5US",
+            "Arn": "arn:aws:iam::429100831877:role/g1-ecs-task-role",
+            "CreateDate": "2026-10-26T20:33:39+00:00",
+            "AssumeRolePolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Sid": "AllowECSTasksInAccount",
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": "ecs-tasks.amazonaws.com"
+                  },
+                  "Action": "sts:AssumeRole",
+                  "Condition": {
+                    "StringEquals": {
+                      "aws:SourceAccount": "429100831877"
+                    },
+                    "ArnLike": {
+                      "aws:SourceArn": "arn:aws:ecs:us-east-1:429100831877:*"
+                    }
+                  }
+                }
+              ]
+            },
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "achados-perdidos"
+              },
+              {
+                "Key": "Environment",
+                "Value": "laboratorio"
+              }
+            ]
+          }
+        },
+        "task_policy": {}
+      },
+      "api_calls": [
+        {
+          "service": "sts",
+          "operation": "GetCallerIdentity",
+          "status": "success"
+        },
+        {
+          "service": "iam",
+          "operation": "CreateRole",
+          "status": "success"
+        },
+        {
+          "service": "iam",
+          "operation": "PutRolePolicy",
+          "status": "success"
+        },
+        {
+          "service": "iam",
+          "operation": "CreateRole",
+          "status": "success"
+        },
+        {
+          "service": "iam",
+          "operation": "PutRolePolicy",
+          "status": "success"
+        }
+      ]
+    },
+    "readback": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:34:25.242314+00:00",
+        "execution_role": {
+          "Role": {
+            "Path": "/",
+            "RoleName": "g1-ecs-execution-role",
+            "RoleId": "AROAWH2DHCSCYU3ZIOU7B",
+            "Arn": "arn:aws:iam::429100831877:role/g1-ecs-execution-role",
+            "CreateDate": "2026-10-26T20:33:38+00:00",
+            "AssumeRolePolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Sid": "AllowECSTasksInAccount",
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": "ecs-tasks.amazonaws.com"
+                  },
+                  "Action": "sts:AssumeRole",
+                  "Condition": {
+                    "StringEquals": {
+                      "aws:SourceAccount": "429100831877"
+                    },
+                    "ArnLike": {
+                      "aws:SourceArn": "arn:aws:ecs:us-east-1:429100831877:*"
+                    }
+                  }
+                }
+              ]
+            },
+            "Description": "ECS runtime: imagens ECR, logs e segredos exclusivos do laboratorio G1",
+            "MaxSessionDuration": 3600,
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "achados-perdidos"
+              },
+              {
+                "Key": "Environment",
+                "Value": "laboratorio"
+              }
+            ],
+            "RoleLastUsed": {}
+          }
+        },
+        "execution_policy": {
+          "RoleName": "g1-ecs-execution-role",
+          "PolicyName": "g1-ecs-execution-access",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "GetECRAuthorization",
+                "Effect": "Allow",
+                "Action": "ecr:GetAuthorizationToken",
+                "Resource": "*"
+              },
+              {
+                "Sid": "PullProjectImages",
+                "Effect": "Allow",
+                "Action": [
+                  "ecr:BatchCheckLayerAvailability",
+                  "ecr:GetDownloadUrlForLayer",
+                  "ecr:BatchGetImage"
+                ],
+                "Resource": [
+                  "arn:aws:ecr:us-east-1:429100831877:repository/achados-web",
+                  "arn:aws:ecr:us-east-1:429100831877:repository/achados-frontend"
+                ]
+              },
+              {
+                "Sid": "WriteProjectContainerLogs",
+                "Effect": "Allow",
+                "Action": [
+                  "logs:CreateLogStream",
+                  "logs:PutLogEvents"
+                ],
+                "Resource": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:*"
+              },
+              {
+                "Sid": "ReadProjectSecrets",
+                "Effect": "Allow",
+                "Action": "secretsmanager:GetSecretValue",
+                "Resource": [
+                  "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y",
+                  "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/acesso-TR13WW"
+                ]
+              }
+            ]
+          }
+        },
+        "execution_inline_list": {
+          "PolicyNames": [
+            "g1-ecs-execution-access"
+          ]
+        },
+        "execution_managed_list": {
+          "AttachedPolicies": []
+        },
+        "task_role": {
+          "Role": {
+            "Path": "/",
+            "RoleName": "g1-ecs-task-role",
+            "RoleId": "AROAWH2DHCSC347EFP5US",
+            "Arn": "arn:aws:iam::429100831877:role/g1-ecs-task-role",
+            "CreateDate": "2026-10-26T20:33:39+00:00",
+            "AssumeRolePolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Sid": "AllowECSTasksInAccount",
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": "ecs-tasks.amazonaws.com"
+                  },
+                  "Action": "sts:AssumeRole",
+                  "Condition": {
+                    "StringEquals": {
+                      "aws:SourceAccount": "429100831877"
+                    },
+                    "ArnLike": {
+                      "aws:SourceArn": "arn:aws:ecs:us-east-1:429100831877:*"
+                    }
+                  }
+                }
+              ]
+            },
+            "Description": "ECS task: montagem e acesso as fotos do laboratorio G1",
+            "MaxSessionDuration": 3600,
+            "Tags": [
+              {
+                "Key": "Project",
+                "Value": "achados-perdidos"
+              },
+              {
+                "Key": "Environment",
+                "Value": "laboratorio"
+              }
+            ],
+            "RoleLastUsed": {}
+          }
+        },
+        "task_policy": {
+          "RoleName": "g1-ecs-task-role",
+          "PolicyName": "g1-ecs-photo-access",
+          "PolicyDocument": {
+            "Version": "2012-10-17",
+            "Statement": [
+              {
+                "Sid": "MountWritePhotosThroughAccessPoint",
+                "Effect": "Allow",
+                "Action": [
+                  "s3files:ClientMount",
+                  "s3files:ClientWrite"
+                ],
+                "Resource": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+                "Condition": {
+                  "ArnEquals": {
+                    "s3files:AccessPointArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137"
+                  }
+                }
+              },
+              {
+                "Sid": "ReadPhotoObjects",
+                "Effect": "Allow",
+                "Action": [
+                  "s3:GetObject",
+                  "s3:GetObjectVersion"
+                ],
+                "Resource": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026/uploads/*"
+              },
+              {
+                "Sid": "ListPhotoBucket",
+                "Effect": "Allow",
+                "Action": "s3:ListBucket",
+                "Resource": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026"
+              }
+            ]
+          }
+        },
+        "task_inline_list": {
+          "PolicyNames": [
+            "g1-ecs-photo-access"
+          ]
+        },
+        "task_managed_list": {
+          "AttachedPolicies": []
+        },
+        "filesystem_policy": {
+          "fileSystemId": "fs-03cc16c6148b70bad",
+          "policy": "{\n  \"Version\" : \"2012-10-17\",\n  \"Statement\" : [ {\n    \"Sid\" : \"DenyOtherClientPrincipals\",\n    \"Effect\" : \"Deny\",\n    \"Principal\" : \"*\",\n    \"Action\" : \"s3files:Client*\",\n    \"Resource\" : \"arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad\",\n    \"Condition\" : {\n      \"ArnNotEquals\" : {\n        \"aws:PrincipalArn\" : \"arn:aws:iam::429100831877:role/g1-ecs-task-role\"\n      }\n    }\n  }, {\n    \"Sid\" : \"DenyOtherAccessPoints\",\n    \"Effect\" : \"Deny\",\n    \"Principal\" : \"*\",\n    \"Action\" : \"s3files:Client*\",\n    \"Resource\" : \"arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad\",\n    \"Condition\" : {\n      \"ArnNotEquals\" : {\n        \"s3files:AccessPointArn\" : \"arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137\"\n      }\n    }\n  } ]\n}"
+        },
+        "bucket_policy": {
+          "Policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Sid\":\"DenyNonTLSRequests\",\"Effect\":\"Deny\",\"Principal\":\"*\",\"Action\":\"s3:*\",\"Resource\":[\"arn:aws:s3:::g1-achados-fotos-429100831877-20261026\",\"arn:aws:s3:::g1-achados-fotos-429100831877-20261026/*\"],\"Condition\":{\"Bool\":{\"aws:SecureTransport\":\"false\",\"aws:PrincipalIsAWSService\":\"false\"}}}]}"
+        }
+      },
+      "api_calls": [
+        {
+          "service": "iam",
+          "operation": "GetRole",
+          "status": "success"
+        },
+        {
+          "service": "iam",
+          "operation": "GetRolePolicy",
+          "status": "success"
+        },
+        {
+          "service": "iam",
+          "operation": "ListRolePolicies",
+          "status": "success",
+          "n_items": {
+            "PolicyNames": 1
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "ListAttachedRolePolicies",
+          "status": "success",
+          "n_items": {
+            "AttachedPolicies": 0
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "GetRole",
+          "status": "success"
+        },
+        {
+          "service": "iam",
+          "operation": "GetRolePolicy",
+          "status": "success"
+        },
+        {
+          "service": "iam",
+          "operation": "ListRolePolicies",
+          "status": "success",
+          "n_items": {
+            "PolicyNames": 1
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "ListAttachedRolePolicies",
+          "status": "success",
+          "n_items": {
+            "AttachedPolicies": 0
+          }
+        },
+        {
+          "service": "s3files",
+          "operation": "GetFileSystemPolicy",
+          "status": "success"
+        },
+        {
+          "service": "s3",
+          "operation": "GetBucketPolicy",
+          "status": "success"
+        }
+      ]
+    },
+    "principal_simulation": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:34:29.208066+00:00",
+        "cases": [
+          {
+            "case": {
+              "id": "execution_ecr_token",
+              "role": "g1-ecs-execution-role",
+              "actions": [
+                "ecr:GetAuthorizationToken"
+              ],
+              "resources": [
+                "*"
+              ],
+              "expected": "allowed"
+            },
+            "response": {
+              "EvaluationResults": [
+                {
+                  "EvalActionName": "ecr:GetAuthorizationToken",
+                  "EvalResourceName": "*",
+                  "EvalDecision": "allowed",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "role_g1-ecs-execution-role_g1-ecs-execution-access",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 41
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 146
+                      }
+                    }
+                  ],
+                  "MissingContextValues": []
+                }
+              ]
+            }
+          },
+          {
+            "case": {
+              "id": "execution_pull_both_project_images",
+              "role": "g1-ecs-execution-role",
+              "actions": [
+                "ecr:BatchGetImage",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchCheckLayerAvailability"
+              ],
+              "resources": [
+                "arn:aws:ecr:us-east-1:429100831877:repository/achados-web",
+                "arn:aws:ecr:us-east-1:429100831877:repository/achados-frontend"
+              ],
+              "expected": "allowed"
+            },
+            "response": {
+              "EvaluationResults": [
+                {
+                  "EvalActionName": "ecr:BatchGetImage",
+                  "EvalResourceName": "arn:aws:ecr:${Region}:${Account}:repository/${RepositoryName}",
+                  "EvalDecision": "allowed",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "role_g1-ecs-execution-role_g1-ecs-execution-access",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 146
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 434
+                      }
+                    }
+                  ],
+                  "MissingContextValues": [],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:ecr:us-east-1:429100831877:repository/achados-web",
+                      "EvalResourceDecision": "allowed",
+                      "MatchedStatements": [
+                        {
+                          "SourcePolicyId": "role_g1-ecs-execution-role_g1-ecs-execution-access",
+                          "SourcePolicyType": "IAM Policy",
+                          "StartPosition": {
+                            "Line": 1,
+                            "Column": 146
+                          },
+                          "EndPosition": {
+                            "Line": 1,
+                            "Column": 434
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "EvalResourceName": "arn:aws:ecr:us-east-1:429100831877:repository/achados-frontend",
+                      "EvalResourceDecision": "allowed",
+                      "MatchedStatements": [
+                        {
+                          "SourcePolicyId": "role_g1-ecs-execution-role_g1-ecs-execution-access",
+                          "SourcePolicyType": "IAM Policy",
+                          "StartPosition": {
+                            "Line": 1,
+                            "Column": 146
+                          },
+                          "EndPosition": {
+                            "Line": 1,
+                            "Column": 434
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "EvalActionName": "ecr:GetDownloadUrlForLayer",
+                  "EvalResourceName": "arn:aws:ecr:${Region}:${Account}:repository/${RepositoryName}",
+                  "EvalDecision": "allowed",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "role_g1-ecs-execution-role_g1-ecs-execution-access",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 146
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 434
+                      }
+                    }
+                  ],
+                  "MissingContextValues": [],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:ecr:us-east-1:429100831877:repository/achados-web",
+                      "EvalResourceDecision": "allowed",
+                      "MatchedStatements": [
+                        {
+                          "SourcePolicyId": "role_g1-ecs-execution-role_g1-ecs-execution-access",
+                          "SourcePolicyType": "IAM Policy",
+                          "StartPosition": {
+                            "Line": 1,
+                            "Column": 146
+                          },
+                          "EndPosition": {
+                            "Line": 1,
+                            "Column": 434
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "EvalResourceName": "arn:aws:ecr:us-east-1:429100831877:repository/achados-frontend",
+                      "EvalResourceDecision": "allowed",
+                      "MatchedStatements": [
+                        {
+                          "SourcePolicyId": "role_g1-ecs-execution-role_g1-ecs-execution-access",
+                          "SourcePolicyType": "IAM Policy",
+                          "StartPosition": {
+                            "Line": 1,
+                            "Column": 146
+                          },
+                          "EndPosition": {
+                            "Line": 1,
+                            "Column": 434
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "EvalActionName": "ecr:BatchCheckLayerAvailability",
+                  "EvalResourceName": "arn:aws:ecr:${Region}:${Account}:repository/${RepositoryName}",
+                  "EvalDecision": "allowed",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "role_g1-ecs-execution-role_g1-ecs-execution-access",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 146
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 434
+                      }
+                    }
+                  ],
+                  "MissingContextValues": [],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:ecr:us-east-1:429100831877:repository/achados-web",
+                      "EvalResourceDecision": "allowed",
+                      "MatchedStatements": [
+                        {
+                          "SourcePolicyId": "role_g1-ecs-execution-role_g1-ecs-execution-access",
+                          "SourcePolicyType": "IAM Policy",
+                          "StartPosition": {
+                            "Line": 1,
+                            "Column": 146
+                          },
+                          "EndPosition": {
+                            "Line": 1,
+                            "Column": 434
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "EvalResourceName": "arn:aws:ecr:us-east-1:429100831877:repository/achados-frontend",
+                      "EvalResourceDecision": "allowed",
+                      "MatchedStatements": [
+                        {
+                          "SourcePolicyId": "role_g1-ecs-execution-role_g1-ecs-execution-access",
+                          "SourcePolicyType": "IAM Policy",
+                          "StartPosition": {
+                            "Line": 1,
+                            "Column": 146
+                          },
+                          "EndPosition": {
+                            "Line": 1,
+                            "Column": 434
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "case": {
+              "id": "execution_cannot_pull_other_repository",
+              "role": "g1-ecs-execution-role",
+              "actions": [
+                "ecr:BatchGetImage"
+              ],
+              "resources": [
+                "arn:aws:ecr:us-east-1:429100831877:repository/g1-simulacao-fora-do-projeto"
+              ],
+              "expected": "implicitDeny"
+            },
+            "response": {
+              "EvaluationResults": [
+                {
+                  "EvalActionName": "ecr:BatchGetImage",
+                  "EvalResourceName": "arn:aws:ecr:us-east-1:429100831877:repository/g1-simulacao-fora-do-projeto",
+                  "EvalDecision": "implicitDeny",
+                  "MatchedStatements": [],
+                  "MissingContextValues": [],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:ecr:us-east-1:429100831877:repository/g1-simulacao-fora-do-projeto",
+                      "EvalResourceDecision": "implicitDeny"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "case": {
+              "id": "execution_read_both_secrets",
+              "role": "g1-ecs-execution-role",
+              "actions": [
+                "secretsmanager:GetSecretValue"
+              ],
+              "resources": [
+                "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y",
+                "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/acesso-TR13WW"
+              ],
+              "expected": "allowed"
+            },
+            "response": {
+              "EvaluationResults": [
+                {
+                  "EvalActionName": "secretsmanager:GetSecretValue",
+                  "EvalResourceName": "arn:aws:secretsmanager:${Region}:${Account}:secret:${SecretId}",
+                  "EvalDecision": "allowed",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "role_g1-ecs-execution-role_g1-ecs-execution-access",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 639
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 904
+                      }
+                    }
+                  ],
+                  "MissingContextValues": [],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y",
+                      "EvalResourceDecision": "allowed",
+                      "MatchedStatements": [
+                        {
+                          "SourcePolicyId": "role_g1-ecs-execution-role_g1-ecs-execution-access",
+                          "SourcePolicyType": "IAM Policy",
+                          "StartPosition": {
+                            "Line": 1,
+                            "Column": 639
+                          },
+                          "EndPosition": {
+                            "Line": 1,
+                            "Column": 904
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "EvalResourceName": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/acesso-TR13WW",
+                      "EvalResourceDecision": "allowed",
+                      "MatchedStatements": [
+                        {
+                          "SourcePolicyId": "role_g1-ecs-execution-role_g1-ecs-execution-access",
+                          "SourcePolicyType": "IAM Policy",
+                          "StartPosition": {
+                            "Line": 1,
+                            "Column": 639
+                          },
+                          "EndPosition": {
+                            "Line": 1,
+                            "Column": 904
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "case": {
+              "id": "execution_cannot_read_other_secret",
+              "role": "g1-ecs-execution-role",
+              "actions": [
+                "secretsmanager:GetSecretValue"
+              ],
+              "resources": [
+                "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/simulacao-fora-AbCdEf"
+              ],
+              "expected": "implicitDeny"
+            },
+            "response": {
+              "EvaluationResults": [
+                {
+                  "EvalActionName": "secretsmanager:GetSecretValue",
+                  "EvalResourceName": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/simulacao-fora-AbCdEf",
+                  "EvalDecision": "implicitDeny",
+                  "MatchedStatements": [],
+                  "MissingContextValues": [],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/simulacao-fora-AbCdEf",
+                      "EvalResourceDecision": "implicitDeny"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "case": {
+              "id": "execution_write_project_logs",
+              "role": "g1-ecs-execution-role",
+              "actions": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+              ],
+              "resources": [
+                "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao"
+              ],
+              "expected": "allowed"
+            },
+            "response": {
+              "EvaluationResults": [
+                {
+                  "EvalActionName": "logs:CreateLogStream",
+                  "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+                  "EvalDecision": "implicitDeny",
+                  "MatchedStatements": [],
+                  "MissingContextValues": [],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+                      "EvalResourceDecision": "implicitDeny"
+                    }
+                  ]
+                },
+                {
+                  "EvalActionName": "logs:PutLogEvents",
+                  "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+                  "EvalDecision": "implicitDeny",
+                  "MatchedStatements": [],
+                  "MissingContextValues": [],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+                      "EvalResourceDecision": "implicitDeny"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "case": {
+              "id": "execution_cannot_write_other_logs",
+              "role": "g1-ecs-execution-role",
+              "actions": [
+                "logs:PutLogEvents"
+              ],
+              "resources": [
+                "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/g1-simulacao-fora:log-stream:web"
+              ],
+              "expected": "implicitDeny"
+            },
+            "response": {
+              "EvaluationResults": [
+                {
+                  "EvalActionName": "logs:PutLogEvents",
+                  "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/g1-simulacao-fora:log-stream:web",
+                  "EvalDecision": "implicitDeny",
+                  "MatchedStatements": [],
+                  "MissingContextValues": [],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/g1-simulacao-fora:log-stream:web",
+                      "EvalResourceDecision": "implicitDeny"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "case": {
+              "id": "task_mount_and_write_expected_access_point",
+              "role": "g1-ecs-task-role",
+              "actions": [
+                "s3files:ClientMount",
+                "s3files:ClientWrite"
+              ],
+              "resources": [
+                "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad"
+              ],
+              "context": [
+                {
+                  "ContextKeyName": "s3files:AccessPointArn",
+                  "ContextKeyValues": [
+                    "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137"
+                  ],
+                  "ContextKeyType": "string"
+                }
+              ],
+              "expected": "allowed"
+            },
+            "response": {
+              "EvaluationResults": [
+                {
+                  "EvalActionName": "s3files:ClientMount",
+                  "EvalResourceName": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+                  "EvalDecision": "allowed",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "role_g1-ecs-task-role_g1-ecs-photo-access",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 41
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 417
+                      }
+                    }
+                  ],
+                  "MissingContextValues": [],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+                      "EvalResourceDecision": "allowed",
+                      "MatchedStatements": [
+                        {
+                          "SourcePolicyId": "role_g1-ecs-task-role_g1-ecs-photo-access",
+                          "SourcePolicyType": "IAM Policy",
+                          "StartPosition": {
+                            "Line": 1,
+                            "Column": 41
+                          },
+                          "EndPosition": {
+                            "Line": 1,
+                            "Column": 417
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "EvalActionName": "s3files:ClientWrite",
+                  "EvalResourceName": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+                  "EvalDecision": "allowed",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "role_g1-ecs-task-role_g1-ecs-photo-access",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 41
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 417
+                      }
+                    }
+                  ],
+                  "MissingContextValues": [],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+                      "EvalResourceDecision": "allowed",
+                      "MatchedStatements": [
+                        {
+                          "SourcePolicyId": "role_g1-ecs-task-role_g1-ecs-photo-access",
+                          "SourcePolicyType": "IAM Policy",
+                          "StartPosition": {
+                            "Line": 1,
+                            "Column": 41
+                          },
+                          "EndPosition": {
+                            "Line": 1,
+                            "Column": 417
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "case": {
+              "id": "task_wrong_access_point_denied",
+              "role": "g1-ecs-task-role",
+              "actions": [
+                "s3files:ClientMount",
+                "s3files:ClientWrite"
+              ],
+              "resources": [
+                "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad"
+              ],
+              "context": [
+                {
+                  "ContextKeyName": "s3files:AccessPointArn",
+                  "ContextKeyValues": [
+                    "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-00000000000000000"
+                  ],
+                  "ContextKeyType": "string"
+                }
+              ],
+              "expected": "implicitDeny"
+            },
+            "response": {
+              "EvaluationResults": [
+                {
+                  "EvalActionName": "s3files:ClientMount",
+                  "EvalResourceName": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+                  "EvalDecision": "implicitDeny",
+                  "MatchedStatements": [],
+                  "MissingContextValues": [],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+                      "EvalResourceDecision": "implicitDeny"
+                    }
+                  ]
+                },
+                {
+                  "EvalActionName": "s3files:ClientWrite",
+                  "EvalResourceName": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+                  "EvalDecision": "implicitDeny",
+                  "MatchedStatements": [],
+                  "MissingContextValues": [],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+                      "EvalResourceDecision": "implicitDeny"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "case": {
+              "id": "task_missing_access_point_denied",
+              "role": "g1-ecs-task-role",
+              "actions": [
+                "s3files:ClientMount",
+                "s3files:ClientWrite"
+              ],
+              "resources": [
+                "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad"
+              ],
+              "expected": "implicitDeny"
+            },
+            "response": {
+              "EvaluationResults": [
+                {
+                  "EvalActionName": "s3files:ClientMount",
+                  "EvalResourceName": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+                  "EvalDecision": "implicitDeny",
+                  "MatchedStatements": [],
+                  "MissingContextValues": [
+                    "s3files:AccessPointArn"
+                  ],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+                      "EvalResourceDecision": "implicitDeny",
+                      "MissingContextValues": [
+                        "s3files:AccessPointArn"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "EvalActionName": "s3files:ClientWrite",
+                  "EvalResourceName": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+                  "EvalDecision": "implicitDeny",
+                  "MatchedStatements": [],
+                  "MissingContextValues": [
+                    "s3files:AccessPointArn"
+                  ],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+                      "EvalResourceDecision": "implicitDeny",
+                      "MissingContextValues": [
+                        "s3files:AccessPointArn"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "case": {
+              "id": "task_read_photo_and_version",
+              "role": "g1-ecs-task-role",
+              "actions": [
+                "s3:GetObject",
+                "s3:GetObjectVersion"
+              ],
+              "resources": [
+                "arn:aws:s3:::g1-achados-fotos-429100831877-20261026/uploads/g1-simulacao.png"
+              ],
+              "expected": "allowed"
+            },
+            "response": {
+              "EvaluationResults": [
+                {
+                  "EvalActionName": "s3:GetObject",
+                  "EvalResourceName": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026/uploads/g1-simulacao.png",
+                  "EvalDecision": "allowed",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "role_g1-ecs-task-role_g1-ecs-photo-access",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 417
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 593
+                      }
+                    }
+                  ],
+                  "MissingContextValues": [],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026/uploads/g1-simulacao.png",
+                      "EvalResourceDecision": "allowed",
+                      "MatchedStatements": [
+                        {
+                          "SourcePolicyId": "role_g1-ecs-task-role_g1-ecs-photo-access",
+                          "SourcePolicyType": "IAM Policy",
+                          "StartPosition": {
+                            "Line": 1,
+                            "Column": 417
+                          },
+                          "EndPosition": {
+                            "Line": 1,
+                            "Column": 593
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "EvalActionName": "s3:GetObjectVersion",
+                  "EvalResourceName": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026/uploads/g1-simulacao.png",
+                  "EvalDecision": "allowed",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "role_g1-ecs-task-role_g1-ecs-photo-access",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 417
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 593
+                      }
+                    }
+                  ],
+                  "MissingContextValues": [],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026/uploads/g1-simulacao.png",
+                      "EvalResourceDecision": "allowed",
+                      "MatchedStatements": [
+                        {
+                          "SourcePolicyId": "role_g1-ecs-task-role_g1-ecs-photo-access",
+                          "SourcePolicyType": "IAM Policy",
+                          "StartPosition": {
+                            "Line": 1,
+                            "Column": 417
+                          },
+                          "EndPosition": {
+                            "Line": 1,
+                            "Column": 593
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "case": {
+              "id": "task_read_other_prefix_denied",
+              "role": "g1-ecs-task-role",
+              "actions": [
+                "s3:GetObject"
+              ],
+              "resources": [
+                "arn:aws:s3:::g1-achados-fotos-429100831877-20261026/fora/g1-simulacao.png"
+              ],
+              "expected": "implicitDeny"
+            },
+            "response": {
+              "EvaluationResults": [
+                {
+                  "EvalActionName": "s3:GetObject",
+                  "EvalResourceName": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026/fora/g1-simulacao.png",
+                  "EvalDecision": "implicitDeny",
+                  "MatchedStatements": [],
+                  "MissingContextValues": [
+                    "s3files:AccessPointArn"
+                  ],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026/fora/g1-simulacao.png",
+                      "EvalResourceDecision": "implicitDeny",
+                      "MissingContextValues": [
+                        "s3files:AccessPointArn"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "case": {
+              "id": "task_direct_s3_write_denied",
+              "role": "g1-ecs-task-role",
+              "actions": [
+                "s3:PutObject"
+              ],
+              "resources": [
+                "arn:aws:s3:::g1-achados-fotos-429100831877-20261026/uploads/g1-simulacao.png"
+              ],
+              "expected": "implicitDeny"
+            },
+            "response": {
+              "EvaluationResults": [
+                {
+                  "EvalActionName": "s3:PutObject",
+                  "EvalResourceName": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026/uploads/g1-simulacao.png",
+                  "EvalDecision": "implicitDeny",
+                  "MatchedStatements": [],
+                  "MissingContextValues": [
+                    "s3files:AccessPointArn"
+                  ],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026/uploads/g1-simulacao.png",
+                      "EvalResourceDecision": "implicitDeny",
+                      "MissingContextValues": [
+                        "s3files:AccessPointArn"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "case": {
+              "id": "task_cannot_fetch_secrets",
+              "role": "g1-ecs-task-role",
+              "actions": [
+                "secretsmanager:GetSecretValue"
+              ],
+              "resources": [
+                "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y",
+                "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/acesso-TR13WW"
+              ],
+              "expected": "implicitDeny"
+            },
+            "response": {
+              "EvaluationResults": [
+                {
+                  "EvalActionName": "secretsmanager:GetSecretValue",
+                  "EvalResourceName": "arn:aws:secretsmanager:${Region}:${Account}:secret:${SecretId}",
+                  "EvalDecision": "implicitDeny",
+                  "MatchedStatements": [],
+                  "MissingContextValues": [
+                    "s3files:AccessPointArn"
+                  ],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y",
+                      "EvalResourceDecision": "implicitDeny",
+                      "MissingContextValues": [
+                        "s3files:AccessPointArn"
+                      ]
+                    },
+                    {
+                      "EvalResourceName": "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/acesso-TR13WW",
+                      "EvalResourceDecision": "implicitDeny",
+                      "MissingContextValues": [
+                        "s3files:AccessPointArn"
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "case": {
+              "id": "task_list_photo_bucket",
+              "role": "g1-ecs-task-role",
+              "actions": [
+                "s3:ListBucket"
+              ],
+              "resources": [
+                "arn:aws:s3:::g1-achados-fotos-429100831877-20261026"
+              ],
+              "expected": "allowed"
+            },
+            "response": {
+              "EvaluationResults": [
+                {
+                  "EvalActionName": "s3:ListBucket",
+                  "EvalResourceName": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026",
+                  "EvalDecision": "allowed",
+                  "MatchedStatements": [
+                    {
+                      "SourcePolicyId": "role_g1-ecs-task-role_g1-ecs-photo-access",
+                      "SourcePolicyType": "IAM Policy",
+                      "StartPosition": {
+                        "Line": 1,
+                        "Column": 593
+                      },
+                      "EndPosition": {
+                        "Line": 1,
+                        "Column": 734
+                      }
+                    }
+                  ],
+                  "MissingContextValues": [],
+                  "EvalDecisionDetails": {},
+                  "ResourceSpecificResults": [
+                    {
+                      "EvalResourceName": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026",
+                      "EvalResourceDecision": "allowed",
+                      "MatchedStatements": [
+                        {
+                          "SourcePolicyId": "role_g1-ecs-task-role_g1-ecs-photo-access",
+                          "SourcePolicyType": "IAM Policy",
+                          "StartPosition": {
+                            "Line": 1,
+                            "Column": 593
+                          },
+                          "EndPosition": {
+                            "Line": 1,
+                            "Column": 734
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "api_calls": [
+        {
+          "service": "iam",
+          "operation": "SimulatePrincipalPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 1
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "SimulatePrincipalPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 3
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "SimulatePrincipalPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 1
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "SimulatePrincipalPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 1
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "SimulatePrincipalPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 1
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "SimulatePrincipalPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 2
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "SimulatePrincipalPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 1
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "SimulatePrincipalPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 2
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "SimulatePrincipalPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 2
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "SimulatePrincipalPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 2
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "SimulatePrincipalPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 2
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "SimulatePrincipalPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 1
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "SimulatePrincipalPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 1
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "SimulatePrincipalPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 1
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "SimulatePrincipalPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 1
+          }
+        }
+      ]
+    },
+    "logs_diagnosis": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:35:52.708612+00:00",
+        "custom_log_permissions": {
+          "EvaluationResults": [
+            {
+              "EvalActionName": "logs:CreateLogStream",
+              "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+              "EvalDecision": "implicitDeny",
+              "MatchedStatements": [],
+              "MissingContextValues": [],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+                  "EvalResourceDecision": "implicitDeny"
+                }
+              ]
+            },
+            {
+              "EvalActionName": "logs:PutLogEvents",
+              "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+              "EvalDecision": "implicitDeny",
+              "MatchedStatements": [],
+              "MissingContextValues": [],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+                  "EvalResourceDecision": "implicitDeny"
+                }
+              ]
+            }
+          ]
+        },
+        "principal_log_permissions": {
+          "EvaluationResults": [
+            {
+              "EvalActionName": "logs:CreateLogStream",
+              "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+              "EvalDecision": "implicitDeny",
+              "MatchedStatements": [],
+              "MissingContextValues": [],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+                  "EvalResourceDecision": "implicitDeny"
+                }
+              ]
+            },
+            {
+              "EvalActionName": "logs:PutLogEvents",
+              "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+              "EvalDecision": "implicitDeny",
+              "MatchedStatements": [],
+              "MissingContextValues": [],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+                  "EvalResourceDecision": "implicitDeny"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "api_calls": [
+        {
+          "service": "iam",
+          "operation": "SimulateCustomPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 2
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "SimulatePrincipalPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 2
+          }
+        }
+      ]
+    },
+    "logs_control_simulation": {
+      "status": "success",
+      "stdout": "",
+      "return_value": {
+        "timestamp": "2026-10-26T20:36:33.009325+00:00",
+        "group_wildcard": {
+          "EvaluationResults": [
+            {
+              "EvalActionName": "logs:CreateLogStream",
+              "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+              "EvalDecision": "implicitDeny",
+              "MatchedStatements": [],
+              "MissingContextValues": [],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+                  "EvalResourceDecision": "implicitDeny"
+                }
+              ]
+            },
+            {
+              "EvalActionName": "logs:PutLogEvents",
+              "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+              "EvalDecision": "implicitDeny",
+              "MatchedStatements": [],
+              "MissingContextValues": [],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+                  "EvalResourceDecision": "implicitDeny"
+                }
+              ]
+            }
+          ]
+        },
+        "exact_stream": {
+          "EvaluationResults": [
+            {
+              "EvalActionName": "logs:CreateLogStream",
+              "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+              "EvalDecision": "implicitDeny",
+              "MatchedStatements": [],
+              "MissingContextValues": [],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+                  "EvalResourceDecision": "implicitDeny"
+                }
+              ]
+            },
+            {
+              "EvalActionName": "logs:PutLogEvents",
+              "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+              "EvalDecision": "implicitDeny",
+              "MatchedStatements": [],
+              "MissingContextValues": [],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+                  "EvalResourceDecision": "implicitDeny"
+                }
+              ]
+            }
+          ]
+        },
+        "all_resources_control": {
+          "EvaluationResults": [
+            {
+              "EvalActionName": "logs:CreateLogStream",
+              "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+              "EvalDecision": "implicitDeny",
+              "MatchedStatements": [],
+              "MissingContextValues": [],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+                  "EvalResourceDecision": "implicitDeny"
+                }
+              ]
+            },
+            {
+              "EvalActionName": "logs:PutLogEvents",
+              "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+              "EvalDecision": "implicitDeny",
+              "MatchedStatements": [],
+              "MissingContextValues": [],
+              "EvalDecisionDetails": {},
+              "ResourceSpecificResults": [
+                {
+                  "EvalResourceName": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:web/web/g1-simulacao",
+                  "EvalResourceDecision": "implicitDeny"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "api_calls": [
+        {
+          "service": "iam",
+          "operation": "SimulateCustomPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 2
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "SimulateCustomPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 2
+          }
+        },
+        {
+          "service": "iam",
+          "operation": "SimulateCustomPolicy",
+          "status": "success",
+          "n_items": {
+            "EvaluationResults": 2
+          }
+        }
+      ]
+    }
+  },
+  "expected_policy_documents": {
+    "trust": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "AllowECSTasksInAccount",
+          "Effect": "Allow",
+          "Principal": {
+            "Service": "ecs-tasks.amazonaws.com"
+          },
+          "Action": "sts:AssumeRole",
+          "Condition": {
+            "StringEquals": {
+              "aws:SourceAccount": "429100831877"
+            },
+            "ArnLike": {
+              "aws:SourceArn": "arn:aws:ecs:us-east-1:429100831877:*"
+            }
+          }
+        }
+      ]
+    },
+    "execution": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "GetECRAuthorization",
+          "Effect": "Allow",
+          "Action": "ecr:GetAuthorizationToken",
+          "Resource": "*"
+        },
+        {
+          "Sid": "PullProjectImages",
+          "Effect": "Allow",
+          "Action": [
+            "ecr:BatchCheckLayerAvailability",
+            "ecr:GetDownloadUrlForLayer",
+            "ecr:BatchGetImage"
+          ],
+          "Resource": [
+            "arn:aws:ecr:us-east-1:429100831877:repository/achados-web",
+            "arn:aws:ecr:us-east-1:429100831877:repository/achados-frontend"
+          ]
+        },
+        {
+          "Sid": "WriteProjectContainerLogs",
+          "Effect": "Allow",
+          "Action": [
+            "logs:CreateLogStream",
+            "logs:PutLogEvents"
+          ],
+          "Resource": "arn:aws:logs:us-east-1:429100831877:log-group:/ecs/achados-web:log-stream:*"
+        },
+        {
+          "Sid": "ReadProjectSecrets",
+          "Effect": "Allow",
+          "Action": "secretsmanager:GetSecretValue",
+          "Resource": [
+            "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/db-w28d8y",
+            "arn:aws:secretsmanager:us-east-1:429100831877:secret:g1/achados/acesso-TR13WW"
+          ]
+        }
+      ]
+    },
+    "task": {
+      "Version": "2012-10-17",
+      "Statement": [
+        {
+          "Sid": "MountWritePhotosThroughAccessPoint",
+          "Effect": "Allow",
+          "Action": [
+            "s3files:ClientMount",
+            "s3files:ClientWrite"
+          ],
+          "Resource": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad",
+          "Condition": {
+            "ArnEquals": {
+              "s3files:AccessPointArn": "arn:aws:s3files:us-east-1:429100831877:file-system/fs-03cc16c6148b70bad/access-point/fsap-02894e11d3d7d7137"
+            }
+          }
+        },
+        {
+          "Sid": "ReadPhotoObjects",
+          "Effect": "Allow",
+          "Action": [
+            "s3:GetObject",
+            "s3:GetObjectVersion"
+          ],
+          "Resource": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026/uploads/*"
+        },
+        {
+          "Sid": "ListPhotoBucket",
+          "Effect": "Allow",
+          "Action": "s3:ListBucket",
+          "Resource": "arn:aws:s3:::g1-achados-fotos-429100831877-20261026"
+        }
+      ]
+    }
+  },
+  "verification_summary": {
+    "configuration": {
+      "execution_role_exists": true,
+      "task_role_exists": true,
+      "both_trust_policies_match": true,
+      "execution_policy_matches": true,
+      "task_policy_matches": true,
+      "only_expected_execution_inline": true,
+      "only_expected_task_inline": true,
+      "no_managed_policy_overgrants": true,
+      "filesystem_expected_task_role": true,
+      "filesystem_expected_access_point": true,
+      "identity_policies_validated": true
+    },
+    "simulation_cases": [
+      {
+        "id": "execution_ecr_token",
+        "expected": "allowed",
+        "matches_expected": true,
+        "decisions": [
+          {
+            "action": "ecr:GetAuthorizationToken",
+            "decision": "allowed"
+          }
+        ]
+      },
+      {
+        "id": "execution_pull_both_project_images",
+        "expected": "allowed",
+        "matches_expected": true,
+        "decisions": [
+          {
+            "action": "ecr:BatchGetImage",
+            "decision": "allowed"
+          },
+          {
+            "action": "ecr:GetDownloadUrlForLayer",
+            "decision": "allowed"
+          },
+          {
+            "action": "ecr:BatchCheckLayerAvailability",
+            "decision": "allowed"
+          }
+        ]
+      },
+      {
+        "id": "execution_cannot_pull_other_repository",
+        "expected": "implicitDeny",
+        "matches_expected": true,
+        "decisions": [
+          {
+            "action": "ecr:BatchGetImage",
+            "decision": "implicitDeny"
+          }
+        ]
+      },
+      {
+        "id": "execution_read_both_secrets",
+        "expected": "allowed",
+        "matches_expected": true,
+        "decisions": [
+          {
+            "action": "secretsmanager:GetSecretValue",
+            "decision": "allowed"
+          }
+        ]
+      },
+      {
+        "id": "execution_cannot_read_other_secret",
+        "expected": "implicitDeny",
+        "matches_expected": true,
+        "decisions": [
+          {
+            "action": "secretsmanager:GetSecretValue",
+            "decision": "implicitDeny"
+          }
+        ]
+      },
+      {
+        "id": "execution_write_project_logs",
+        "expected": "allowed",
+        "matches_expected": false,
+        "decisions": [
+          {
+            "action": "logs:CreateLogStream",
+            "decision": "implicitDeny"
+          },
+          {
+            "action": "logs:PutLogEvents",
+            "decision": "implicitDeny"
+          }
+        ]
+      },
+      {
+        "id": "execution_cannot_write_other_logs",
+        "expected": "implicitDeny",
+        "matches_expected": true,
+        "decisions": [
+          {
+            "action": "logs:PutLogEvents",
+            "decision": "implicitDeny"
+          }
+        ]
+      },
+      {
+        "id": "task_mount_and_write_expected_access_point",
+        "expected": "allowed",
+        "matches_expected": true,
+        "decisions": [
+          {
+            "action": "s3files:ClientMount",
+            "decision": "allowed"
+          },
+          {
+            "action": "s3files:ClientWrite",
+            "decision": "allowed"
+          }
+        ]
+      },
+      {
+        "id": "task_wrong_access_point_denied",
+        "expected": "implicitDeny",
+        "matches_expected": true,
+        "decisions": [
+          {
+            "action": "s3files:ClientMount",
+            "decision": "implicitDeny"
+          },
+          {
+            "action": "s3files:ClientWrite",
+            "decision": "implicitDeny"
+          }
+        ]
+      },
+      {
+        "id": "task_missing_access_point_denied",
+        "expected": "implicitDeny",
+        "matches_expected": true,
+        "decisions": [
+          {
+            "action": "s3files:ClientMount",
+            "decision": "implicitDeny"
+          },
+          {
+            "action": "s3files:ClientWrite",
+            "decision": "implicitDeny"
+          }
+        ]
+      },
+      {
+        "id": "task_read_photo_and_version",
+        "expected": "allowed",
+        "matches_expected": true,
+        "decisions": [
+          {
+            "action": "s3:GetObject",
+            "decision": "allowed"
+          },
+          {
+            "action": "s3:GetObjectVersion",
+            "decision": "allowed"
+          }
+        ]
+      },
+      {
+        "id": "task_read_other_prefix_denied",
+        "expected": "implicitDeny",
+        "matches_expected": true,
+        "decisions": [
+          {
+            "action": "s3:GetObject",
+            "decision": "implicitDeny"
+          }
+        ]
+      },
+      {
+        "id": "task_direct_s3_write_denied",
+        "expected": "implicitDeny",
+        "matches_expected": true,
+        "decisions": [
+          {
+            "action": "s3:PutObject",
+            "decision": "implicitDeny"
+          }
+        ]
+      },
+      {
+        "id": "task_cannot_fetch_secrets",
+        "expected": "implicitDeny",
+        "matches_expected": true,
+        "decisions": [
+          {
+            "action": "secretsmanager:GetSecretValue",
+            "decision": "implicitDeny"
+          }
+        ]
+      },
+      {
+        "id": "task_list_photo_bucket",
+        "expected": "allowed",
+        "matches_expected": true,
+        "decisions": [
+          {
+            "action": "s3:ListBucket",
+            "decision": "allowed"
+          }
+        ]
+      }
+    ],
+    "simulation_cases_matched": 14,
+    "simulation_cases_total": 15,
+    "logs_simulation_inconclusive": true
+  },
+  "limits": {
+    "mcp_identity": "root",
+    "iam_user_modified": false,
+    "roles_assumed_by_human": false,
+    "secret_values_read": false,
+    "application_deployed": false,
+    "logs_runtime_tested": false,
+    "rds_connection_tested": false,
+    "s3files_mount_tested": false,
+    "notes": "Simulações de identidade não substituem execução integrada. Políticas com Resource * usadas no diagnóstico de logs não foram anexadas; somente GetECRAuthorization requer esse escopo na política real."
+  }
+}

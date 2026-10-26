@@ -14,7 +14,9 @@ local que já exista, e execute:
 docker compose up -d --build
 ```
 
-Abra **http://localhost:8080**. Um roteiro de demonstração ao professor:
+Abra **http://localhost:8080** e informe usuário `visitante` e a senha do `.env`.
+A entrada é solicitada pelo navegador; consulte [ACESSO.md](ACESSO.md).
+Um roteiro de demonstração ao professor:
 
 1. Mostre o indicador de conexão e a quantidade de itens/fotos reais.
 2. Procure por `biblio` e confira o filtro por local; limpe o filtro.
@@ -58,7 +60,9 @@ de o servidor já ter gravado o registro.
 Descrição e local respeitam os limites das colunas existentes (200 e 100
 caracteres). A interface aceita JPG/PNG de até 10 MB. Essa validação é apenas
 uma conveniência no navegador: a API e o Nginx mantêm o comportamento anterior,
-sem limite global ou autenticação. Não equivale a proteção de produção.
+sem limite global. O Nginx agora exige senha antes de encaminhar qualquer
+rota pública. A validação de arquivo no navegador não equivale a uma proteção
+de uploads no servidor.
 
 O total de fotos vem de `/estatisticas`: é a quantidade de arquivos no volume,
 que não precisa ser idêntica à quantidade de registros com foto, pois arquivo
@@ -82,8 +86,10 @@ Com Node.js 20 ou superior e o ambiente de teste já em execução:
 npm install
 npx playwright install chromium
 $env:TEST_BASE_URL = 'http://localhost:8080'
-npm run test:frontend
 ```
+
+Depois configure `TEST_ACCESS_PASSWORD` pela entrada protegida descrita em
+[ACESSO.md](ACESSO.md#verificação-de-desenvolvimento) e execute os testes.
 
 Use um ambiente descartável: o teste cadastra dois objetos, um deles com foto.
 O script está em [tests/frontend.mjs](../tests/frontend.mjs). Ele cobre as rotas
@@ -114,6 +120,11 @@ $env:TEST_BASE_URL = 'http://127.0.0.1:18080'
 npm run test:frontend
 ```
 
+O exemplo acima usa a credencial pública de demonstração de `.env.example`;
+os testes ainda precisam receber `TEST_ACCESS_PASSWORD`. No ambiente local
+configurado com uma senha própria, use `--env-file .env` para atualizar o mesmo
+projeto, sem revelar o arquivo ou alterar as credenciais do PostgreSQL.
+
 Para encerrar somente esses contêineres preservando os dados de teste:
 
 ```powershell
@@ -124,7 +135,9 @@ docker compose --env-file .env.example -p g1-frontend-validacao -f docker-compos
 
 O [guia AWS](GUIA_AWS.md) foi atualizado para duas imagens ECR e dois contêineres
 na mesma task Fargate. O acesso entra na porta 80 do frontend Nginx, que consulta
-o Flask em localhost:5000. Só `web` recebe o segredo e a montagem S3 Files.
-O ALB opcional encaminha para `frontend:80`. A configuração AWS foi testada
+o Flask em localhost:5000. `web` recebe o segredo do banco e a montagem S3 Files;
+`frontend` recebe outro segredo para a senha de entrada. O ALB com HTTPS
+encaminha para `frontend:80` e verifica `/healthz` na porta interna 8082.
+A configuração AWS foi testada
 localmente com dois contêineres compartilhando a rede; isso não comprova
 implantação em ECS, RDS ou S3 Files, que continua pendente.

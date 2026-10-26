@@ -53,6 +53,7 @@ estrutura apresentada como `achados-perdidos` no enunciado. Os arquivos
 | [A5 — Reflexão](docs/REFLEXAO.md) | Sete respostas e tabela de equivalência Azure, AWS e Google Cloud. |
 | [Guia AWS](docs/GUIA_AWS.md) | Roteiro de laboratório com ECS/Fargate, RDS, S3 Files, VPC, Secrets Manager e ECR; ainda não executado na conta AWS. |
 | [Frontend](docs/FRONTEND.md) | Interface, integração com a API, roteiro para demonstração e testes de navegador. |
+| [Acesso por senha](docs/ACESSO.md) | Entrada compartilhada no Nginx, segredo local/AWS, curl autenticado e HTTPS. |
 | [Bônus](docs/BONUS.md) | Proxy reverso, backup com restauração e Adminer no perfil `debug`. |
 
 ## Arquitetura
@@ -92,13 +93,17 @@ O exemplo contém valores fictícios suficientes para o teste inicial. Substitua
 antes de usar fora do exercício. O `.env` é ignorado pelo Git e não deve ser
 incluído na entrega. O Compose lê as três variáveis `POSTGRES_*` e repassa os mesmos
 valores ao banco e às variáveis `DB_NAME`, `DB_USER` e `DB_PASSWORD` da aplicação.
+O Nginx recebe `ACCESS_USER` e `ACCESS_PASSWORD` do mesmo arquivo e exige essa
+credencial para a interface, API e fotos. O exemplo usa credenciais fictícias;
+o valor real deve ficar somente no `.env` ou no Secrets Manager.
 Evite salvar a saída de `docker compose config` sem `--quiet`, pois ela pode revelar
 os valores resolvidos, incluindo a senha.
 
 A interface fica em **`http://localhost:8080`**. O serviço `nginx`, construído a
 partir de `./frontend` sobre a imagem oficial Nginx, publica `8080:80` e serve
 HTML/CSS/JavaScript. As rotas da API seguem por proxy para `web:5000`, no mesmo
-endereço. `web` e `db` não publicam porta no host.
+endereço. A publicação HTTP local fica restrita a `127.0.0.1`.
+`web` e `db` não publicam porta no host.
 A aplicação se conecta a `db:5432` pela bridge `rede_interna`. O Compose aguarda
 o banco saudável (`pg_isready`) antes de iniciar `web`, e aguarda o healthcheck
 HTTP de `web` antes de iniciar o Nginx. Os serviços usam `restart: unless-stopped`.
@@ -111,7 +116,8 @@ somente para leitura e executado na inicialização de um banco vazio.
 
 ## Demonstrar pelo navegador
 
-Abra `http://localhost:8080` e confira a lista e as estatísticas. Busque pelo
+Abra `http://localhost:8080`, informe o usuário **`visitante`** e a senha
+configurada no `.env`, e confira a lista e as estatísticas. Busque pelo
 local `biblio`, limpe o filtro e cadastre um objeto com descrição, local e uma
 foto PNG/JPG de teste. Clique na miniatura para ampliar a imagem. O formulário
 também aceita cadastro sem foto.
@@ -124,24 +130,26 @@ continuam fazendo parte das evidências da avaliação.
 ## Testar a API
 
 ```sh
-curl -i http://localhost:8080/health
-curl -i http://localhost:8080/itens
-curl -i 'http://localhost:8080/itens?local=biblio'
-curl -i http://localhost:8080/estatisticas
+curl --user visitante -i http://localhost:8080/health
+curl --user visitante -i http://localhost:8080/itens
+curl --user visitante -i 'http://localhost:8080/itens?local=biblio'
+curl --user visitante -i http://localhost:8080/estatisticas
 ```
 
-Com o banco acessível, `/health` deve retornar HTTP 200 com `status: "ok"` e
+O curl pede a senha sem incluí-la no comando. Sem credenciais ou com senha
+incorreta, as rotas públicas retornam 401. Veja [acesso por senha](docs/ACESSO.md).
+Com credencial válida e banco acessível, `/health` deve retornar HTTP 200 com `status: "ok"` e
 `banco: "conectado"`. Um banco novo deve conter os três itens de `db/init.sql`.
 Para cadastrar um item, você pode usar a imagem de teste sem dados pessoais
 incluída no repositório:
 
 ```sh
-curl -i -X POST http://localhost:8080/itens \
+curl --user visitante -i -X POST http://localhost:8080/itens \
   -F 'descricao=Objeto de teste' \
   -F 'local=Biblioteca' \
   -F 'foto=@docs/evidencias/foto-teste-1.png'
-curl -i http://localhost:8080/itens
-curl -i http://localhost:8080/estatisticas
+curl --user visitante -i http://localhost:8080/itens
+curl --user visitante -i http://localhost:8080/estatisticas
 docker compose exec web whoami
 docker compose logs web --tail 20
 ```
@@ -211,6 +219,10 @@ comparar os hashes. `backups/` é ignorado pelo Git. Esse procedimento copia
 somente fotos; o banco exige uma estratégia de backup própria.
 
 ## Evidências e entrega
+
+**Acesso compartilhado:** os registros 34 em diante verificam o bloqueio com
+senha no Nginx. As rotas e capturas anteriores continuam como histórico.
+Na AWS, use HTTPS pelo ALB; o segredo real nunca deve ser versionado.
 
 **Atualização do frontend (26/10/2026):** a interface e a nova imagem Nginx são
 posteriores à publicação registrada em 28. Os testes desta branch estão nos

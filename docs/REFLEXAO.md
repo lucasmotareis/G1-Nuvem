@@ -51,7 +51,8 @@ Fotos de RG ou carteira estudantil podem identificar pessoas e conter dados pess
 O art. 46 exige medidas de proteção; restringir a porta do banco é apenas uma parte dessa proteção.
 Proponho (1) autenticação e autorização para limitar quem pode cadastrar itens e consultar fotos;
 e (2) HTTPS para proteger as requisições e o transporte das imagens.
-São medidas futuras: o protótipo atual usa HTTP e suas rotas não implementam controle de acesso.
+Na etapa de 19/10, eram medidas futuras e as rotas não tinham controle de acesso.
+Em 26/10, esta branch acrescentou [senha compartilhada no Nginx](ACESSO.md); contas individuais e HTTPS na AWS continuam pendentes de implantação.
 
 ## Q7 — Réplicas
 

@@ -1,8 +1,10 @@
 # Arquitetura do ambiente
 
 O host executa o Docker Engine. Na versão com bônus, somente o Nginx publica a
-porta 8080 para a interface e a API. Ele serve o frontend estático e encaminha
-as rotas da API para `web:5000`. Dentro da
+porta 8080 para a interface e a API. Depois de validar a senha compartilhada,
+ele serve o frontend estático e encaminha as rotas da API para `web:5000`.
+A publicação local é `127.0.0.1:8080:80`, e a porta de prontidão 8082 não é
+publicada. Dentro da
 bridge `rede_interna`, `web` encontra o PostgreSQL pelo nome `db`, na porta 5432.
 `web` e `db` não publicam porta no host. O Adminer é opcional e usa somente a
 porta local `127.0.0.1:8081` quando o perfil `debug` é ativado.
@@ -28,7 +30,7 @@ flowchart TB
         ADMIN["Navegador para administração<br/>http://127.0.0.1:8081<br/>somente com perfil debug"]
 
         subgraph REDE["rede_interna - bridge definida pelo usuário"]
-            NGINX["Contêiner nginx<br/>imagem própria: build ./frontend<br/>base nginx:1.30-alpine<br/>interface em / · porta interna 80"]
+            NGINX["Contêiner nginx<br/>imagem própria: build ./frontend<br/>base nginx:1.30-alpine<br/>senha na interface/API · porta 80<br/>prontidão 8082 sem publicação"]
             WEB["Contêiner web<br/>imagem própria: build ./app<br/>Gunicorn / Flask em 0.0.0.0:5000<br/>usuário app"]
             DB["Contêiner db<br/>postgres:16-alpine<br/>5432 sem publicação no host"]
             ADMINER["Contêiner adminer<br/>adminer:6<br/>perfil debug - opcional"]
@@ -40,7 +42,7 @@ flowchart TB
         FOTOS[("Volume nomeado fotos<br/>g1-nuvem_fotos")]
         DADOS[("Volume nomeado dados_banco<br/>g1-nuvem_dados_banco")]
 
-        CLIENTE -->|"HTTP - publicação 8080:80"| NGINX
+        CLIENTE -->|"HTTP Basic - 127.0.0.1:8080:80"| NGINX
         ADMIN -->|"publicação 127.0.0.1:8081:8080"| ADMINER
         WEB ---|"montagem leitura/escrita em /app/uploads"| FOTOS
         DB ---|"montagem leitura/escrita em /var/lib/postgresql/data"| DADOS
@@ -49,6 +51,7 @@ flowchart TB
         FRONT -.->|"COPY no build<br/>/usr/share/nginx/html<br/>/etc/nginx/snippets/achados-routing.conf"| NGINX
         ENV -.->|"DB_NAME, DB_USER, DB_PASSWORD"| WEB
         ENV -.->|"POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD"| DB
+        ENV -.->|"ACCESS_USER, ACCESS_PASSWORD<br/>hash gerado somente ao iniciar"| NGINX
     end
 ```
 

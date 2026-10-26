@@ -1,0 +1,4 @@
+APROVADO: Sem credenciais: interface, arquivos estaticos, API, fotos e POST retornam 401
+APROVADO: Senha incorreta retorna 401
+APROVADO: Credencial valida libera API/fotos; arquivos secretos nao sao servidos
+APROVADO: Navegador autenticado carrega a interface; senha ausente do HTML/JavaScript

@@ -8,8 +8,10 @@ não foi executado na sua conta.** Não representa evidência de implantação.
 
 Para aprender cada serviço sem administrar uma máquina virtual, use o console
 AWS para criar os recursos e o PowerShell local para enviar a imagem e executar
-as tarefas. Comece com uma tarefa Fargate com dois contêineres, acesso restrito ao seu IP e dados
-fictícios. Depois acrescente balanceador, domínio e HTTPS.
+as tarefas. Use uma tarefa Fargate com dois contêineres e dados fictícios.
+O acesso compartilhado exige a senha no Nginx e **HTTPS no ALB antes de enviar
+essa senha pela internet**. Será necessário um domínio que você possa validar
+no ACM; o DNS padrão do ALB não substitui essa validação.
 
 | Peça local | Serviço usado | O que você administra |
 | --- | --- | --- |
@@ -17,7 +19,7 @@ fictícios. Depois acrescente balanceador, domínio e HTTPS.
 | PostgreSQL + `dados_banco` | RDS for PostgreSQL | Banco, acesso, tamanho e política de backup. |
 | `fotos` | S3 + **S3 Files** | Bucket privado, sistema de arquivos, permissões e montagem. |
 | `rede_interna` | VPC e security groups | Conectividade e portas permitidas. |
-| `.env` | Secrets Manager | Credenciais e quais tarefas podem recebê-las. |
+| `.env` | Secrets Manager | Dois segredos separados: banco e senha de entrada. |
 | Imagem local | ECR privado | Versões da imagem enviada pelo Docker. |
 
 Uma **task definition** é a receita de execução do contêiner. Uma **task** é uma
@@ -26,11 +28,14 @@ substituindo as que falham. Um **cluster** organiza esses recursos no ECS.
 
 ```mermaid
 flowchart LR
-    PC["Seu computador · IP autorizado"] -->|"HTTP :80 · laboratório"| FRONT
+    PC["Visitante com a senha compartilhada"] -->|"HTTPS :443"| ALB
     ECR["ECR privado · duas imagens"] -. "download na inicialização" .-> WEB
     ECR -. "download na inicialização" .-> FRONT
     SM["Secrets Manager"] -. "injeção de credenciais" .-> WEB
     subgraph VPC["VPC · duas zonas de disponibilidade"]
+        ALB["ALB público · certificado ACM<br/>HTTP redireciona para HTTPS"]
+        ALB -->|"HTTP :80 · senha validada pelo Nginx"| FRONT
+        ALB -. "prontidão :8082/healthz" .-> FRONT
         subgraph TASK["Uma task ECS/Fargate · IP público"]
             FRONT["Nginx :80 · interface e proxy"]
             WEB["Gunicorn/Flask :5000"]
@@ -56,10 +61,11 @@ Veja [S3 Files](https://docs.aws.amazon.com/AmazonS3/latest/userguide/s3-files.h
 e a [integração com ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/s3files-volumes.html).
 
 O frontend estático é empacotado em uma segunda imagem Nginx. A página inicial
-e a API usam a mesma origem: `http://<IP-da-task>/`, porta 80. O Nginx faz proxy
+e a API usam a mesma origem: `https://seu-dominio/`. O Nginx faz proxy
 das rotas da API para `127.0.0.1:5000`, pois os contêineres da mesma task
 compartilham a rede. Não há DNS Docker `db`, publicação `8080:80`, contêiner
-PostgreSQL ou Adminer na AWS. A porta 5000 não recebe regra de entrada pública.
+PostgreSQL ou Adminer na AWS. As portas da task não recebem entrada direta da
+internet: 80 e 8082 aceitam somente o grupo do ALB. A porta 5000 fica interna.
 Veja [rede awsvpc](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-networking-awsvpc.html).
 
 ## 2. Preparar conta, região e computador
@@ -73,7 +79,7 @@ Veja [rede awsvpc](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/t
    em valores adequados ao seu laboratório. O alerta não impede novas cobranças.
 4. Confira o [AWS Pricing Calculator](https://calculator.aws/) antes de criar:
    considere Fargate, RDS, armazenamento e operações S3/S3 Files, ECR, segredos,
-   logs e IPv4 público. Não pressuponha gratuidade por já possuir uma conta.
+   logs, ALB, domínio e IPv4 público. Não pressuponha gratuidade por já possuir uma conta.
 5. No Windows, tenha Docker Desktop funcionando com contêineres Linux e a
    [AWS CLI v2 atualizada](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html).
    Não precisa instalar Python ou PostgreSQL localmente.
@@ -112,20 +118,25 @@ Se a VPC padrão tiver sido excluída, a opção **Actions → Create default VP
 permite recriá-la; não altere uma rede existente de outro projeto.
 Referência: [VPC padrão](https://docs.aws.amazon.com/vpc/latest/userguide/default-vpc.html).
 
-Em **VPC → Security groups**, crie os três grupos na mesma VPC:
+Em **VPC → Security groups**, crie os quatro grupos na mesma VPC:
 
 | Nome sugerido | Regra de entrada | Origem |
 | --- | --- | --- |
-| `g1-web-sg` | HTTP TCP `80` | **My IP**, seu IPv4 público `/32`. |
+| `g1-alb-sg` | HTTPS TCP `443` | `0.0.0.0/0` para compartilhar o link; a senha continua obrigatória. |
+| `g1-alb-sg` | HTTP TCP `80` | `0.0.0.0/0`; listener somente de redirecionamento para HTTPS. |
+| `g1-web-sg` | HTTP TCP `80` | ID do grupo `g1-alb-sg`. |
+| `g1-web-sg` | TCP `8082` | ID do grupo `g1-alb-sg`, exclusivo para healthcheck. |
 | `g1-db-sg` | PostgreSQL TCP `5432` | ID do grupo `g1-web-sg`. |
 | `g1-fotos-sg` | NFS TCP `2049` | ID do grupo `g1-web-sg`. |
 
 Mantenha a saída padrão dos grupos para simplificar o laboratório. Não acrescente
-regras de entrada no grupo padrão da VPC. Se seu IP mudar, atualize apenas a
-origem da regra web. Não libere `5432` ou `2049` para a internet.
+regras de entrada no grupo padrão da VPC. Não libere 80/8082 diretamente para a
+internet na task, nem `5432`, `5000` ou `2049`. Você pode restringir também o ALB
+a IPs conhecidos; liberar seu HTTPS permite que o professor use o link de outra
+rede, desde que conheça a senha.
 
-A tarefa receberá IP público para baixar imagens/segredo e permitir seus
-testes. O RDS terá **Public access: No**, mesmo usando sub-redes da VPC padrão.
+A tarefa receberá IP público para baixar imagens/segredos, mas suas regras não
+permitem acesso direto externo. O RDS terá **Public access: No**, mesmo usando sub-redes da VPC padrão.
 Sub-rede pública significa que há uma rota ao internet gateway; isso não obriga
 o banco a ter IP público. O security group ainda limita quem se conecta.
 
@@ -193,6 +204,20 @@ Veja [TLS no RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Postgre
 O usuário administrativo simplifica este laboratório isolado. Antes de um uso
 real, separe o usuário de migrações do usuário da aplicação, com acesso limitado
 às tabelas e sequências necessárias.
+
+### 4.3. Criar o segredo de entrada do site
+
+Em **Secrets Manager → Store a new secret → Other type of secret**, crie outro
+segredo, por exemplo `g1/achados/acesso`, com a chave **`password`**. Informe a
+senha compartilhada apenas no console, sem gravá-la em arquivos versionados.
+Use de 20 a 72 bytes, sem quebra de linha; o Nginx gera um hash bcrypt ao iniciar.
+Use a chave padrão `aws/secretsmanager` neste roteiro e anote o ARN completo.
+Esse segredo é independente da senha do PostgreSQL. O usuário de entrada será
+`visitante`, configurado no contêiner frontend.
+
+Consulte [ACESSO.md](ACESSO.md) para o comportamento da entrada por senha e a
+troca posterior. A frase real não deve aparecer no JSON, Dockerfile, imagem ou
+evidências. Não use a credencial pública do `.env.example` na internet.
 
 ## 5. S3 e S3 Files: persistir as fotos
 
@@ -281,7 +306,7 @@ Service → Elastic Container Service Task**. Ambas confiam em
 ### 7.1. `g1-ecs-execution-role`
 
 Anexe `AmazonECSTaskExecutionRolePolicy` para baixar a imagem e enviar logs.
-Adicione esta política inline, substituindo o ARN pelo segredo do passo 4:
+Adicione esta política inline, substituindo os ARNs pelos dois segredos do passo 4:
 
 ```json
 {
@@ -290,7 +315,10 @@ Adicione esta política inline, substituindo o ARN pelo segredo do passo 4:
     {
       "Effect": "Allow",
       "Action": "secretsmanager:GetSecretValue",
-      "Resource": "SUBSTITUA_ARN_COMPLETO_DO_SEGREDO"
+      "Resource": [
+        "SUBSTITUA_ARN_COMPLETO_DO_SEGREDO_BANCO",
+        "SUBSTITUA_ARN_COMPLETO_DO_SEGREDO_ACESSO"
+      ]
     }
   ]
 }
@@ -348,7 +376,8 @@ Fonte: [acesso IAM ao S3 Files](https://docs.aws.amazon.com/AmazonS3/latest/user
 4. Substitua todos os marcadores `SUBSTITUA_...` pelos valores anotados.
    Use a URI `achados-web:<tag>` em `web` e `achados-frontend:<tag>` em `frontend`.
    Preserve os sufixos **`:username::`** e **`:password::`** nas referências ao
-   segredo. `DB_NAME=achados` deve ser igual ao banco criado.
+   segredo do banco. Em `frontend`, preencha o ARN do segredo de entrada,
+   preservando **`:password::`**. `DB_NAME=achados` deve ser igual ao banco criado.
 5. Se escolheu outra região, ajuste os dois campos `awslogs-region`. Mantenha
    os comandos padrão das imagens: Gunicorn em `web` e Nginx em `frontend`.
    Não preencha `entryPoint`/`command` na definição usada pelo service.
@@ -357,8 +386,10 @@ Fonte: [acesso IAM ao S3 Files](https://docs.aws.amazon.com/AmazonS3/latest/user
 
 O modelo usa 0,25 vCPU e 0,5 GiB compartilhados pelos dois contêineres, ponto de
 partida para teste pequeno. Aumente se observar falta de memória.
-O frontend aguarda `web` saudável por `dependsOn: HEALTHY`; sua checagem passa
-pelo proxy até `/health`. Só `web` recebe credenciais e montagem de fotos.
+O frontend aguarda `web` saudável por `dependsOn: HEALTHY`; sua checagem usa
+`http://127.0.0.1:8082/healthz`, sem senha, em listener interno separado.
+`web` recebe as credenciais do banco e montagem de fotos; `frontend` recebe
+somente a senha de entrada. Todas as rotas públicas na porta 80 exigem senha.
 Veja [dependências de contêineres](https://docs.aws.amazon.com/AmazonECS/latest/APIReference/API_ContainerDependency.html).
 Inclui montagem de fotos, logs e healthcheck;
 não inclui o segredo em texto. Confira [S3 Files na task definition](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/specify-s3files-config.html).
@@ -469,28 +500,33 @@ Em **ECS → Clusters → g1-achados → Services → Create**:
 2. Use Fargate regular, plataforma `LATEST`, nome `achados-web` e **Desired tasks: 1**.
 3. Selecione a VPC padrão e as duas sub-redes do passo 3.
 4. Use somente `g1-web-sg` e **Public IP: Turned on**.
-5. Nesta etapa, não configure load balancer ou autoscaling.
+5. Nesta etapa, não configure autoscaling. É possível criar o service sem
+   balanceador e associá-lo pelo comando da seção 11.
 6. Crie e aguarde a tarefa ficar **Running/Healthy**.
 
 Essa tarefa usa a definição completa com `web` e `frontend`: a definição
 `achados-init` e os overrides do passo 9 valem apenas para a tarefa avulsa.
-Abra a tarefa do service → **Networking**
-e copie seu IPv4 público. No PowerShell:
+**Configure agora o ALB, domínio e HTTPS da seção 11 antes de acessar.**
+O IP público da task não é o endereço a compartilhar. Depois de validar o
+certificado e apontar o DNS, no PowerShell:
 
 ```powershell
-$ApiBase = 'http://SUBSTITUA_IP_PUBLICO'
-curl.exe -i "$ApiBase/health"
-curl.exe -i "$ApiBase/itens"
-curl.exe -i "$ApiBase/itens?local=biblio"
-curl.exe -i "$ApiBase/estatisticas"
-curl.exe -i -X POST "$ApiBase/itens" -F 'descricao=Objeto AWS' -F 'local=Biblioteca' -F 'foto=@docs/evidencias/foto-teste-1.png'
-curl.exe -i "$ApiBase/itens"
-curl.exe -i "$ApiBase/estatisticas"
+$ApiBase = 'https://SUBSTITUA_SEU_DOMINIO'
+curl.exe --user visitante -i "$ApiBase/health"
+curl.exe --user visitante -i "$ApiBase/itens"
+curl.exe --user visitante -i "$ApiBase/itens?local=biblio"
+curl.exe --user visitante -i "$ApiBase/estatisticas"
+curl.exe --user visitante -i -X POST "$ApiBase/itens" -F 'descricao=Objeto AWS' -F 'local=Biblioteca' -F 'foto=@docs/evidencias/foto-teste-1.png'
+curl.exe --user visitante -i "$ApiBase/itens"
+curl.exe --user visitante -i "$ApiBase/estatisticas"
 ```
 
-Verifique HTTP 200 em `/health`, `status: ok` e `banco: conectado`. O cadastro
+O curl pedirá a senha sem registrá-la no comando. Sem credencial, o esperado é
+401, inclusive em `/health`. Verifique HTTP 200 em `/health` com a senha correta,
+`status: ok` e `banco: conectado`. O cadastro
 precisa retornar 201. Na listagem, pegue o caminho `/fotos/<nome>` e abra-o no
-navegador usando a mesma base. **Abra também `$ApiBase/` no navegador**: a
+navegador usando a mesma base. **Abra também `$ApiBase/` no navegador**, informe
+usuário `visitante` e a senha compartilhada: a
 interface permite buscar, cadastrar com ou sem foto e visualizar o acervo.
 Confirme pelo navegador um cadastro e a abertura da foto ampliada. O frontend
 faz as mesmas chamadas à API e não substitui o roteiro de `curl` da avaliação.
@@ -499,9 +535,9 @@ O bucket continua privado: as fotos são servidas pela aplicação.
 
 Para provar persistência, registre ID, caminho da foto e estatísticas. Em
 **Service → Update → Force new deployment**, substitua a tarefa e espere a nova
-ficar saudável. Pegue seu novo IP e confira os mesmos registros e a mesma foto.
-O endereço público pode mudar a cada substituição; isso é uma limitação deste
-primeiro acesso direto. Não há `depends_on` do Compose: inicialize o RDS antes
+ficar saudável. Use o mesmo domínio e confira os mesmos registros e a mesma foto.
+O ALB acompanha os IPs das tasks; não é preciso compartilhar um novo IP a cada
+substituição. Não há `depends_on` do Compose: inicialize o RDS antes
 e use o healthcheck do ECS para monitorar a aplicação.
 
 ## 11. Usar e atualizar no dia a dia
@@ -512,8 +548,9 @@ e use o healthcheck do ECS para monitorar a aplicação.
 | Ver logs da aplicação/inicialização | CloudWatch → `/ecs/achados-web`. |
 | Enviar código novo | Build/push da imagem alterada (`web` ou `frontend`) com outra tag; nova revisão da task definition; atualizar o service. |
 | Atualizar a senha | Atualizar RDS e segredo de forma coordenada; depois forçar novo deployment. |
+| Atualizar a senha de entrada | Alterar apenas `g1/achados/acesso`; forçar novo deployment e aguardar a substituição de todas as tasks antigas. |
 | Parar a aplicação | Atualizar o service para **Desired tasks: 0**. |
-| Retomar | RDS disponível; atualizar o service para **Desired tasks: 1** e conferir o novo IP. |
+| Retomar | RDS disponível; atualizar o service para **Desired tasks: 1** e conferir os targets do ALB. |
 
 Parar uma task manualmente não é uma parada permanente: o service cria outra
 para manter a quantidade desejada. Para atualizar, guarde a revisão anterior
@@ -521,18 +558,24 @@ para poder reverter e faça os testes das rotas novamente.
 
 ### Endereço estável, HTTPS e réplicas
 
-Depois de validar a primeira instância, acrescente um **Application Load Balancer**:
+Para compartilhar o site protegido por senha, configure um **Application Load
+Balancer com HTTPS**. Esse passo é necessário antes dos testes externos da
+seção 10; o HTTP local em loopback serve apenas para desenvolvimento.
 
 1. Crie um ALB público em duas sub-redes de zonas diferentes.
-2. Crie `g1-alb-sg` com entrada inicialmente restrita ao seu IP em `80`/`443`.
-3. Crie target group do tipo **IP**, HTTP `80`, healthcheck `/health`.
-4. Configure um listener para encaminhar ao target group. Para adicionar o
+2. Use `g1-alb-sg` do passo 3. Sua saída precisa alcançar as portas 80 e 8082 da task.
+3. Crie target group do tipo **IP**, HTTP `80`. Nas configurações avançadas de
+   healthcheck, escolha HTTP, **porta 8082**, caminho **`/healthz`**, sucesso 200.
+4. No ACM da mesma região, solicite certificado para um domínio seu e conclua
+   a validação DNS. Configure listener **HTTPS 443** com esse certificado para
+   encaminhar ao target group. Configure o listener **HTTP 80 somente para
+   redirecionar a HTTPS 443**. Para adicionar o
    balanceador ao service já existente, use o comando abaixo; essa alteração
    não é feita pelo console do ECS. O ECS registra/desregistra os IPs das tasks.
-5. Troque a entrada de `g1-web-sg`: TCP `80` apenas de `g1-alb-sg`.
-6. Acesse pelo DNS do ALB. Para HTTPS, valide um domínio próprio no ACM na mesma
-   região, associe o certificado ao listener `443`, aponte o DNS do domínio para
-   o ALB e redirecione HTTP para HTTPS.
+5. Confira a entrada de `g1-web-sg`: TCP `80` e `8082` apenas de `g1-alb-sg`.
+   Não abra 8082 publicamente; esse listener não serve o site ou as outras rotas.
+6. Aponte o DNS do seu domínio para o ALB e acesse **`https://seu-dominio/`**.
+   Não envie a senha ao IP público da task, a um endereço HTTP ou usando `-k`.
 
 Depois de criar o listener, preencha o ARN do target group e execute:
 
@@ -542,7 +585,7 @@ aws ecs update-service --region $AwsRegion --cluster g1-achados --service achado
 ```
 
 Esse comando inicia um novo deployment. Aguarde os targets saudáveis antes
-de testar o DNS do ALB e mantenha a configuração do service em rolling update
+de testar o domínio HTTPS e mantenha a configuração do service em rolling update
 (`ECS` deployment controller).
 
 O ALB passa a ser a entrada pública e termina o HTTPS; o Nginx de cada task
@@ -554,11 +597,16 @@ operações distintas, sem transação conjunta. O ALB acrescenta cobrança cont
 Referência: [ALB com ECS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/alb.html).
 
 O IP público das tasks ainda permite saída para os serviços AWS; o grupo web
-limita a entrada ao ALB. Em uma próxima arquitetura, use tasks em sub-redes
-privadas com NAT ou endpoints. Para disponibilização real, implemente também
-autenticação/autorização e limites de upload em uma versão própria da aplicação.
-O protótipo atual aceita cadastros e leitura de fotos sem autenticação; mantenha
-o laboratório limitado ao seu IP e use imagens sem dados pessoais.
+limita a entrada ao ALB. A configuração AWS do Nginx exige
+`X-Forwarded-Proto: https` na porta 80 e retorna 426 se ele faltar. A regra de
+rede é indispensável para confiar nesse cabeçalho. O listener interno de
+prontidão fica separado para não contornar a senha. Veja os
+[healthchecks do ALB](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html).
+
+Em uma próxima arquitetura, use tasks em sub-redes privadas com NAT ou
+endpoints. A senha compartilhada controla a entrada de todos igualmente;
+contas individuais, permissões por pessoa e limites de upload exigem uma
+evolução própria. Use imagens de teste sem dados pessoais neste laboratório.
 
 ## 12. Diagnóstico rápido
 
@@ -570,7 +618,10 @@ o laboratório limitado ao seu IP e use imagens sem dados pessoais.
 | `Permission denied` ao cadastrar foto | Access point correto, usuário POSIX, diretório `/uploads` e `ClientWrite`. |
 | `/health` retorna 503 | Endpoint, DB name, segredo, RDS disponível, regra 5432 e TLS. |
 | `/health` funciona, `/itens` falha | A tabela foi criada pelo passo 9? O healthcheck só faz `SELECT 1`. |
-| Navegador não conecta | IP atual da task, porta 80, regra My IP e os dois contêineres saudáveis. |
+| Navegador não conecta | Domínio HTTPS, certificado, listeners, grupos do ALB/task e os dois contêineres saudáveis. |
+| HTTP 401 | Informe usuário e senha de entrada; confira o segredo de acesso e force novo deployment se foi alterado. |
+| HTTP 426 na AWS | Use o domínio HTTPS do ALB, não o IP da task; confira `X-Forwarded-Proto` e as regras de rede. |
+| ALB marca targets como não saudáveis | Healthcheck precisa usar `/healthz`, porta 8082 e regra de entrada somente do ALB. |
 | Página abre, mas a API retorna 502 | Os dois contêineres estão na mesma task? O frontend usa `127.0.0.1:5000`, não o DNS Docker. |
 | Fotos desaparecem após substituir task | A montagem S3 Files está realmente em `/app/uploads`? |
 | Tarefa não é criada por limite de vCPU | Service Quotas → Fargate On-Demand vCPU; confira a cota da região e solicite aumento se necessário. |
@@ -578,7 +629,7 @@ o laboratório limitado ao seu IP e use imagens sem dados pessoais.
 ## 13. Encerrar o laboratório e controlar custos
 
 **Desired tasks: 0 não encerra a cobrança de todos os serviços.** RDS,
-armazenamento, versões do S3, snapshots, segredos e eventual ALB continuam
+armazenamento, versões do S3, snapshots, segredos e ALB continuam
 existindo. Um RDS parado também cobra armazenamento e reinicia automaticamente
 após sete dias. Veja [parada do RDS](https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/USER_StopInstance.html).
 
@@ -593,7 +644,7 @@ Para encerrar definitivamente, depois de preservar os dados necessários:
    remova access points, mount targets e o sistema de arquivos.
 5. Se as fotos puderem ser descartadas, esvazie o bucket **incluindo versões
    anteriores e delete markers**, depois exclua-o. Versionamento retém versões.
-6. Remova imagens e os dois repositórios ECR, segredo conforme sua janela de recuperação,
+6. Remova imagens e os dois repositórios ECR, ambos os segredos conforme suas janelas de recuperação,
    log group e cluster exclusivos do laboratório.
 7. Remova somente as roles e security groups criados para este laboratório
    depois que não houver dependências. Não exclua a VPC padrão compartilhada.
@@ -611,7 +662,9 @@ CloudFormation ou Terraform, depois de confirmar as escolhas e os custos.
 - [ ] Segredos injetados por referência, sem senha no JSON, logs ou Git.
 - [ ] Inicialização avulsa terminou com exit code 0 e criou os três exemplos.
 - [ ] Todas as rotas testadas, incluindo cadastro e recuperação da foto.
-- [ ] Interface em `/` com busca, cadastro e foto funcionando pela porta 80 do Nginx.
+- [ ] Interface em `/` com busca, cadastro e foto funcionando por HTTPS no ALB.
+- [ ] Sem senha, interface/API/fotos retornam 401; senha válida permite acesso.
+- [ ] Porta 8082 restrita ao ALB, servindo apenas `/healthz`.
 - [ ] Objeto identificado no bucket e sincronização sem erros.
 - [ ] Mesmos registros e foto após substituição da task.
 - [ ] Recursos removidos ou custos de retenção conscientemente mantidos.

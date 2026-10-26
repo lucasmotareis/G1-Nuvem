@@ -58,11 +58,16 @@
       "image": "SUBSTITUA_URI_ECR_FRONTEND_COM_TAG",
       "essential": true,
       "dependsOn": [{"containerName": "web", "condition": "HEALTHY"}],
+      "environment": [{"name": "ACCESS_USER", "value": "visitante"}],
+      "secrets": [
+        {"name": "ACCESS_PASSWORD", "valueFrom": "SUBSTITUA_ARN_SEGREDO_ACESSO:password::"}
+      ],
       "portMappings": [
-        {"containerPort": 80, "protocol": "tcp", "appProtocol": "http"}
+        {"containerPort": 80, "protocol": "tcp", "appProtocol": "http"},
+        {"containerPort": 8082, "protocol": "tcp", "appProtocol": "http"}
       ],
       "healthCheck": {
-        "command": ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/health"],
+        "command": ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8082/healthz"],
         "interval": 30,
         "timeout": 5,
         "retries": 3,

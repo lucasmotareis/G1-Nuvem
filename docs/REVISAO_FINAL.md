@@ -6,6 +6,8 @@ separada, preservando os arquivos fornecidos; seus testes estão nas
 [evidências 29 a 33](evidencias/README.md#estado-da-branch-com-frontend).
 O Mermaid e os roteiros local/AWS foram atualizados. O frontend ainda não foi
 publicado no repositório remoto nem implantado na AWS.
+A proteção por senha foi acrescentada em seguida, também sem alterar a aplicação
+fornecida. Os testes 34 a 38 e [ACESSO.md](ACESSO.md) documentam essa etapa.
 
 Revisão de `G1-CN-2N.pdf`, seções 2 a 7 e Apêndice A, em 19/10/2026.
 A implementação local atende aos requisitos obrigatórios conferidos abaixo.
